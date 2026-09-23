@@ -66,7 +66,6 @@ html[data-lang="en"] [data-en]{display:inline}
 html[data-lang="en"] h3[data-en],
 html[data-lang="en"] p[data-en],
 html[data-lang="en"] div.sub[data-en]{display:block}
-textarea[data-en-ph]{}
 </style>
 </head>
 <body>
@@ -88,56 +87,16 @@ textarea[data-en-ph]{}
 </aside>
 
 <div class="wrap">
-  <h1><span data-vi>Câu hỏi cần xác nhận — trước khi làm theo feedback mới</span><span data-en>Open Questions — before implementing the latest feedback</span></h1>
-  <p class="sub"><span data-vi>Gõ câu trả lời dưới mỗi câu hỏi rồi bấm Save — sẽ được lưu thẳng vào repo (<code>blocker/answers.json</code>) để Trung xem lại bất cứ lúc nào.</span><span data-en>Type an answer under each question and hit Save — it's committed straight to the repo (<code>blocker/answers.json</code>) so Trung can read it back anytime.</span></p>
-  <div class="status" id="status"></div>
+  <h1><span data-vi>Không còn câu hỏi nào cần xác nhận</span><span data-en>No open questions right now</span></h1>
+  <p class="sub"><span data-vi>Cả 5 câu hỏi trước đó (xóa section, bỏ Mermaid, Recommendations, số nguồn tối thiểu, bảng màu theo client) đều đã được quyết định và áp dụng vào skill. Trang này sẽ mở lại khi có câu hỏi mới cần bạn xác nhận.</span><span data-en>All 5 earlier questions (section removal, dropping Mermaid, Recommendations, minimum source count, per-client palette) have been decided and applied to the skill. This page reopens when a new question needs your confirmation.</span></p>
 
-  <div class="q" data-id="q1">
-    <div class="src"><span data-vi>Liên quan mục 5 &amp; 6 — xóa các mục</span><span data-en>Re: item 5 &amp; 6 — remove sections</span></div>
-    <h3><span data-vi>Xóa 12 mục này gần như xóa hết phần kỹ thuật Odoo/AI/Social</span><span data-en>Removing these 12 sections strips out almost the entire Odoo/AI/Social technical pitch</span></h3>
-    <p><span data-vi>Danh sách cần xóa — Operations, Stakeholder Perspectives, AI &amp; Automation Catalog, AI in Action, Odoo 19 Architecture, Data Migration, Social Media Architecture &amp; Tools, Implementation Roadmap, Change Management, Hypercare &amp; Support, Risk Register &amp; RACI, KPIs &amp; Benefits — gần như toàn bộ phần "sẽ triển khai như thế nào".</span><span data-en>The list to remove — Operations, Stakeholder Perspectives, AI &amp; Automation Catalog, AI in Action, Odoo 19 Architecture, Data Migration, Social Media Architecture &amp; Tools, Implementation Roadmap, Change Management, Hypercare &amp; Support, Risk Register &amp; RACI, KPIs &amp; Benefits — covers nearly all of the "how we'd actually deliver this" content.</span></p>
-    <div class="why"><b><span data-vi>Câu hỏi:</span><span data-en>Question:</span></b> <span data-vi>rút gọn proposal chỉ còn research + khuyến nghị, hay chuyển nội dung này sang chỗ khác thay vì bỏ hẳn?</span><span data-en>cut the proposal down to research + recommendation only, or move some of this content elsewhere instead of dropping it entirely?</span></div>
-    <textarea data-ph-vi="Gõ câu trả lời ở đây..." data-ph-en="Type your answer here..." placeholder="Type your answer here..."></textarea>
-    <div class="row"><button class="save"><span data-vi>Lưu</span><span data-en>Save</span></button><span class="saved"><span data-vi>Đã lưu!</span><span data-en>Saved!</span></span><span class="lastsaved"></span></div>
+  <div class="q" style="border-left-color:var(--green)">
+    <div class="src"><span data-vi>Trạng thái</span><span data-en>Status</span></div>
+    <h3><span data-vi>✓ Đã xử lý xong tất cả</span><span data-en>✓ All resolved</span></h3>
+    <p><span data-vi>Xem chi tiết những gì đã thay đổi trong <a href="../report/sales-proposal-pipeline-workflow.html">sơ đồ pipeline</a>.</span><span data-en>See what changed in the <a href="../report/sales-proposal-pipeline-workflow.html">pipeline diagram</a>.</span></p>
   </div>
 
-  <div class="q" data-id="q2">
-    <div class="src"><span data-vi>Liên quan mục 4 — bỏ Mermaid</span><span data-en>Re: item 4 — remove Mermaid</span></div>
-    <h3><span data-vi>Đã bỏ Mermaid, nhưng mục BPMN·Blueprint·UML không nằm trong danh sách xóa</span><span data-en>Mermaid removed, but BPMN·Blueprint·UML section wasn't on the removal list</span></h3>
-    <p><span data-vi>"Không dùng Mermaid" mâu thuẫn với việc giữ BPMN·Blueprint·UML, vì toàn bộ nội dung mục đó là 2 sơ đồ Mermaid.</span><span data-en>"Do not use Mermaid chart" conflicts with keeping BPMN·Blueprint·UML, since that section's entire content is 2 Mermaid diagrams.</span></p>
-    <div class="why"><b><span data-vi>Câu hỏi:</span><span data-en>Question:</span></b> <span data-vi>xóa luôn mục BPMN·Blueprint·UML, hay vẽ lại bằng ảnh tĩnh/bảng thay vì Mermaid?</span><span data-en>remove BPMN·Blueprint·UML too, or rebuild it as static images/tables instead of Mermaid?</span></div>
-    <textarea data-ph-vi="Gõ câu trả lời ở đây..." data-ph-en="Type your answer here..." placeholder="Type your answer here..."></textarea>
-    <div class="row"><button class="save"><span data-vi>Lưu</span><span data-en>Save</span></button><span class="saved"><span data-vi>Đã lưu!</span><span data-en>Saved!</span></span><span class="lastsaved"></span></div>
-  </div>
-
-  <div class="q" data-id="q3">
-    <div class="src"><span data-vi>Liên quan Mục tiêu chính #2</span><span data-en>Re: Main objective #2</span></div>
-    <h3><span data-vi>"Đưa ra khuyến nghị nên làm thế nào" — để ở đâu?</span><span data-en>"Give recommendations on how it should be" — where should this live?</span></h3>
-    <p><span data-vi>Được đánh dấu là hiện đang thiếu. Proposal đã có Executive Summary và 3 mục Proposed Solutions mang tính khuyến nghị.</span><span data-en>Flagged as currently missing. The proposal already has an Executive Summary and 3 Proposed Solutions sections carrying recommendations.</span></p>
-    <div class="why"><b><span data-vi>Câu hỏi:</span><span data-en>Question:</span></b> <span data-vi>làm 1 mục "Recommendations" riêng, hay tăng cường nội dung ngay trong Executive Summary?</span><span data-en>a distinct standalone "Recommendations" section, or strengthen the existing Executive Summary?</span></div>
-    <textarea data-ph-vi="Gõ câu trả lời ở đây..." data-ph-en="Type your answer here..." placeholder="Type your answer here..."></textarea>
-    <div class="row"><button class="save"><span data-vi>Lưu</span><span data-en>Save</span></button><span class="saved"><span data-vi>Đã lưu!</span><span data-en>Saved!</span></span><span class="lastsaved"></span></div>
-  </div>
-
-  <div class="q" data-id="q4">
-    <div class="src"><span data-vi>Liên quan Sources &amp; Citation</span><span data-en>Re: Sources &amp; Citation</span></div>
-    <h3><span data-vi>"Chỉ 2 nguồn?? cần nhiều hơn" — con số mục tiêu là bao nhiêu?</span><span data-en>"Only 2 sources?? needs to be more" — what's the target?</span></h3>
-    <p><span data-vi>Hiện chưa có số lượng nguồn tối thiểu bắt buộc, chỉ có luật là mỗi claim phải có nguồn hoặc gắn nhãn assessment.</span><span data-en>No minimum source count is enforced today, only a rule that every claim needs a source or an explicit assessment tag.</span></p>
-    <div class="why"><b><span data-vi>Câu hỏi:</span><span data-en>Question:</span></b> <span data-vi>có con số cụ thể trong đầu không (vd 15+, 30+) để biến thành ngưỡng tối thiểu bắt buộc kiểm tra được?</span><span data-en>a rough number in mind (e.g. 15+, 30+) so this becomes a hard, checkable minimum?</span></div>
-    <textarea data-ph-vi="Gõ câu trả lời ở đây..." data-ph-en="Type your answer here..." placeholder="Type your answer here..."></textarea>
-    <div class="row"><button class="save"><span data-vi>Lưu</span><span data-en>Save</span></button><span class="saved"><span data-vi>Đã lưu!</span><span data-en>Saved!</span></span><span class="lastsaved"></span></div>
-  </div>
-
-  <div class="q" data-id="q5">
-    <div class="src"><span data-vi>Liên quan UI/bảng màu</span><span data-en>Re: UI/color scheme</span></div>
-    <h3><span data-vi>Xác nhận hướng đi: mỗi client 1 bảng màu riêng</span><span data-en>Confirming direction: per-client palette</span></h3>
-    <p><span data-vi>Đã quyết định: thay vì cố định navy/teal cho mọi client, agent sẽ tự chọn bảng màu/font phù hợp với ngành/thương hiệu của từng khách hàng.</span><span data-en>Decided so far: instead of one fixed navy/teal theme for every client, the agent picks a palette/typography fitting each client's own industry/brand.</span></p>
-    <div class="why"><b><span data-vi>Câu hỏi:</span><span data-en>Question:</span></b> <span data-vi>có ràng buộc cứng nào không (vd phải dark-mode-first, phải giữ nguyên logo/wordmark TechNext) trước khi làm?</span><span data-en>any hard constraints (must stay dark-mode-first, must keep the TechNext logo/wordmark treatment) before this gets built?</span></div>
-    <textarea data-ph-vi="Gõ câu trả lời ở đây..." data-ph-en="Type your answer here..." placeholder="Type your answer here..."></textarea>
-    <div class="row"><button class="save"><span data-vi>Lưu</span><span data-en>Save</span></button><span class="saved"><span data-vi>Đã lưu!</span><span data-en>Saved!</span></span><span class="lastsaved"></span></div>
-  </div>
-
-  <div class="foot">technext-sales-proposal · <span data-vi>câu trả lời được lưu vào blocker/answers.json trong repo</span><span data-en>answers are committed to blocker/answers.json in the repo</span></div>
+  <div class="foot">technext-sales-proposal</div>
 </div>
 
 <script>
@@ -165,63 +124,6 @@ function setTheme(t){
   }catch(e){}
 })();
 
-const statusEl = document.getElementById('status');
-function showStatus(msg, kind){
-  statusEl.textContent = msg;
-  statusEl.className = 'status show ' + kind;
-}
-
-function fmtTime(iso){
-  const lang = document.documentElement.getAttribute('data-lang');
-  const prefix = lang === 'vi' ? 'Trả lời lần cuối ' : 'Last answered ';
-  return prefix + new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
-}
-async function loadAnswers(){
-  try{
-    const r = await fetch('/api/answers');
-    const data = await r.json();
-    if (!r.ok) throw new Error(data.message || data.error || ('http_' + r.status));
-    document.querySelectorAll('.q').forEach(card => {
-      const id = card.dataset.id;
-      if (data[id]) {
-        card.querySelector('textarea').value = data[id].answer || '';
-        const ls = card.querySelector('.lastsaved');
-        if (data[id].updatedAt) ls.textContent = fmtTime(data[id].updatedAt);
-      }
-    });
-  }catch(e){
-    showStatus('Could not load saved answers: ' + e.message, 'err');
-  }
-}
-
-document.querySelectorAll('.q').forEach(card => {
-  const id = card.dataset.id;
-  const ta = card.querySelector('textarea');
-  const btn = card.querySelector('button.save');
-  const saved = card.querySelector('.saved');
-  const lastsaved = card.querySelector('.lastsaved');
-  btn.addEventListener('click', async () => {
-    btn.disabled = true;
-    try{
-      const r = await fetch('/api/answers', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ id, answer: ta.value })
-      });
-      const j = await r.json();
-      if (!r.ok) throw new Error(j.detail || j.message || j.error || ('http_' + r.status));
-      saved.classList.add('show');
-      lastsaved.textContent = fmtTime(new Date().toISOString());
-      setTimeout(() => saved.classList.remove('show'), 2500);
-    }catch(e){
-      showStatus('Save failed: ' + e.message, 'err');
-    }finally{
-      btn.disabled = false;
-    }
-  });
-});
-
-loadAnswers();
 </script>
 </body>
 </html>

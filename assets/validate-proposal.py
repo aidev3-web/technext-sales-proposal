@@ -18,7 +18,7 @@ import re
 import sys
 from pathlib import Path
 
-REQUIRED_ASSESS_SECTIONS = ["implementation-roadmap", "change-management", "hypercare-support"]
+REQUIRED_ASSESS_SECTIONS = ["recommendations"]
 
 MENU_STRUCTURE_PATH = Path(__file__).parent / "menu-structure.md"
 
@@ -171,19 +171,19 @@ def main():
     else:
         ok("all template shell markers present — this is the real template, filled in")
 
-    print(f"\n=== 9. Full chart & Mermaid manifest present (19 canvases + 9 diagrams, exact ids) ===")
-    # The reference build (full1 / Casa Escondida) ships 21 named Chart.js canvases;
-    # this skill drops the 2 tied to the removed PESTLE/Porter's Five Forces sections,
-    # leaving 19 — SKILL.md's "Charts & diagrams" manifest requires this skill's output
-    # to match that count and those exact canvas ids (content adapted per client, but
-    # the slot itself must exist). This does not judge whether the plotted data is any
-    # good — that's a judgment call.
+    print(f"\n=== 9. Full chart & diagram manifest present (18 canvases + 4 static diagram blocks, exact ids) ===")
+    # SKILL.md's "Charts & diagrams" manifest requires this skill's output to match this
+    # count and these exact canvas ids (content adapted per client, but the slot itself
+    # must exist). Diagrams are static HTML (boss feedback 2026-09-23: no Mermaid),
+    # wrapped in <div class="diagram-block">. This does not judge whether the plotted
+    # data is any good — that's a judgment call.
     REQUIRED_CANVAS_IDS = [
         "cRevMix", "cScorecard", "cRevStream", "cHeadcount", "cSeasonStaff", "cChannel",
         "cDigital", "cSentiment", "cThemes", "cPosition", "cGap",
-        "cOrigin", "cSeason", "cPersona", "cAuto", "cRisk", "cKpi", "cRoi", "cOwner",
+        "cOrigin", "cSeason", "cPersona", "cRisk", "cKpi", "cRoi", "cOwner",
     ]
     canvas_count = len(re.findall(r'<canvas\s+id="', html))
+    diagram_count = len(re.findall(r'class="diagram-block"', html))
     mermaid_count = len(re.findall(r'class="mermaid"', html))
     regchart_count = len(re.findall(r'regChart\s*\(', html))
     has_chartjs = "chart.js" in html.lower() or "new Chart(" in html or "mkChart(" in html
@@ -197,10 +197,12 @@ def main():
         passed = fail(f"only {canvas_count} <canvas> chart(s) found total (manifest requires {len(REQUIRED_CANVAS_IDS)})") and passed
     else:
         ok(f"{canvas_count} chart canvas(es) found")
-    if mermaid_count < 9:
-        passed = fail(f"only {mermaid_count} Mermaid diagram(s) found (manifest requires 9: 1 Group A + 5 Group B + 3 Group C)") and passed
+    if mermaid_count:
+        passed = fail(f"{mermaid_count} Mermaid diagram(s) found — Mermaid is banned (boss feedback 2026-09-23), rebuild as static diagram-block HTML") and passed
+    if diagram_count < 4:
+        passed = fail(f"only {diagram_count} diagram-block(s) found (manifest requires 4: 1 Group A + 3 Group B, static HTML, no Mermaid)") and passed
     else:
-        ok(f"{mermaid_count} Mermaid diagram(s) found")
+        ok(f"{diagram_count} diagram-block(s) found")
     if canvas_count and not has_chartjs:
         passed = fail("canvas elements present but no Chart.js script/mkChart() call found — charts won't render") and passed
     if canvas_count and regchart_count < canvas_count:

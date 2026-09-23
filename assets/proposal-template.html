@@ -7,11 +7,6 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0a0f1a">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose' });
-  window._mermaid = mermaid;
-</script>
 <style>
 :root{
   --bg:#0a0f1a; --bg2:#0f1626; --panel:#121c30; --panel2:#16223a; --line:#1f2d49;
@@ -95,13 +90,13 @@ section{padding:64px 0 32px;border-bottom:1px solid var(--line);scroll-margin-to
 .g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
 .card h3{margin-top:0}
-.chartbox,.mermaid,.bpmn{min-width:0;max-width:100%}
+.chartbox,.diagram-block,.bpmn{min-width:0;max-width:100%}
 .chartbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
 .chartbox h4{margin:0 0 4px}
 .chartbox .cap{color:var(--muted);font-size:.76rem;margin-bottom:12px}
 .canvas-h{position:relative;height:300px}
 .canvas-h.tall{height:380px}
-.mermaid{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);overflow-x:auto}
+.diagram-block{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);overflow-x:auto}
 .kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;position:relative;overflow:hidden}
 .kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad)}
 .kpi .num{font-size:2.3rem;font-weight:900;letter-spacing:-.03em;background:var(--grad2);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
@@ -267,6 +262,10 @@ footer{padding:50px 24px 70px;text-align:center;color:var(--muted);font-size:.82
       <div class="wrap"><h2><span class="t-vi">Tóm tắt điều hành</span><span class="t-en">Executive Summary</span></h2><p class="placeholder-note">PLACEHOLDER — needs charts: cRevMix (doughnut) + cScorecard (bar) — written in Phase 2, see SKILL.md "Charts &amp; diagrams"</p></div>
     </section>
 
+    <section id="recommendations" data-nav-vi="Khuyến nghị" data-nav-en="Recommendations" data-grp-vi="Tổng quan" data-grp-en="Overview">
+      <div class="wrap"><h2><span class="t-vi">Khuyến nghị</span><span class="t-en">Recommendations</span></h2><p class="placeholder-note">PLACEHOLDER — direct "the company should…" recommendations + needs charts: cRisk (bubble), cKpi (bar), cRoi (line), a Mutual Action Plan .tbl, all .assess-tagged — written in Phase 2, see SKILL.md "Charts &amp; diagrams"</p></div>
+    </section>
+
     <section id="solution-odoo-erp" data-nav-vi="Giải pháp Odoo ERP" data-nav-en="Odoo ERP Solution" data-grp-vi="Giải pháp đề xuất" data-grp-en="Proposed Solutions">
       <div class="wrap"><h2><span class="t-vi">Giải pháp Odoo ERP</span><span class="t-en">Odoo ERP Solution</span></h2><p class="placeholder-note">PLACEHOLDER — grounded in this client's specific pains, not a generic Odoo pitch</p></div>
     </section>
@@ -290,7 +289,7 @@ footer{padding:50px 24px 70px;text-align:center;color:var(--muted);font-size:.82
       <div class="wrap"><h2><span class="t-vi">Nhà sáng lập &amp; Ban lãnh đạo</span><span class="t-en">Founders &amp; Leadership</span></h2><p class="placeholder-note">PLACEHOLDER</p></div>
     </section>
     <section id="staff-org" data-nav-vi="Nhân sự &amp; Cơ cấu tổ chức" data-nav-en="Staff &amp; Org Analysis" data-grp-vi="Rà soát toàn diện" data-grp-en="Due Diligence">
-      <div class="wrap"><h2><span class="t-vi">Nhân sự &amp; Cơ cấu tổ chức</span><span class="t-en">Staff &amp; Org Analysis</span></h2><p class="placeholder-note">PLACEHOLDER — needs charts: cHeadcount (bar) + cSeasonStaff (line, dual-axis), plus 1 Mermaid flowchart (org chart) — Group A</p></div>
+      <div class="wrap"><h2><span class="t-vi">Nhân sự &amp; Cơ cấu tổ chức</span><span class="t-en">Staff &amp; Org Analysis</span></h2><p class="placeholder-note">PLACEHOLDER — needs charts: cHeadcount (bar) + cSeasonStaff (line, dual-axis), plus 1 static diagram-block (org chart, no Mermaid) — Group A</p></div>
     </section>
     <section id="current-operations" data-nav-vi="Vận hành hiện tại" data-nav-en="Current Operations" data-grp-vi="Rà soát toàn diện" data-grp-en="Due Diligence">
       <div class="wrap"><h2><span class="t-vi">Vận hành hiện tại</span><span class="t-en">Current Operations</span></h2><p class="placeholder-note">PLACEHOLDER — how the client actually runs today, before any TechNext change</p></div>
@@ -326,52 +325,14 @@ footer{padding:50px 24px 70px;text-align:center;color:var(--muted);font-size:.82
       <div class="wrap"><h2><span class="t-vi">Hồ sơ khách hàng mục tiêu</span><span class="t-en">Customer Personas</span></h2><p class="placeholder-note">PLACEHOLDER — needs chart: cPersona (bubble) — Group A</p></div>
     </section>
 
-    <section id="operations" data-nav-vi="Vận hành" data-nav-en="Operations" data-grp-vi="Vận hành" data-grp-en="Operations">
-      <div class="wrap"><h2><span class="t-vi">Vận hành</span><span class="t-en">Operations</span></h2><p class="placeholder-note">PLACEHOLDER</p></div>
-    </section>
-    <section id="stakeholder-perspectives" data-nav-vi="Góc nhìn các bên liên quan" data-nav-en="Stakeholder Perspectives" data-grp-vi="Vận hành" data-grp-en="Operations">
-      <div class="wrap"><h2><span class="t-vi">Góc nhìn các bên liên quan</span><span class="t-en">Stakeholder Perspectives</span></h2><p class="placeholder-note">PLACEHOLDER</p></div>
-    </section>
     <section id="department-workflows" data-nav-vi="Quy trình phòng ban" data-nav-en="Department Workflows" data-grp-vi="Vận hành" data-grp-en="Operations">
-      <div class="wrap"><h2><span class="t-vi">Quy trình phòng ban</span><span class="t-en">Department Workflows</span></h2><p class="placeholder-note">PLACEHOLDER — needs 1 Mermaid flowchart (acquisition funnel / manual-handling load, as-is) — Group B</p></div>
+      <div class="wrap"><h2><span class="t-vi">Quy trình phòng ban</span><span class="t-en">Department Workflows</span></h2><p class="placeholder-note">PLACEHOLDER — needs 1 static diagram-block (acquisition funnel / manual-handling load, as-is, no Mermaid) — Group B</p></div>
     </section>
     <section id="pain-solution-matrix" data-nav-vi="Ma trận Vấn đề → Giải pháp" data-nav-en="Pain → Solution Matrix" data-grp-vi="Vận hành" data-grp-en="Operations">
       <div class="wrap"><h2><span class="t-vi">Ma trận Vấn đề → Giải pháp</span><span class="t-en">Pain → Solution Matrix</span></h2><p class="placeholder-note">PLACEHOLDER — use .tbl</p></div>
     </section>
     <section id="bpmn-blueprint-uml" data-nav-vi="BPMN · Blueprint · UML" data-nav-en="BPMN · Blueprint · UML" data-grp-vi="Vận hành" data-grp-en="Operations">
-      <div class="wrap"><h2>BPMN · Blueprint · UML</h2><p class="placeholder-note">PLACEHOLDER — needs 2 Mermaid diagrams: a swimlane-style flowchart (BPMN, use `subgraph` per lane) + a sequenceDiagram (a key transaction flow) — Group B</p></div>
-    </section>
-
-    <section id="ai-automation-catalog" data-nav-vi="Danh mục AI &amp; Tự động hoá" data-nav-en="AI &amp; Automation Catalog" data-grp-vi="Công nghệ" data-grp-en="Technology">
-      <div class="wrap"><h2><span class="t-vi">Danh mục AI &amp; Tự động hoá</span><span class="t-en">AI &amp; Automation Catalog</span></h2><p class="placeholder-note">PLACEHOLDER — needs chart: cAuto (bubble) — Group B</p></div>
-    </section>
-    <section id="ai-in-action" data-nav-vi="AI trong thực tế — Câu chuyện điển hình" data-nav-en="AI in Action — Peer Story" data-grp-vi="Công nghệ" data-grp-en="Technology">
-      <div class="wrap"><h2><span class="t-vi">AI trong thực tế — Câu chuyện điển hình</span><span class="t-en">AI in Action — Peer Story</span></h2><p class="placeholder-note">PLACEHOLDER</p></div>
-    </section>
-    <section id="odoo-architecture" data-nav-vi="Kiến trúc Odoo 19" data-nav-en="Odoo 19 Architecture" data-grp-vi="Công nghệ" data-grp-en="Technology">
-      <div class="wrap"><h2><span class="t-vi">Kiến trúc Odoo 19</span><span class="t-en">Odoo 19 Architecture</span></h2><p class="placeholder-note">PLACEHOLDER — modules + demo-data plan, concrete — needs 2 Mermaid flowcharts: module dependency &amp; data flow, and an integration map (Odoo ↔ AI ↔ other systems) — Group B</p></div>
-    </section>
-    <section id="data-migration" data-nav-vi="Di chuyển dữ liệu" data-nav-en="Data Migration" data-grp-vi="Công nghệ" data-grp-en="Technology">
-      <div class="wrap"><h2><span class="t-vi">Di chuyển dữ liệu</span><span class="t-en">Data Migration</span></h2><p class="placeholder-note">PLACEHOLDER</p></div>
-    </section>
-    <section id="social-media-architecture" data-nav-vi="Kiến trúc &amp; Công cụ Marketing mạng xã hội" data-nav-en="Social Media Marketing Architecture &amp; Tools" data-grp-vi="Công nghệ" data-grp-en="Technology">
-      <div class="wrap"><h2><span class="t-vi">Kiến trúc &amp; Công cụ Marketing mạng xã hội</span><span class="t-en">Social Media Marketing Architecture &amp; Tools</span></h2><p class="placeholder-note">PLACEHOLDER — platforms, content pipeline, tools/APIs, reporting stack</p></div>
-    </section>
-
-    <section id="implementation-roadmap" data-nav-vi="Lộ trình triển khai" data-nav-en="Implementation Roadmap" data-grp-vi="Triển khai" data-grp-en="Delivery">
-      <div class="wrap"><h2><span class="t-vi">Lộ trình triển khai</span><span class="t-en">Implementation Roadmap</span></h2><p class="placeholder-note">PLACEHOLDER — use .tl timeline — needs 2 Mermaid diagrams: migration approach/cutover flowchart + a `gantt` roadmap timeline — Group C</p></div>
-    </section>
-    <section id="change-management" data-nav-vi="Quản lý thay đổi" data-nav-en="Change Management" data-grp-vi="Triển khai" data-grp-en="Delivery">
-      <div class="wrap"><h2><span class="t-vi">Quản lý thay đổi</span><span class="t-en">Change Management</span></h2><p class="placeholder-note">PLACEHOLDER</p></div>
-    </section>
-    <section id="hypercare-support" data-nav-vi="Hỗ trợ Hypercare" data-nav-en="Hypercare &amp; Support" data-grp-vi="Triển khai" data-grp-en="Delivery">
-      <div class="wrap"><h2><span class="t-vi">Hỗ trợ Hypercare</span><span class="t-en">Hypercare &amp; Support</span></h2><p class="placeholder-note">PLACEHOLDER — needs 1 Mermaid flowchart (issue-triage flow) — Group C</p></div>
-    </section>
-    <section id="risk-register-raci" data-nav-vi="Bảng rủi ro &amp; RACI" data-nav-en="Risk Register &amp; RACI" data-grp-vi="Triển khai" data-grp-en="Delivery">
-      <div class="wrap"><h2><span class="t-vi">Bảng rủi ro &amp; RACI</span><span class="t-en">Risk Register &amp; RACI</span></h2><p class="placeholder-note">PLACEHOLDER — use .tbl — needs chart: cRisk (bubble) — Group C</p></div>
-    </section>
-    <section id="kpis-benefits" data-nav-vi="KPI &amp; Lợi ích" data-nav-en="KPIs &amp; Benefits" data-grp-vi="Triển khai" data-grp-en="Delivery">
-      <div class="wrap"><h2><span class="t-vi">KPI &amp; Lợi ích</span><span class="t-en">KPIs &amp; Benefits</span></h2><p class="placeholder-note">PLACEHOLDER — use .grid.g4 of .kpi — needs charts: cKpi (bar) + cRoi (line) — Group C</p></div>
+      <div class="wrap"><h2>BPMN · Blueprint · UML</h2><p class="placeholder-note">PLACEHOLDER — needs 2 static diagram-blocks (no Mermaid): a swimlane-style process (BPMN, one .tl per role/lane) + a numbered sequence (a key transaction flow) — Group B</p></div>
     </section>
 
     <section id="competitive-intel" data-nav-vi="Thông tin cạnh tranh" data-nav-en="Competitive Intel" data-grp-vi="Thông tin cạnh tranh" data-grp-en="Competitive Intel">
