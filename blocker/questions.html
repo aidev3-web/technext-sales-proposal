@@ -32,6 +32,8 @@ button.save{background:var(--accent);color:#241a08;border:none;border-radius:999
 button.save:disabled{opacity:.5;cursor:default}
 .saved{font-size:.76rem;color:var(--green);opacity:0;transition:opacity .3s}
 .saved.show{opacity:1}
+.lastsaved{font-size:.74rem;color:var(--muted);margin-left:auto}
+.lastsaved:empty{display:none}
 code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em}
 .foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.78rem}
 </style>
@@ -49,7 +51,7 @@ code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-family:ui-m
     <p>The list to remove — Operations, Stakeholder Perspectives, AI &amp; Automation Catalog, AI in Action, Odoo 19 Architecture, Data Migration, Social Media Architecture &amp; Tools, Implementation Roadmap, Change Management, Hypercare &amp; Support, Risk Register &amp; RACI, KPIs &amp; Benefits — covers nearly all of the "how we'd actually deliver this" content.</p>
     <div class="why"><b>Question:</b> cut the proposal down to research + recommendation only, or move some of this content elsewhere instead of dropping it entirely?</div>
     <textarea placeholder="Type your answer here..."></textarea>
-    <div class="row"><button class="save">Save</button><span class="saved">Saved</span></div>
+    <div class="row"><button class="save">Save</button><span class="saved">Saved</span><span class="lastsaved"></span></div>
   </div>
 
   <div class="q" data-id="q2">
@@ -58,7 +60,7 @@ code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-family:ui-m
     <p>"Do not use Mermaid chart" conflicts with keeping BPMN·Blueprint·UML, since that section's entire content is 2 Mermaid diagrams.</p>
     <div class="why"><b>Question:</b> remove BPMN·Blueprint·UML too, or rebuild it as static images/tables instead of Mermaid?</div>
     <textarea placeholder="Type your answer here..."></textarea>
-    <div class="row"><button class="save">Save</button><span class="saved">Saved</span></div>
+    <div class="row"><button class="save">Save</button><span class="saved">Saved</span><span class="lastsaved"></span></div>
   </div>
 
   <div class="q" data-id="q3">
@@ -67,7 +69,7 @@ code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-family:ui-m
     <p>Flagged as currently missing. The proposal already has an Executive Summary and 3 Proposed Solutions sections carrying recommendations.</p>
     <div class="why"><b>Question:</b> a distinct standalone "Recommendations" section, or strengthen the existing Executive Summary?</div>
     <textarea placeholder="Type your answer here..."></textarea>
-    <div class="row"><button class="save">Save</button><span class="saved">Saved</span></div>
+    <div class="row"><button class="save">Save</button><span class="saved">Saved</span><span class="lastsaved"></span></div>
   </div>
 
   <div class="q" data-id="q4">
@@ -76,7 +78,7 @@ code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-family:ui-m
     <p>No minimum source count is enforced today, only a rule that every claim needs a source or an explicit assessment tag.</p>
     <div class="why"><b>Question:</b> a rough number in mind (e.g. 15+, 30+) so this becomes a hard, checkable minimum?</div>
     <textarea placeholder="Type your answer here..."></textarea>
-    <div class="row"><button class="save">Save</button><span class="saved">Saved</span></div>
+    <div class="row"><button class="save">Save</button><span class="saved">Saved</span><span class="lastsaved"></span></div>
   </div>
 
   <div class="q" data-id="q5">
@@ -85,7 +87,7 @@ code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-family:ui-m
     <p>Decided so far: instead of one fixed navy/teal theme for every client, the agent picks a palette/typography fitting each client's own industry/brand.</p>
     <div class="why"><b>Question:</b> any hard constraints (must stay dark-mode-first, must keep the TechNext logo/wordmark treatment) before this gets built?</div>
     <textarea placeholder="Type your answer here..."></textarea>
-    <div class="row"><button class="save">Save</button><span class="saved">Saved</span></div>
+    <div class="row"><button class="save">Save</button><span class="saved">Saved</span><span class="lastsaved"></span></div>
   </div>
 
   <div class="foot">technext-sales-proposal · answers are committed to blocker/answers.json in the repo</div>
@@ -98,6 +100,9 @@ function showStatus(msg, kind){
   statusEl.className = 'status show ' + kind;
 }
 
+function fmtTime(iso){
+  return 'Last answered ' + new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+}
 async function loadAnswers(){
   try{
     const r = await fetch('/api/answers');
@@ -105,7 +110,11 @@ async function loadAnswers(){
     if (!r.ok) throw new Error(data.message || data.error || ('http_' + r.status));
     document.querySelectorAll('.q').forEach(card => {
       const id = card.dataset.id;
-      if (data[id]) card.querySelector('textarea').value = data[id].answer || '';
+      if (data[id]) {
+        card.querySelector('textarea').value = data[id].answer || '';
+        const ls = card.querySelector('.lastsaved');
+        if (data[id].updatedAt) ls.textContent = fmtTime(data[id].updatedAt);
+      }
     });
   }catch(e){
     showStatus('Could not load saved answers: ' + e.message, 'err');
@@ -117,6 +126,7 @@ document.querySelectorAll('.q').forEach(card => {
   const ta = card.querySelector('textarea');
   const btn = card.querySelector('button.save');
   const saved = card.querySelector('.saved');
+  const lastsaved = card.querySelector('.lastsaved');
   btn.addEventListener('click', async () => {
     btn.disabled = true;
     try{
@@ -127,8 +137,9 @@ document.querySelectorAll('.q').forEach(card => {
       });
       const j = await r.json();
       if (!r.ok) throw new Error(j.detail || j.message || j.error || ('http_' + r.status));
-      saved.textContent = 'Saved ' + new Date().toLocaleTimeString();
+      saved.textContent = 'Saved!';
       saved.classList.add('show');
+      lastsaved.textContent = fmtTime(new Date().toISOString());
       setTimeout(() => saved.classList.remove('show'), 2500);
     }catch(e){
       showStatus('Save failed: ' + e.message, 'err');
