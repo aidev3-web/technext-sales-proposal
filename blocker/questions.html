@@ -17,7 +17,9 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6}
-.topbar{position:sticky;top:0;display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;background:var(--bg);z-index:20;border-bottom:1px solid var(--line)}
+.topbar{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px 20px;background:var(--bg);z-index:20;border-bottom:1px solid var(--line)}
+.topbar .toggles{display:flex;align-items:center;gap:8px}
+.navfab{display:inline-flex;align-items:center;gap:6px;background:#241d17;color:#ece6dc;border:none;border-radius:999px;padding:9px 16px 9px 12px;font:600 .82rem -apple-system,'Segoe UI',sans-serif;text-decoration:none;cursor:pointer}
 .pill-toggle{display:inline-flex;border:2px solid var(--line);border-radius:999px;overflow:hidden;background:var(--panel)}
 .pill-toggle button{border:none;background:transparent;color:var(--muted);font-weight:700;font-size:.78rem;padding:6px 14px;cursor:pointer;letter-spacing:.03em}
 .pill-toggle button.active{background:var(--accent);color:#fff}
@@ -56,16 +58,17 @@ textarea[data-en-ph]{}
 </style>
 </head>
 <body>
-<a href="../index.html" style="position:fixed;top:64px;left:14px;z-index:99999;display:inline-flex;align-items:center;gap:6px;background:#241d17;color:#ece6dc;border:1px solid #4a3c30;border-radius:999px;padding:7px 14px;font:600 .78rem -apple-system,'Segoe UI',sans-serif;text-decoration:none;box-shadow:0 6px 18px -8px rgba(0,0,0,.4)">← Dashboard</a>
-
 <div class="topbar">
-  <div class="pill-toggle">
-    <button id="btn-vi" onclick="setLang('vi')">VI</button>
-    <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
-  </div>
-  <div class="pill-toggle">
-    <button id="btn-light" class="active" onclick="setTheme('light')">☼</button>
-    <button id="btn-dark" onclick="setTheme('dark')">☾</button>
+  <a class="navfab" href="../index.html">☰ Dashboard</a>
+  <div class="toggles">
+    <div class="pill-toggle">
+      <button id="btn-vi" onclick="setLang('vi')">VI</button>
+      <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+    </div>
+    <div class="pill-toggle">
+      <button id="btn-light" class="active" onclick="setTheme('light')">☼</button>
+      <button id="btn-dark" onclick="setTheme('dark')">☾</button>
+    </div>
   </div>
 </div>
 
