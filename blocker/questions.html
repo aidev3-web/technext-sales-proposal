@@ -17,13 +17,25 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6}
-.topbar{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px 20px;background:var(--bg);z-index:20;border-bottom:1px solid var(--line)}
-.topbar .toggles{display:flex;align-items:center;gap:8px}
-.navfab{display:inline-flex;align-items:center;gap:6px;background:#241d17;color:#ece6dc;border:none;border-radius:999px;padding:9px 16px 9px 12px;font:600 .82rem -apple-system,'Segoe UI',sans-serif;text-decoration:none;cursor:pointer}
-.pill-toggle{display:inline-flex;border:2px solid var(--line);border-radius:999px;overflow:hidden;background:var(--panel)}
-.pill-toggle button{border:none;background:transparent;color:var(--muted);font-weight:700;font-size:.78rem;padding:6px 14px;cursor:pointer;letter-spacing:.03em}
+/* ---- hamburger: icon only, opens the side panel, no other meaning ---- */
+#navfab{position:fixed;top:14px;left:14px;z-index:100000;background:transparent;color:var(--accent);border:none;border-radius:10px;width:36px;height:36px;font-size:1.15rem;cursor:pointer;transition:background .15s}
+#navfab:hover{background:rgba(128,128,128,.15)}
+
+/* ---- side panel: everything (back link + VI/EN + theme) lives in here ---- */
+.side{position:fixed;top:0;left:0;bottom:0;width:82vw;max-width:280px;background:#241d17;color:#ece6dc;padding:64px 22px 24px;z-index:99998;
+  transform:translateX(-105%);transition:transform .25s ease;overflow-y:auto}
+body.nav-open .side{transform:none}
+.side .brand{font-size:1.05rem;font-weight:700;margin:0 0 18px}
+.side a.backlink{display:block;color:#ece6dc;text-decoration:none;font-size:.9rem;padding:8px 0;opacity:.85}
+.side a.backlink:hover{opacity:1}
+.side .grp-label{color:#8d8a7c;font-size:.66rem;text-transform:uppercase;letter-spacing:.09em;font-weight:600;margin:20px 0 10px}
+#scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:99997;opacity:0;pointer-events:none;transition:opacity .25s}
+body.nav-open #scrim{opacity:1;pointer-events:auto}
+
+.pill-toggle{display:inline-flex;border:2px solid #4a3c30;border-radius:999px;overflow:hidden;background:#2e251d}
+.pill-toggle button{border:none;background:transparent;color:#a89a89;font-weight:700;font-size:.78rem;padding:6px 14px;cursor:pointer;letter-spacing:.03em}
 .pill-toggle button.active{background:var(--accent);color:#fff}
-.wrap{max-width:760px;margin:0 auto;padding:28px 20px 80px}
+.wrap{max-width:760px;margin:0 auto;padding:64px 20px 80px}
 h1{font-size:1.7rem;font-weight:800;margin:0 0 6px}
 p.sub{color:var(--ink2);margin:0 0 24px;max-width:62ch}
 .status{font-size:.8rem;padding:8px 14px;border-radius:10px;margin-bottom:24px;display:none}
@@ -58,19 +70,22 @@ textarea[data-en-ph]{}
 </style>
 </head>
 <body>
-<div class="topbar">
-  <a class="navfab" href="../index.html">☰ Dashboard</a>
-  <div class="toggles">
-    <div class="pill-toggle">
-      <button id="btn-vi" onclick="setLang('vi')">VI</button>
-      <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
-    </div>
-    <div class="pill-toggle">
-      <button id="btn-light" class="active" onclick="setTheme('light')">☼</button>
-      <button id="btn-dark" onclick="setTheme('dark')">☾</button>
-    </div>
+<button id="navfab" onclick="document.body.classList.toggle('nav-open')" aria-label="Toggle menu">☰</button>
+<div id="scrim" onclick="document.body.classList.remove('nav-open')"></div>
+<aside class="side">
+  <div class="brand">technext-sales-proposal</div>
+  <a class="backlink" href="../index.html">← Dashboard</a>
+  <div class="grp-label">Language</div>
+  <div class="pill-toggle">
+    <button id="btn-vi" onclick="setLang('vi')">VI</button>
+    <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
   </div>
-</div>
+  <div class="grp-label">Theme</div>
+  <div class="pill-toggle">
+    <button id="btn-light" class="active" onclick="setTheme('light')">☼ Light</button>
+    <button id="btn-dark" onclick="setTheme('dark')">☾ Dark</button>
+  </div>
+</aside>
 
 <div class="wrap">
   <h1><span data-vi>Câu hỏi cần xác nhận — trước khi làm theo feedback mới</span><span data-en>Open Questions — before implementing the latest feedback</span></h1>
