@@ -1,24 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light" data-lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Open Questions</title>
 <style>
 :root{
-  --bg:#0b0d12; --panel:#12151c; --panel2:#171b24; --line:#262b36;
-  --ink:#e7e9ee; --ink2:#a7adba; --muted:#6d7484;
-  --accent:#f0b25c; --red:#f2695c; --green:#4ad395;
+  --bg:#fbf3ea; --panel:#fffaf3; --panel2:#f2e9dd; --line:#e3ceb8;
+  --ink:#3a3a3a; --ink2:#5c5147; --muted:#8a7f74;
+  --accent:#e8734a; --red:#c85c4a; --green:#5a8f6b;
+}
+:root[data-theme="dark"]{
+  --bg:#1c1712; --panel:#241d17; --panel2:#2e251d; --line:#4a3c30;
+  --ink:#ece6dc; --ink2:#c2b9ac; --muted:#a89a89;
+  --accent:#f08a5f; --red:#e08072; --green:#7bbf8e;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6}
-.wrap{max-width:760px;margin:0 auto;padding:48px 20px 80px}
+.topbar{position:sticky;top:0;display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;background:var(--bg);z-index:20;border-bottom:1px solid var(--line)}
+.pill-toggle{display:inline-flex;border:2px solid var(--line);border-radius:999px;overflow:hidden;background:var(--panel)}
+.pill-toggle button{border:none;background:transparent;color:var(--muted);font-weight:700;font-size:.78rem;padding:6px 14px;cursor:pointer;letter-spacing:.03em}
+.pill-toggle button.active{background:var(--accent);color:#fff}
+.wrap{max-width:760px;margin:0 auto;padding:28px 20px 80px}
 h1{font-size:1.7rem;font-weight:800;margin:0 0 6px}
 p.sub{color:var(--ink2);margin:0 0 24px;max-width:62ch}
 .status{font-size:.8rem;padding:8px 14px;border-radius:10px;margin-bottom:24px;display:none}
 .status.show{display:block}
-.status.err{background:rgba(242,105,92,.12);color:var(--red)}
-.status.ok{background:rgba(74,211,149,.12);color:var(--green)}
+.status.err{background:rgba(200,92,74,.12);color:var(--red)}
+.status.ok{background:rgba(90,143,107,.12);color:var(--green)}
 .q{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 12px 12px 0;padding:16px 20px;margin-bottom:16px}
 .q .src{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:6px}
 .q h3{margin:0 0 8px;font-size:1rem}
@@ -27,8 +36,8 @@ p.sub{color:var(--ink2);margin:0 0 24px;max-width:62ch}
 .q .why b{color:var(--ink)}
 textarea{width:100%;min-height:64px;margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:.88rem;resize:vertical}
 textarea:disabled{opacity:.6}
-.row{display:flex;align-items:center;gap:10px;margin-top:8px}
-button.save{background:var(--accent);color:#241a08;border:none;border-radius:999px;padding:7px 18px;font-size:.82rem;font-weight:700;cursor:pointer}
+.row{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+button.save{background:var(--accent);color:#fff;border:none;border-radius:999px;padding:7px 18px;font-size:.82rem;font-weight:700;cursor:pointer}
 button.save:disabled{opacity:.5;cursor:default}
 .saved{font-size:.76rem;color:var(--green);opacity:0;transition:opacity .3s}
 .saved.show{opacity:1}
@@ -36,64 +45,108 @@ button.save:disabled{opacity:.5;cursor:default}
 .lastsaved:empty{display:none}
 code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em}
 .foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.78rem}
+
+[data-en]{display:none}
+html[data-lang="en"] [data-vi]{display:none}
+html[data-lang="en"] [data-en]{display:inline}
+html[data-lang="en"] h3[data-en],
+html[data-lang="en"] p[data-en],
+html[data-lang="en"] div.sub[data-en]{display:block}
+textarea[data-en-ph]{}
 </style>
 </head>
 <body>
-<a href="../index.html" style="position:fixed;top:14px;left:14px;z-index:99999;display:inline-flex;align-items:center;gap:6px;background:#241d17;color:#ece6dc;border:1px solid #4a3c30;border-radius:999px;padding:7px 14px;font:600 .78rem -apple-system,'Segoe UI',sans-serif;text-decoration:none;box-shadow:0 6px 18px -8px rgba(0,0,0,.4)">← Dashboard</a>
+<a href="../index.html" style="position:fixed;top:64px;left:14px;z-index:99999;display:inline-flex;align-items:center;gap:6px;background:#241d17;color:#ece6dc;border:1px solid #4a3c30;border-radius:999px;padding:7px 14px;font:600 .78rem -apple-system,'Segoe UI',sans-serif;text-decoration:none;box-shadow:0 6px 18px -8px rgba(0,0,0,.4)">← Dashboard</a>
+
+<div class="topbar">
+  <div class="pill-toggle">
+    <button id="btn-vi" onclick="setLang('vi')">VI</button>
+    <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+  </div>
+  <div class="pill-toggle">
+    <button id="btn-light" class="active" onclick="setTheme('light')">☼</button>
+    <button id="btn-dark" onclick="setTheme('dark')">☾</button>
+  </div>
+</div>
+
 <div class="wrap">
-  <h1>Open Questions — before implementing the latest feedback</h1>
-  <p class="sub">Type an answer under each question and hit Save — it's committed straight to the repo (<code>blocker/answers.json</code>) so Trung can read it back anytime.</p>
+  <h1><span data-vi>Câu hỏi cần xác nhận — trước khi làm theo feedback mới</span><span data-en>Open Questions — before implementing the latest feedback</span></h1>
+  <p class="sub"><span data-vi>Gõ câu trả lời dưới mỗi câu hỏi rồi bấm Save — sẽ được lưu thẳng vào repo (<code>blocker/answers.json</code>) để Trung xem lại bất cứ lúc nào.</span><span data-en>Type an answer under each question and hit Save — it's committed straight to the repo (<code>blocker/answers.json</code>) so Trung can read it back anytime.</span></p>
   <div class="status" id="status"></div>
 
   <div class="q" data-id="q1">
-    <div class="src">Re: item 5 &amp; 6 — remove sections</div>
-    <h3>Removing these 12 sections strips out almost the entire Odoo/AI/Social technical pitch</h3>
-    <p>The list to remove — Operations, Stakeholder Perspectives, AI &amp; Automation Catalog, AI in Action, Odoo 19 Architecture, Data Migration, Social Media Architecture &amp; Tools, Implementation Roadmap, Change Management, Hypercare &amp; Support, Risk Register &amp; RACI, KPIs &amp; Benefits — covers nearly all of the "how we'd actually deliver this" content.</p>
-    <div class="why"><b>Question:</b> cut the proposal down to research + recommendation only, or move some of this content elsewhere instead of dropping it entirely?</div>
-    <textarea placeholder="Type your answer here..."></textarea>
-    <div class="row"><button class="save">Save</button><span class="saved">Saved</span><span class="lastsaved"></span></div>
+    <div class="src"><span data-vi>Liên quan mục 5 &amp; 6 — xóa các mục</span><span data-en>Re: item 5 &amp; 6 — remove sections</span></div>
+    <h3><span data-vi>Xóa 12 mục này gần như xóa hết phần kỹ thuật Odoo/AI/Social</span><span data-en>Removing these 12 sections strips out almost the entire Odoo/AI/Social technical pitch</span></h3>
+    <p><span data-vi>Danh sách cần xóa — Operations, Stakeholder Perspectives, AI &amp; Automation Catalog, AI in Action, Odoo 19 Architecture, Data Migration, Social Media Architecture &amp; Tools, Implementation Roadmap, Change Management, Hypercare &amp; Support, Risk Register &amp; RACI, KPIs &amp; Benefits — gần như toàn bộ phần "sẽ triển khai như thế nào".</span><span data-en>The list to remove — Operations, Stakeholder Perspectives, AI &amp; Automation Catalog, AI in Action, Odoo 19 Architecture, Data Migration, Social Media Architecture &amp; Tools, Implementation Roadmap, Change Management, Hypercare &amp; Support, Risk Register &amp; RACI, KPIs &amp; Benefits — covers nearly all of the "how we'd actually deliver this" content.</span></p>
+    <div class="why"><b><span data-vi>Câu hỏi:</span><span data-en>Question:</span></b> <span data-vi>rút gọn proposal chỉ còn research + khuyến nghị, hay chuyển nội dung này sang chỗ khác thay vì bỏ hẳn?</span><span data-en>cut the proposal down to research + recommendation only, or move some of this content elsewhere instead of dropping it entirely?</span></div>
+    <textarea data-ph-vi="Gõ câu trả lời ở đây..." data-ph-en="Type your answer here..." placeholder="Type your answer here..."></textarea>
+    <div class="row"><button class="save"><span data-vi>Lưu</span><span data-en>Save</span></button><span class="saved"><span data-vi>Đã lưu!</span><span data-en>Saved!</span></span><span class="lastsaved"></span></div>
   </div>
 
   <div class="q" data-id="q2">
-    <div class="src">Re: item 4 — remove Mermaid</div>
-    <h3>Mermaid removed, but BPMN·Blueprint·UML section wasn't on the removal list</h3>
-    <p>"Do not use Mermaid chart" conflicts with keeping BPMN·Blueprint·UML, since that section's entire content is 2 Mermaid diagrams.</p>
-    <div class="why"><b>Question:</b> remove BPMN·Blueprint·UML too, or rebuild it as static images/tables instead of Mermaid?</div>
-    <textarea placeholder="Type your answer here..."></textarea>
-    <div class="row"><button class="save">Save</button><span class="saved">Saved</span><span class="lastsaved"></span></div>
+    <div class="src"><span data-vi>Liên quan mục 4 — bỏ Mermaid</span><span data-en>Re: item 4 — remove Mermaid</span></div>
+    <h3><span data-vi>Đã bỏ Mermaid, nhưng mục BPMN·Blueprint·UML không nằm trong danh sách xóa</span><span data-en>Mermaid removed, but BPMN·Blueprint·UML section wasn't on the removal list</span></h3>
+    <p><span data-vi>"Không dùng Mermaid" mâu thuẫn với việc giữ BPMN·Blueprint·UML, vì toàn bộ nội dung mục đó là 2 sơ đồ Mermaid.</span><span data-en>"Do not use Mermaid chart" conflicts with keeping BPMN·Blueprint·UML, since that section's entire content is 2 Mermaid diagrams.</span></p>
+    <div class="why"><b><span data-vi>Câu hỏi:</span><span data-en>Question:</span></b> <span data-vi>xóa luôn mục BPMN·Blueprint·UML, hay vẽ lại bằng ảnh tĩnh/bảng thay vì Mermaid?</span><span data-en>remove BPMN·Blueprint·UML too, or rebuild it as static images/tables instead of Mermaid?</span></div>
+    <textarea data-ph-vi="Gõ câu trả lời ở đây..." data-ph-en="Type your answer here..." placeholder="Type your answer here..."></textarea>
+    <div class="row"><button class="save"><span data-vi>Lưu</span><span data-en>Save</span></button><span class="saved"><span data-vi>Đã lưu!</span><span data-en>Saved!</span></span><span class="lastsaved"></span></div>
   </div>
 
   <div class="q" data-id="q3">
-    <div class="src">Re: Main objective #2</div>
-    <h3>"Give recommendations on how it should be" — where should this live?</h3>
-    <p>Flagged as currently missing. The proposal already has an Executive Summary and 3 Proposed Solutions sections carrying recommendations.</p>
-    <div class="why"><b>Question:</b> a distinct standalone "Recommendations" section, or strengthen the existing Executive Summary?</div>
-    <textarea placeholder="Type your answer here..."></textarea>
-    <div class="row"><button class="save">Save</button><span class="saved">Saved</span><span class="lastsaved"></span></div>
+    <div class="src"><span data-vi>Liên quan Mục tiêu chính #2</span><span data-en>Re: Main objective #2</span></div>
+    <h3><span data-vi>"Đưa ra khuyến nghị nên làm thế nào" — để ở đâu?</span><span data-en>"Give recommendations on how it should be" — where should this live?</span></h3>
+    <p><span data-vi>Được đánh dấu là hiện đang thiếu. Proposal đã có Executive Summary và 3 mục Proposed Solutions mang tính khuyến nghị.</span><span data-en>Flagged as currently missing. The proposal already has an Executive Summary and 3 Proposed Solutions sections carrying recommendations.</span></p>
+    <div class="why"><b><span data-vi>Câu hỏi:</span><span data-en>Question:</span></b> <span data-vi>làm 1 mục "Recommendations" riêng, hay tăng cường nội dung ngay trong Executive Summary?</span><span data-en>a distinct standalone "Recommendations" section, or strengthen the existing Executive Summary?</span></div>
+    <textarea data-ph-vi="Gõ câu trả lời ở đây..." data-ph-en="Type your answer here..." placeholder="Type your answer here..."></textarea>
+    <div class="row"><button class="save"><span data-vi>Lưu</span><span data-en>Save</span></button><span class="saved"><span data-vi>Đã lưu!</span><span data-en>Saved!</span></span><span class="lastsaved"></span></div>
   </div>
 
   <div class="q" data-id="q4">
-    <div class="src">Re: Sources &amp; Citation</div>
-    <h3>"Only 2 sources?? needs to be more" — what's the target?</h3>
-    <p>No minimum source count is enforced today, only a rule that every claim needs a source or an explicit assessment tag.</p>
-    <div class="why"><b>Question:</b> a rough number in mind (e.g. 15+, 30+) so this becomes a hard, checkable minimum?</div>
-    <textarea placeholder="Type your answer here..."></textarea>
-    <div class="row"><button class="save">Save</button><span class="saved">Saved</span><span class="lastsaved"></span></div>
+    <div class="src"><span data-vi>Liên quan Sources &amp; Citation</span><span data-en>Re: Sources &amp; Citation</span></div>
+    <h3><span data-vi>"Chỉ 2 nguồn?? cần nhiều hơn" — con số mục tiêu là bao nhiêu?</span><span data-en>"Only 2 sources?? needs to be more" — what's the target?</span></h3>
+    <p><span data-vi>Hiện chưa có số lượng nguồn tối thiểu bắt buộc, chỉ có luật là mỗi claim phải có nguồn hoặc gắn nhãn assessment.</span><span data-en>No minimum source count is enforced today, only a rule that every claim needs a source or an explicit assessment tag.</span></p>
+    <div class="why"><b><span data-vi>Câu hỏi:</span><span data-en>Question:</span></b> <span data-vi>có con số cụ thể trong đầu không (vd 15+, 30+) để biến thành ngưỡng tối thiểu bắt buộc kiểm tra được?</span><span data-en>a rough number in mind (e.g. 15+, 30+) so this becomes a hard, checkable minimum?</span></div>
+    <textarea data-ph-vi="Gõ câu trả lời ở đây..." data-ph-en="Type your answer here..." placeholder="Type your answer here..."></textarea>
+    <div class="row"><button class="save"><span data-vi>Lưu</span><span data-en>Save</span></button><span class="saved"><span data-vi>Đã lưu!</span><span data-en>Saved!</span></span><span class="lastsaved"></span></div>
   </div>
 
   <div class="q" data-id="q5">
-    <div class="src">Re: UI/color scheme</div>
-    <h3>Confirming direction: per-client palette</h3>
-    <p>Decided so far: instead of one fixed navy/teal theme for every client, the agent picks a palette/typography fitting each client's own industry/brand.</p>
-    <div class="why"><b>Question:</b> any hard constraints (must stay dark-mode-first, must keep the TechNext logo/wordmark treatment) before this gets built?</div>
-    <textarea placeholder="Type your answer here..."></textarea>
-    <div class="row"><button class="save">Save</button><span class="saved">Saved</span><span class="lastsaved"></span></div>
+    <div class="src"><span data-vi>Liên quan UI/bảng màu</span><span data-en>Re: UI/color scheme</span></div>
+    <h3><span data-vi>Xác nhận hướng đi: mỗi client 1 bảng màu riêng</span><span data-en>Confirming direction: per-client palette</span></h3>
+    <p><span data-vi>Đã quyết định: thay vì cố định navy/teal cho mọi client, agent sẽ tự chọn bảng màu/font phù hợp với ngành/thương hiệu của từng khách hàng.</span><span data-en>Decided so far: instead of one fixed navy/teal theme for every client, the agent picks a palette/typography fitting each client's own industry/brand.</span></p>
+    <div class="why"><b><span data-vi>Câu hỏi:</span><span data-en>Question:</span></b> <span data-vi>có ràng buộc cứng nào không (vd phải dark-mode-first, phải giữ nguyên logo/wordmark TechNext) trước khi làm?</span><span data-en>any hard constraints (must stay dark-mode-first, must keep the TechNext logo/wordmark treatment) before this gets built?</span></div>
+    <textarea data-ph-vi="Gõ câu trả lời ở đây..." data-ph-en="Type your answer here..." placeholder="Type your answer here..."></textarea>
+    <div class="row"><button class="save"><span data-vi>Lưu</span><span data-en>Save</span></button><span class="saved"><span data-vi>Đã lưu!</span><span data-en>Saved!</span></span><span class="lastsaved"></span></div>
   </div>
 
-  <div class="foot">technext-sales-proposal · answers are committed to blocker/answers.json in the repo</div>
+  <div class="foot">technext-sales-proposal · <span data-vi>câu trả lời được lưu vào blocker/answers.json trong repo</span><span data-en>answers are committed to blocker/answers.json in the repo</span></div>
 </div>
 
 <script>
+function setLang(l){
+  document.documentElement.setAttribute('data-lang', l);
+  document.getElementById('btn-vi').classList.toggle('active', l==='vi');
+  document.getElementById('btn-en').classList.toggle('active', l==='en');
+  document.querySelectorAll('textarea[data-ph-vi]').forEach(t => {
+    t.placeholder = l === 'vi' ? t.dataset.phVi : t.dataset.phEn;
+  });
+  try{localStorage.setItem('blocker_lang', l);}catch(e){}
+}
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('btn-light').classList.toggle('active', t==='light');
+  document.getElementById('btn-dark').classList.toggle('active', t==='dark');
+  try{localStorage.setItem('blocker_theme', t);}catch(e){}
+}
+(function(){
+  try{
+    const l = localStorage.getItem('blocker_lang');
+    if (l) setLang(l);
+    const t = localStorage.getItem('blocker_theme');
+    if (t) setTheme(t);
+  }catch(e){}
+})();
+
 const statusEl = document.getElementById('status');
 function showStatus(msg, kind){
   statusEl.textContent = msg;
@@ -101,7 +154,9 @@ function showStatus(msg, kind){
 }
 
 function fmtTime(iso){
-  return 'Last answered ' + new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+  const lang = document.documentElement.getAttribute('data-lang');
+  const prefix = lang === 'vi' ? 'Trả lời lần cuối ' : 'Last answered ';
+  return prefix + new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
 }
 async function loadAnswers(){
   try{
@@ -137,7 +192,6 @@ document.querySelectorAll('.q').forEach(card => {
       });
       const j = await r.json();
       if (!r.ok) throw new Error(j.detail || j.message || j.error || ('http_' + r.status));
-      saved.textContent = 'Saved!';
       saved.classList.add('show');
       lastsaved.textContent = fmtTime(new Date().toISOString());
       setTimeout(() => saved.classList.remove('show'), 2500);
