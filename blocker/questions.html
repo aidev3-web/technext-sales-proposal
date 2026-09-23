@@ -14,15 +14,24 @@
 body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6}
 .wrap{max-width:760px;margin:0 auto;padding:48px 20px 80px}
 h1{font-size:1.7rem;font-weight:800;margin:0 0 6px}
-p.sub{color:var(--ink2);margin:0 0 32px;max-width:62ch}
+p.sub{color:var(--ink2);margin:0 0 24px;max-width:62ch}
+.status{font-size:.8rem;padding:8px 14px;border-radius:10px;margin-bottom:24px;display:none}
+.status.show{display:block}
+.status.err{background:rgba(242,105,92,.12);color:var(--red)}
+.status.ok{background:rgba(74,211,149,.12);color:var(--green)}
 .q{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 12px 12px 0;padding:16px 20px;margin-bottom:16px}
 .q .src{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:6px}
 .q h3{margin:0 0 8px;font-size:1rem}
 .q p{margin:0 0 8px;color:var(--ink2);font-size:.9rem}
-.q .why{font-size:.85rem;color:var(--ink2);background:var(--panel2);border-radius:8px;padding:8px 12px;margin-top:8px}
+.q .why{font-size:.85rem;color:var(--ink2);background:var(--panel2);border-radius:8px;padding:8px 12px;margin:8px 0}
 .q .why b{color:var(--ink)}
-.status{display:inline-block;font-size:.65rem;font-weight:700;padding:2px 9px;border-radius:999px;margin-left:8px;vertical-align:middle}
-.status.open{background:rgba(240,178,92,.15);color:var(--accent)}
+textarea{width:100%;min-height:64px;margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:.88rem;resize:vertical}
+textarea:disabled{opacity:.6}
+.row{display:flex;align-items:center;gap:10px;margin-top:8px}
+button.save{background:var(--accent);color:#241a08;border:none;border-radius:999px;padding:7px 18px;font-size:.82rem;font-weight:700;cursor:pointer}
+button.save:disabled{opacity:.5;cursor:default}
+.saved{font-size:.76rem;color:var(--green);opacity:0;transition:opacity .3s}
+.saved.show{opacity:1}
 code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em}
 .foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.78rem}
 </style>
@@ -31,44 +40,105 @@ code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-family:ui-m
 <a href="../index.html" style="position:fixed;top:14px;left:14px;z-index:99999;display:inline-flex;align-items:center;gap:6px;background:#241d17;color:#ece6dc;border:1px solid #4a3c30;border-radius:999px;padding:7px 14px;font:600 .78rem -apple-system,'Segoe UI',sans-serif;text-decoration:none;box-shadow:0 6px 18px -8px rgba(0,0,0,.4)">← Dashboard</a>
 <div class="wrap">
   <h1>Open Questions — before implementing the latest feedback</h1>
-  <p class="sub">A few items from the "Feedback for tool" list have big structural implications. Flagging them here for a decision before building, instead of guessing and redoing the work later.</p>
+  <p class="sub">Type an answer under each question and hit Save — it's committed straight to the repo (<code>blocker/answers.json</code>) so Trung can read it back anytime.</p>
+  <div class="status" id="status"></div>
 
-  <div class="q">
+  <div class="q" data-id="q1">
     <div class="src">Re: item 5 &amp; 6 — remove sections</div>
-    <h3>Removing these 12 sections strips out almost the entire Odoo/AI/Social technical pitch <span class="status open">OPEN</span></h3>
-    <p>The list to remove — Operations, Stakeholder Perspectives, AI &amp; Automation Catalog, AI in Action, Odoo 19 Architecture, Data Migration, Social Media Architecture &amp; Tools, Implementation Roadmap, Change Management, Hypercare &amp; Support, Risk Register &amp; RACI, KPIs &amp; Benefits — covers nearly all of the "how we'd actually deliver this" content (the concrete Odoo module plan, the AI use cases, the rollout timeline, the risk plan).</p>
-    <div class="why"><b>Question:</b> is the intent to cut the proposal down to research + recommendation only (no delivery/technical plan at all), or should some of this content move somewhere else (e.g. folded into a shorter "How we'd do it" section) instead of disappearing entirely?</div>
+    <h3>Removing these 12 sections strips out almost the entire Odoo/AI/Social technical pitch</h3>
+    <p>The list to remove — Operations, Stakeholder Perspectives, AI &amp; Automation Catalog, AI in Action, Odoo 19 Architecture, Data Migration, Social Media Architecture &amp; Tools, Implementation Roadmap, Change Management, Hypercare &amp; Support, Risk Register &amp; RACI, KPIs &amp; Benefits — covers nearly all of the "how we'd actually deliver this" content.</p>
+    <div class="why"><b>Question:</b> cut the proposal down to research + recommendation only, or move some of this content elsewhere instead of dropping it entirely?</div>
+    <textarea placeholder="Type your answer here..."></textarea>
+    <div class="row"><button class="save">Save</button><span class="saved">Saved</span></div>
   </div>
 
-  <div class="q">
+  <div class="q" data-id="q2">
     <div class="src">Re: item 4 — remove Mermaid</div>
-    <h3>Mermaid diagrams removed, but BPMN·Blueprint·UML section wasn't on the removal list <span class="status open">OPEN</span></h3>
-    <p>"Do not use Mermaid chart" conflicts with keeping the BPMN·Blueprint·UML section, since that section's entire content is 2 Mermaid diagrams.</p>
-    <div class="why"><b>Question:</b> should BPMN·Blueprint·UML be removed too, or rebuilt as static images/tables instead of Mermaid?</div>
+    <h3>Mermaid removed, but BPMN·Blueprint·UML section wasn't on the removal list</h3>
+    <p>"Do not use Mermaid chart" conflicts with keeping BPMN·Blueprint·UML, since that section's entire content is 2 Mermaid diagrams.</p>
+    <div class="why"><b>Question:</b> remove BPMN·Blueprint·UML too, or rebuild it as static images/tables instead of Mermaid?</div>
+    <textarea placeholder="Type your answer here..."></textarea>
+    <div class="row"><button class="save">Save</button><span class="saved">Saved</span></div>
   </div>
 
-  <div class="q">
+  <div class="q" data-id="q3">
     <div class="src">Re: Main objective #2</div>
-    <h3>"Give recommendations on how it should be" — where should this live? <span class="status open">OPEN</span></h3>
-    <p>You flagged this as currently missing. The proposal already has an Executive Summary and 3 Proposed Solutions sections that carry recommendations.</p>
-    <div class="why"><b>Question:</b> do you want a distinct, standalone "Recommendations" section, or a strengthened/more explicit recommendation inside the existing Executive Summary?</div>
+    <h3>"Give recommendations on how it should be" — where should this live?</h3>
+    <p>Flagged as currently missing. The proposal already has an Executive Summary and 3 Proposed Solutions sections carrying recommendations.</p>
+    <div class="why"><b>Question:</b> a distinct standalone "Recommendations" section, or strengthen the existing Executive Summary?</div>
+    <textarea placeholder="Type your answer here..."></textarea>
+    <div class="row"><button class="save">Save</button><span class="saved">Saved</span></div>
   </div>
 
-  <div class="q">
+  <div class="q" data-id="q4">
     <div class="src">Re: Sources &amp; Citation</div>
-    <h3>"Only 2 sources?? needs to be more" — what's the target? <span class="status open">OPEN</span></h3>
-    <p>There's currently no minimum source count enforced, only a rule that every claim needs <em>a</em> source or an explicit assessment tag.</p>
-    <div class="why"><b>Question:</b> is there a rough number in mind (e.g. 15+, 30+) so this becomes a hard, checkable minimum instead of a vague "more"?</div>
+    <h3>"Only 2 sources?? needs to be more" — what's the target?</h3>
+    <p>No minimum source count is enforced today, only a rule that every claim needs a source or an explicit assessment tag.</p>
+    <div class="why"><b>Question:</b> a rough number in mind (e.g. 15+, 30+) so this becomes a hard, checkable minimum?</div>
+    <textarea placeholder="Type your answer here..."></textarea>
+    <div class="row"><button class="save">Save</button><span class="saved">Saved</span></div>
   </div>
 
-  <div class="q">
+  <div class="q" data-id="q5">
     <div class="src">Re: UI/color scheme</div>
-    <h3>Confirming direction: per-client palette <span class="status open">OPEN</span></h3>
+    <h3>Confirming direction: per-client palette</h3>
     <p>Decided so far: instead of one fixed navy/teal theme for every client, the agent picks a palette/typography fitting each client's own industry/brand.</p>
-    <div class="why"><b>Question:</b> any hard constraints (e.g. must still be dark-mode-first, must keep the TechNext logo/wordmark treatment as-is) before this gets built?</div>
+    <div class="why"><b>Question:</b> any hard constraints (must stay dark-mode-first, must keep the TechNext logo/wordmark treatment) before this gets built?</div>
+    <textarea placeholder="Type your answer here..."></textarea>
+    <div class="row"><button class="save">Save</button><span class="saved">Saved</span></div>
   </div>
 
-  <div class="foot">technext-sales-proposal · aidev3-web/technext-sales-proposal</div>
+  <div class="foot">technext-sales-proposal · answers are committed to blocker/answers.json in the repo</div>
 </div>
+
+<script>
+const statusEl = document.getElementById('status');
+function showStatus(msg, kind){
+  statusEl.textContent = msg;
+  statusEl.className = 'status show ' + kind;
+}
+
+async function loadAnswers(){
+  try{
+    const r = await fetch('/api/answers');
+    if (!r.ok) throw new Error('load_failed');
+    const data = await r.json();
+    document.querySelectorAll('.q').forEach(card => {
+      const id = card.dataset.id;
+      if (data[id]) card.querySelector('textarea').value = data[id].answer || '';
+    });
+  }catch(e){
+    showStatus('Could not load saved answers (API not reachable yet — this only works once deployed on Vercel with GITHUB_TOKEN set).', 'err');
+  }
+}
+
+document.querySelectorAll('.q').forEach(card => {
+  const id = card.dataset.id;
+  const ta = card.querySelector('textarea');
+  const btn = card.querySelector('button.save');
+  const saved = card.querySelector('.saved');
+  btn.addEventListener('click', async () => {
+    btn.disabled = true;
+    try{
+      const r = await fetch('/api/answers', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ id, answer: ta.value })
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.message || j.error || 'save_failed');
+      saved.textContent = 'Saved ' + new Date().toLocaleTimeString();
+      saved.classList.add('show');
+      setTimeout(() => saved.classList.remove('show'), 2500);
+    }catch(e){
+      showStatus('Save failed: ' + e.message, 'err');
+    }finally{
+      btn.disabled = false;
+    }
+  });
+});
+
+loadAnswers();
+</script>
 </body>
 </html>
