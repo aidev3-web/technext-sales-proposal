@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>technext-sales-proposal</title>
+<style>
+:root{
+  --bg:#0b0d12; --panel:#12151c; --panel2:#171b24; --line:#262b36;
+  --ink:#e7e9ee; --ink2:#a7adba; --muted:#6d7484; --accent:#4fd1c5; --accent2:#818cf8;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6}
+.wrap{max-width:760px;margin:0 auto;padding:60px 20px 80px}
+h1{font-size:1.9rem;font-weight:800;margin:0 0 8px}
+p.sub{color:var(--ink2);margin:0 0 40px;max-width:60ch}
+h2{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:36px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.grid{display:grid;gap:12px}
+a.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;text-decoration:none;color:var(--ink);transition:.15s}
+a.card:hover{border-color:var(--accent);background:var(--panel2)}
+a.card b{display:block;font-size:.98rem;margin-bottom:3px}
+a.card span{color:var(--ink2);font-size:.82rem}
+.foot{margin-top:50px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem}
+code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em;color:var(--accent2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>technext-sales-proposal</h1>
+  <p class="sub">Client research → TechNext sales proposal generator (Odoo ERP · AI · Social Media). Reports and live demos below.</p>
+
+  <h2>Report</h2>
+  <div class="grid">
+    <a class="card" href="report/changelog.html"><b>Changelog</b><span>Everything changed vs. the original build — charts, citations, checkpoints, sidebar restructure</span></a>
+    <a class="card" href="report/full-docs.html"><b>Full documentation</b><span>Sidebar structure, 5-phase workflow, verification rules, real usage example</span></a>
+  </div>
+
+  <h2>Demo</h2>
+  <div class="grid">
+    <a class="card" href="demo/jrtech-preview.html"><b>JR-Tech Solution — live proposal preview</b><span>Real section-level test run: Digital &amp; Web Presence, Reviews &amp; Reputation, BPMN·Blueprint·UML filled in</span></a>
+    <a class="card" href="demo/chart-manifest.html"><b>Full chart &amp; diagram manifest</b><span>All 21 chart types + 9 Mermaid diagrams the skill can produce, with a light/dark theme toggle</span></a>
+    <a class="card" href="demo/citation-hover.html"><b>Hover-card citations</b><span>Wikipedia-style source preview on hover/focus, tap-to-preview on mobile</span></a>
+  </div>
+
+  <div class="foot">github.com/aidev3-web/technext-sales-proposal</div>
+</div>
+</body>
+</html>

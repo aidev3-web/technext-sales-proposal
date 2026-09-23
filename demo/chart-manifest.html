@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>Demo — full 21-chart + 9-diagram manifest</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose' });
+  window._mermaid = mermaid;
+</script>
+<style>
+:root{
+  --bg:#0a0f1a; --panel:#121c30; --panel2:#16223a; --line:#1f2d49;
+  --ink:#e8f0fb; --ink2:#a9bdd8; --muted:#7388ab;
+  --teal:#19c6c6; --shadow:0 8px 24px rgba(0,0,0,.35);
+}
+:root[data-theme="light"]{ --bg:#f3f7fc; --panel:#ffffff; --panel2:#f1f6fc; --line:#dbe6f3; --ink:#10203a; --ink2:#33486a; --muted:#5c7295; }
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,Segoe UI,Arial,sans-serif;line-height:1.6;padding:32px}
+.topbar{display:flex;justify-content:space-between;align-items:center;max-width:1300px;margin:0 auto 20px;position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:10}
+.tb-btn{background:var(--panel);border:1px solid var(--line);color:var(--ink2);border-radius:10px;padding:8px 16px;cursor:pointer;font-size:.85rem;font-weight:600}
+.tb-btn:hover{color:var(--ink);border-color:var(--teal)}
+h2{margin:0}
+h3{max-width:1300px;margin:32px auto 14px;color:var(--teal);font-size:1rem;letter-spacing:.03em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1300px;margin:0 auto 10px}
+@media(max-width:1100px){.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+.chartbox{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.chartbox h4{margin:0 0 3px;font-size:.88rem}
+.chartbox .cap{color:var(--muted);font-size:.72rem;margin-bottom:10px}
+.canvas-h{position:relative;height:220px}
+.mermaid{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow);overflow-x:auto;max-width:1300px;margin:0 auto 20px}
+.count{color:var(--muted);font-size:.85rem}
+.dlabel{max-width:1300px;margin:0 auto 8px;font-size:.8rem;color:var(--ink2)}
+.dlabel code{background:var(--panel2);padding:1px 5px;border-radius:5px;font-size:.78rem}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div><h2>Demo — đủ 21 biểu đồ + 9 sơ đồ (manifest thật trong SKILL.md)</h2><div class="count">Dữ liệu minh họa cho 1 client giả định — thử nút Theme để xem biểu đồ tự vẽ lại đúng màu</div></div>
+  <button class="tb-btn" onclick="toggleTheme()">◐ Theme</button>
+</div>
+
+<h3>Phase 2 — Executive Summary (2)</h3>
+<div class="grid">
+  <div class="chartbox"><h4>cRevMix</h4><div class="cap">Tỉ trọng nỗ lực/doanh thu ước tính theo 3 mảng dịch vụ</div><div class="canvas-h"><canvas id="cRevMix"></canvas></div></div>
+  <div class="chartbox"><h4>cScorecard</h4><div class="cap">Chỉ số hôm nay vs. sau 12 tháng (index=100)</div><div class="canvas-h"><canvas id="cScorecard"></canvas></div></div>
+</div>
+
+<h3>Group A — Due Diligence + Strategic Analysis (14)</h3>
+<div class="grid">
+  <div class="chartbox"><h4>cRevStream</h4><div class="cap">Tỉ trọng doanh thu theo dòng dịch vụ</div><div class="canvas-h"><canvas id="cRevStream"></canvas></div></div>
+  <div class="chartbox"><h4>cHeadcount</h4><div class="cap">Nhân sự ước tính theo phòng ban</div><div class="canvas-h"><canvas id="cHeadcount"></canvas></div></div>
+  <div class="chartbox"><h4>cSeasonStaff</h4><div class="cap">Nhân sự hoạt động vs. nhu cầu theo chu kỳ</div><div class="canvas-h"><canvas id="cSeasonStaff"></canvas></div></div>
+  <div class="chartbox"><h4>cChannel</h4><div class="cap">Tỉ trọng kênh tiếp cận/đặt hàng</div><div class="canvas-h"><canvas id="cChannel"></canvas></div></div>
+  <div class="chartbox"><h4>cDigital</h4><div class="cap">Mức độ trưởng thành số — hiện tại vs. mục tiêu</div><div class="canvas-h"><canvas id="cDigital"></canvas></div></div>
+  <div class="chartbox"><h4>cSentiment</h4><div class="cap">Phân bố sao đánh giá</div><div class="canvas-h"><canvas id="cSentiment"></canvas></div></div>
+  <div class="chartbox"><h4>cThemes</h4><div class="cap">Chủ đề khen/chê lặp lại</div><div class="canvas-h"><canvas id="cThemes"></canvas></div></div>
+  <div class="chartbox"><h4>cPestle</h4><div class="cap">Heat-map PESTLE (impact × likelihood)</div><div class="canvas-h"><canvas id="cPestle"></canvas></div></div>
+  <div class="chartbox"><h4>cPorter</h4><div class="cap">Porter's Five Forces — cường độ áp lực</div><div class="canvas-h"><canvas id="cPorter"></canvas></div></div>
+  <div class="chartbox"><h4>cPosition</h4><div class="cap">Bản đồ định vị đối thủ (giá vs. đánh giá)</div><div class="canvas-h"><canvas id="cPosition"></canvas></div></div>
+  <div class="chartbox"><h4>cGap</h4><div class="cap">Feature-gap vs. đối thủ cao cấp</div><div class="canvas-h"><canvas id="cGap"></canvas></div></div>
+  <div class="chartbox"><h4>cOrigin</h4><div class="cap">Tỉ trọng nguồn gốc/phân khúc khách hàng</div><div class="canvas-h"><canvas id="cOrigin"></canvas></div></div>
+  <div class="chartbox"><h4>cSeason</h4><div class="cap">Đường cong nhu cầu theo chu kỳ ngành</div><div class="canvas-h"><canvas id="cSeason"></canvas></div></div>
+  <div class="chartbox"><h4>cPersona</h4><div class="cap">CLV & khối lượng theo persona</div><div class="canvas-h"><canvas id="cPersona"></canvas></div></div>
+</div>
+<p class="dlabel">Sơ đồ #1/9 — <b>flowchart</b> (Group A · <code>staff-org</code>): Organisation chart</p>
+<div class="mermaid">flowchart TB
+  CEO[Giám đốc] --> OPS[Trưởng vận hành]
+  CEO --> SALE[Trưởng kinh doanh]
+  OPS --> TECH[Kỹ thuật viên]
+  OPS --> WH[Kho/Hậu cần]
+  SALE --> CS[Chăm sóc khách hàng]
+</div>
+
+<h3>Group B — Operations + Technology (1 chart + 5 sơ đồ)</h3>
+<div class="grid">
+  <div class="chartbox"><h4>cAuto</h4><div class="cap">Danh mục tự động hóa — impact vs. effort</div><div class="canvas-h"><canvas id="cAuto"></canvas></div></div>
+</div>
+<p class="dlabel">Sơ đồ #2/9 — <b>flowchart</b> (Group B · <code>department-workflows</code>): Acquisition funnel / manual-handling load (as-is)</p>
+<div class="mermaid">flowchart LR
+  A[Khách để lại thông tin] --> B[Nhân viên gọi lại thủ công]
+  B --> C{Có phản hồi?}
+  C -- Có --> D[Ghi chú tay vào Excel]
+  C -- Không --> E[Bỏ sót / quên follow-up]
+</div>
+<p class="dlabel">Sơ đồ #3/9 — <b>flowchart</b> (Group B · <code>odoo-architecture</code>): Module dependency & data flow</p>
+<div class="mermaid">flowchart LR
+  Sales[Odoo Sales] --> Inv[Odoo Inventory]
+  Inv --> Acc[Odoo Accounting]
+  Sales --> CRM[Odoo CRM]
+  CRM --> AI[AI Lead Scoring]
+</div>
+<p class="dlabel">Sơ đồ #4/9 — <b>flowchart</b> (Group B · <code>odoo-architecture</code>/<code>ai-in-action</code>): Integration map (Odoo ↔ AI ↔ kênh khác)</p>
+<div class="mermaid">flowchart LR
+  Web[Website/Social] --> CRM[Odoo CRM]
+  CRM --> AI[AI Chatbot/Automation]
+  AI --> Sales[Odoo Sales]
+  Sales --> ERP[Odoo Accounting/Inventory]
+</div>
+<p class="dlabel">Sơ đồ #5/9 — <b>BPMN-style swimlane flowchart</b> (Group B · <code>bpmn-blueprint-uml</code>): quy trình vận hành cốt lõi, mỗi <code>subgraph</code> = 1 "lane"/phòng ban</p>
+<div class="mermaid">flowchart TB
+  subgraph Sales["Lane: Kinh doanh"]
+  A1[Nhận đơn] --> A2[Xác nhận]
+  end
+  subgraph Ops["Lane: Vận hành"]
+  A2 --> B1[Xử lý/Giao hàng]
+  end
+  subgraph Accounting["Lane: Kế toán"]
+  B1 --> C1[Xuất hóa đơn]
+  end
+</div>
+<p class="dlabel">Sơ đồ #6/9 — <b>sequenceDiagram</b> (Group B · <code>bpmn-blueprint-uml</code>): UML sequence — một luồng giao dịch chính</p>
+<div class="mermaid">sequenceDiagram
+  participant KH as Khách hàng
+  participant Odoo as Odoo ERP
+  participant KT as Kế toán
+  KH->>Odoo: Xác nhận đơn hàng
+  Odoo->>KT: Tự động tạo hóa đơn
+  KT-->>KH: Gửi hóa đơn điện tử
+</div>
+
+<h3>Group C — Delivery + Growth &amp; Strategy (4 chart + 3 sơ đồ)</h3>
+<div class="grid">
+  <div class="chartbox"><h4>cRisk</h4><div class="cap">Ma trận rủi ro (xác suất × tác động)</div><div class="canvas-h"><canvas id="cRisk"></canvas></div></div>
+  <div class="chartbox"><h4>cKpi</h4><div class="cap">Baseline vs. mục tiêu 12 tháng</div><div class="canvas-h"><canvas id="cKpi"></canvas></div></div>
+  <div class="chartbox"><h4>cRoi</h4><div class="cap">Chi phí lũy kế vs. lợi ích lũy kế</div><div class="canvas-h"><canvas id="cRoi"></canvas></div></div>
+  <div class="chartbox"><h4>cOwner</h4><div class="cap">Các quyết định lớn — impact vs. effort</div><div class="canvas-h"><canvas id="cOwner"></canvas></div></div>
+</div>
+<p class="dlabel">Sơ đồ #7/9 — <b>flowchart</b> (Group C · <code>implementation-roadmap</code>): Migration approach / cutover flow</p>
+<div class="mermaid">flowchart LR
+  A[Khảo sát dữ liệu cũ] --> B[Xuất/Chuẩn hóa dữ liệu]
+  B --> C[Nạp vào Odoo staging]
+  C --> D[Đối chiếu & phê duyệt]
+  D --> E[Go-live / Cutover]
+</div>
+<p class="dlabel">Sơ đồ #8/9 — <b>gantt</b> (Group C · <code>implementation-roadmap</code>): Roadmap timeline theo giai đoạn</p>
+<div class="mermaid">gantt
+  title Lộ trình triển khai (rút gọn)
+  dateFormat  YYYY-MM-DD
+  section Giai đoạn 1
+  Khảo sát & thiết kế       :a1, 2026-01-05, 14d
+  section Giai đoạn 2
+  Cấu hình & di dữ liệu     :a2, after a1, 21d
+  section Giai đoạn 3
+  Đào tạo & go-live         :a3, after a2, 10d
+  section Hypercare
+  Hỗ trợ tăng cường         :a4, after a3, 14d
+</div>
+<p class="dlabel">Sơ đồ #9/9 — <b>flowchart</b> (Group C · <code>hypercare-support</code>): Issue-triage flow trong giai đoạn hypercare</p>
+<div class="mermaid">flowchart TD
+  A[Khách/Nhân viên báo lỗi] --> B{Mức độ nghiêm trọng?}
+  B -- Cao --> C[Escalate ngay cho TechNext]
+  B -- Trung bình --> D[Xử lý trong 24h]
+  B -- Thấp --> E[Đưa vào backlog cải tiến]
+</div>
+
+<script>
+/* ---- exact same helper functions as proposal-template.html ---- */
+const CHARTS = [];
+const chartDefs = [];
+function regChart(fn){ chartDefs.push(fn); }
+function inkColors(){
+  const light = document.documentElement.dataset.theme === 'light';
+  return { grid: light ? '#dbe6f3' : '#1f2d49', tick: light ? '#33486a' : '#a9bdd8', ink: light ? '#10203a' : '#e8f0fb' };
+}
+const PAL = ['#19c6c6','#3b82f6','#6366f1','#ffb454','#ff6b6b','#36d399','#a78bfa','#f472b6','#37e0c8','#7eb0ff'];
+function baseOpts(extra){
+  const c = inkColors();
+  return Object.assign({ responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: c.ink, font: { size: 10 } } } }, scales: {} }, extra || {});
+}
+function gridScale(stacked){
+  const c = inkColors();
+  return {
+    x: { stacked: !!stacked, grid: { color: c.grid }, ticks: { color: c.tick, font: { size: 9 } } },
+    y: { stacked: !!stacked, grid: { color: c.grid }, ticks: { color: c.tick, font: { size: 9 } }, beginAtZero: true }
+  };
+}
+function radarScale(){
+  const c = inkColors();
+  return { r: { angleLines: { color: c.grid }, grid: { color: c.grid }, pointLabels: { color: c.tick, font: { size: 9 } }, ticks: { display: false, stepSize: 1 }, min: 0, max: 5 } };
+}
+function mkChart(id, cfg){
+  const el = document.getElementById(id);
+  if (!el || typeof Chart === 'undefined') return;
+  const ch = new Chart(el, cfg);
+  CHARTS.push({ id, cfg });
+  return ch;
+}
+function renderCharts(){ chartDefs.forEach(fn => fn()); }
+function reRenderCharts(){
+  CHARTS.forEach(c => { const inst = Chart.getChart(c.id); if (inst) inst.destroy(); });
+  CHARTS.length = 0;
+  renderCharts();
+}
+function toggleTheme(){
+  const html = document.documentElement;
+  html.setAttribute('data-theme', html.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  reRenderCharts();
+}
+
+/* ---- Phase 2 ---- */
+regChart(() => mkChart('cRevMix', { type:'doughnut', data:{ labels:['Odoo ERP','AI Solutions','Social Media'], datasets:[{ data:[50,30,20], backgroundColor:PAL, borderWidth:0 }] }, options: baseOpts({ cutout:'58%', plugins:{ legend:{ position:'right', labels:{ color:inkColors().ink, font:{size:10} } } } }) }));
+regChart(() => mkChart('cScorecard', { type:'bar', data:{ labels:['Xử lý đơn','Tồn kho','Đặt hàng online','Giờ hành chính','CSAT','Biên LN'], datasets:[ {label:'Hôm nay',data:[100,100,100,100,100,100],backgroundColor:'rgba(115,136,171,.55)'}, {label:'Sau 12 tháng',data:[118,128,165,62,112,121],backgroundColor:'#19c6c6'} ] }, options: baseOpts({ scales: gridScale(), plugins:{ legend:{ labels:{ color:inkColors().ink } } } }) }));
+
+/* ---- Group A ---- */
+regChart(() => mkChart('cRevStream', { type:'bar', data:{ labels:['Dịch vụ chính','Dịch vụ phụ trợ','Bảo trì','Bán lẻ phụ kiện'], datasets:[{ label:'Tỉ trọng %', data:[52,24,16,8], backgroundColor:PAL, borderRadius:6 }] }, options: baseOpts({ indexAxis:'y', scales: gridScale(), plugins:{ legend:{ display:false } } }) }));
+regChart(() => mkChart('cHeadcount', { type:'bar', data:{ labels:['Vận hành','Kỹ thuật','Kinh doanh','Kế toán','Hành chính'], datasets:[{ label:'Nhân sự (≈28)', data:[10,7,6,3,2], backgroundColor:PAL, borderRadius:6 }] }, options: baseOpts({ scales: gridScale(), plugins:{ legend:{ display:false } } }) }));
+regChart(() => mkChart('cSeasonStaff', { type:'line', data:{ labels:['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'], datasets:[ {label:'Nhân sự hoạt động',data:[20,20,21,23,26,28,28,27,26,25,23,21],borderColor:'#19c6c6',backgroundColor:'rgba(25,198,198,.15)',fill:true,tension:.4}, {label:'Nhu cầu (chỉ số)',data:[40,42,48,60,75,85,88,86,78,68,55,44],borderColor:'#ffb454',backgroundColor:'transparent',tension:.4,yAxisID:'y1'} ] }, options: baseOpts({ scales: Object.assign(gridScale(),{ y1:{ position:'right', grid:{display:false}, ticks:{ color:'#ffb454', font:{size:9} } } }) }) }));
+regChart(() => mkChart('cChannel', { type:'doughnut', data:{ labels:['Giới thiệu/Truyền miệng','Website/SEO','Mạng xã hội','Quảng cáo trả phí'], datasets:[{ data:[40,28,20,12], backgroundColor:['#19c6c6','#3b82f6','#ffb454','#a78bfa'], borderWidth:0 }] }, options: baseOpts({ cutout:'58%', plugins:{ legend:{ position:'right', labels:{ color:inkColors().ink, font:{size:10} } } } }) }));
+regChart(() => mkChart('cDigital', { type:'radar', data:{ labels:['Hiện diện MXH','Website/SEO','CRM/Email','Đặt hàng online','Quản lý đánh giá','Phân tích dữ liệu'], datasets:[ {label:'Hiện tại',data:[3,2,1.5,1,2,1],borderColor:'#ff6b6b',backgroundColor:'rgba(255,107,107,.15)'}, {label:'Mục tiêu',data:[4.5,4.2,4,4.5,4.3,4],borderColor:'#19c6c6',backgroundColor:'rgba(25,198,198,.18)'} ] }, options: baseOpts({ scales: radarScale() }) }));
+regChart(() => mkChart('cSentiment', { type:'bar', data:{ labels:['5★','4★','3★','2★','1★'], datasets:[{ label:'Tỉ lệ đánh giá (%)', data:[65,20,8,4,3], backgroundColor:['#36d399','#19c6c6','#ffb454','#ff8c5a','#ff6b6b'], borderRadius:6 }] }, options: baseOpts({ scales: gridScale(), plugins:{ legend:{ display:false } } }) }));
+regChart(() => mkChart('cThemes', { type:'bar', data:{ labels:['Nhân viên','Chất lượng','Giá cả','Tốc độ xử lý'], datasets:[ {label:'Khen',data:[88,80,60,55],backgroundColor:'#36d399'}, {label:'Chê',data:[5,8,20,25],backgroundColor:'#ff6b6b'} ] }, options: baseOpts({ scales: gridScale(true), plugins:{ legend:{ labels:{ color:inkColors().ink } } } }) }));
+regChart(() => mkChart('cPestle', { type:'bubble', data:{ datasets:[ {label:'Kinh tế',data:[{x:4,y:3,r:12}],backgroundColor:'#19c6c6'}, {label:'Công nghệ',data:[{x:3,y:4,r:14}],backgroundColor:'#6366f1'}, {label:'Pháp lý',data:[{x:2,y:2,r:8}],backgroundColor:'#ffb454'}, {label:'Xã hội',data:[{x:3,y:2,r:9}],backgroundColor:'#36d399'} ] }, options: baseOpts({ scales:{ x:{title:{display:true,text:'Khả năng xảy ra (1-5)'},min:0,max:5,grid:{color:inkColors().grid},ticks:{color:inkColors().tick}}, y:{title:{display:true,text:'Mức tác động (1-5)'},min:0,max:5,grid:{color:inkColors().grid},ticks:{color:inkColors().tick}} } }) }));
+regChart(() => mkChart('cPorter', { type:'radar', data:{ labels:['Cạnh tranh ngành','Quyền lực người mua','Đối thủ mới','Quyền lực NCC','Sản phẩm thay thế'], datasets:[{ label:'Cường độ áp lực', data:[4.2,3.6,3.0,2.5,2.0], borderColor:'#19c6c6', backgroundColor:'rgba(25,198,198,.2)', pointBackgroundColor:'#37e0c8' }] }, options: baseOpts({ plugins:{legend:{display:false}}, scales: radarScale() }) }));
+regChart(() => mkChart('cPosition', { type:'bubble', data:{ datasets:[ {label:'Client này',data:[{x:3,y:4,r:14}],backgroundColor:'#19c6c6'}, {label:'Đối thủ A',data:[{x:4,y:3,r:10}],backgroundColor:'#ff6b6b'}, {label:'Đối thủ B',data:[{x:2,y:3.5,r:8}],backgroundColor:'#6366f1'} ] }, options: baseOpts({ scales:{ x:{title:{display:true,text:'Mức giá (1-5)'},min:0,max:5,grid:{color:inkColors().grid},ticks:{color:inkColors().tick}}, y:{title:{display:true,text:'Đánh giá (1-5)'},min:0,max:5,grid:{color:inkColors().grid},ticks:{color:inkColors().tick}} } }) }));
+regChart(() => mkChart('cGap', { type:'radar', data:{ labels:['Đặt hàng online','Quản lý kênh','Định giá động','CRM/Loyalty','Marketing nội dung','Quản lý đánh giá'], datasets:[ {label:'Client này',data:[2,2,1.5,1,2,2],borderColor:'#ff6b6b',backgroundColor:'rgba(255,107,107,.15)'}, {label:'Đối thủ cao cấp',data:[4.5,4,4.2,4,4.3,4],borderColor:'#19c6c6',backgroundColor:'rgba(25,198,198,.18)'} ] }, options: baseOpts({ scales: radarScale() }) }));
+regChart(() => mkChart('cOrigin', { type:'doughnut', data:{ labels:['Nội địa','Khu vực','Quốc tế'], datasets:[{ data:[60,28,12], backgroundColor:PAL, borderWidth:0 }] }, options: baseOpts({ cutout:'55%', plugins:{ legend:{ position:'right', labels:{ color:inkColors().ink, font:{size:10} } } } }) }));
+regChart(() => mkChart('cSeason', { type:'line', data:{ labels:['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'], datasets:[ {label:'Chỉ số nhu cầu',data:[60,62,68,75,85,90,88,85,80,75,68,62],borderColor:'#37e0c8',backgroundColor:'rgba(55,224,200,.15)',fill:true,tension:.45} ] }, options: baseOpts({ scales: gridScale() }) }));
+regChart(() => mkChart('cPersona', { type:'bubble', data:{ datasets:[ {label:'Chủ doanh nghiệp nhỏ',data:[{x:3,y:4,r:14}],backgroundColor:'#19c6c6'}, {label:'Quản lý vận hành',data:[{x:4,y:3,r:10}],backgroundColor:'#6366f1'}, {label:'Khách lẻ',data:[{x:2,y:2,r:7}],backgroundColor:'#ffb454'} ] }, options: baseOpts({ scales:{ x:{title:{display:true,text:'Tần suất mua (1-5)'},min:0,max:5,grid:{color:inkColors().grid},ticks:{color:inkColors().tick}}, y:{title:{display:true,text:'Giá trị CLV (1-5)'},min:0,max:5,grid:{color:inkColors().grid},ticks:{color:inkColors().tick}} } }) }));
+
+/* ---- Group B ---- */
+regChart(() => mkChart('cAuto', { type:'bubble', data:{ datasets:[ {label:'Tự động hóa chăm sóc KH',data:[{x:1.5,y:4,r:14}],backgroundColor:'#19c6c6'}, {label:'Tự động hóa kho vận',data:[{x:3,y:3.5,r:11}],backgroundColor:'#6366f1'}, {label:'AI dự báo nhu cầu',data:[{x:4,y:3,r:9}],backgroundColor:'#ffb454'} ] }, options: baseOpts({ scales:{ x:{title:{display:true,text:'Effort (1-5)'},min:0,max:5,grid:{color:inkColors().grid},ticks:{color:inkColors().tick}}, y:{title:{display:true,text:'Impact (1-5)'},min:0,max:5,grid:{color:inkColors().grid},ticks:{color:inkColors().tick}} } }) }));
+
+/* ---- Group C ---- */
+regChart(() => mkChart('cRisk', { type:'bubble', data:{ datasets:[{ label:'Rủi ro', data:[{x:4,y:4,r:14},{x:2,y:3,r:8},{x:3,y:1,r:6},{x:1,y:4,r:10}], backgroundColor:'rgba(255,107,107,.55)' }] }, options: baseOpts({ scales:{ x:{title:{display:true,text:'Xác suất (1-5)'},min:0,max:5,grid:{color:inkColors().grid},ticks:{color:inkColors().tick}}, y:{title:{display:true,text:'Tác động (1-5)'},min:0,max:5,grid:{color:inkColors().grid},ticks:{color:inkColors().tick}} }, plugins:{legend:{display:false}} }) }));
+regChart(() => mkChart('cKpi', { type:'bar', data:{ labels:['Tốc độ xử lý đơn','Tỉ lệ chuyển đổi','Chi phí vận hành','CSAT'], datasets:[ {label:'Baseline',data:[100,100,100,100],backgroundColor:'rgba(115,136,171,.55)'}, {label:'Mục tiêu 12 tháng',data:[135,120,78,115],backgroundColor:'#19c6c6'} ] }, options: baseOpts({ scales: gridScale(), plugins:{ legend:{ labels:{ color:inkColors().ink } } } }) }));
+regChart(() => mkChart('cRoi', { type:'line', data:{ labels:['T0','T3','T6','T9','T12','T18','T24'], datasets:[ {label:'Chi phí lũy kế',data:[1.2,2.6,3.4,3.9,4.3,5.0,5.6],borderColor:'#ff6b6b',backgroundColor:'transparent',tension:.3}, {label:'Lợi ích lũy kế',data:[0,0.6,2.0,4.2,7.0,13,20],borderColor:'#36d399',backgroundColor:'rgba(54,211,153,.12)',fill:true,tension:.3} ] }, options: baseOpts({ scales: gridScale() }) }));
+regChart(() => mkChart('cOwner', { type:'bubble', data:{ datasets:[ {label:'Triển khai Odoo Core',data:[{x:4,y:5,r:14}],backgroundColor:'#19c6c6'}, {label:'Tích hợp AI',data:[{x:3,y:3.5,r:10}],backgroundColor:'#6366f1'}, {label:'Social Media Setup',data:[{x:1.5,y:2.5,r:8}],backgroundColor:'#ffb454'} ] }, options: baseOpts({ scales:{ x:{title:{display:true,text:'Effort (1-5)'},min:0,max:5,grid:{color:inkColors().grid},ticks:{color:inkColors().tick}}, y:{title:{display:true,text:'Impact (1-5)'},min:0,max:5,grid:{color:inkColors().grid},ticks:{color:inkColors().tick}} } }) }));
+
+window.addEventListener('DOMContentLoaded', renderCharts);
+</script>
+</body>
+</html>
