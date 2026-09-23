@@ -101,14 +101,14 @@ function showStatus(msg, kind){
 async function loadAnswers(){
   try{
     const r = await fetch('/api/answers');
-    if (!r.ok) throw new Error('load_failed');
     const data = await r.json();
+    if (!r.ok) throw new Error(data.message || data.error || ('http_' + r.status));
     document.querySelectorAll('.q').forEach(card => {
       const id = card.dataset.id;
       if (data[id]) card.querySelector('textarea').value = data[id].answer || '';
     });
   }catch(e){
-    showStatus('Could not load saved answers (API not reachable yet — this only works once deployed on Vercel with GITHUB_TOKEN set).', 'err');
+    showStatus('Could not load saved answers: ' + e.message, 'err');
   }
 }
 
@@ -126,7 +126,7 @@ document.querySelectorAll('.q').forEach(card => {
         body: JSON.stringify({ id, answer: ta.value })
       });
       const j = await r.json();
-      if (!r.ok) throw new Error(j.message || j.error || 'save_failed');
+      if (!r.ok) throw new Error(j.detail || j.message || j.error || ('http_' + r.status));
       saved.textContent = 'Saved ' + new Date().toLocaleTimeString();
       saved.classList.add('show');
       setTimeout(() => saved.classList.remove('show'), 2500);
