@@ -1,6 +1,6 @@
 ---
 name: technext-sales-proposal
-description: Turn a prospective TechNext client (a company name, website, or short brief) into one comprehensive, bilingual (VI/EN toggle) self-contained HTML sales proposal website covering all three TechNext service lines — Odoo ERP implementation, AI Solutions, and Social Media Marketing — deep web/social research, a fixed sidebar covering Due Diligence, Strategic Analysis (competitors/market), Operations, a Recommendations section, and a Tools & Documents section (AI Build Playbook, Profit Estimator, Quotation, Meeting Minutes, Discovery Questions, etc). Use when asked to research a client and build a sales proposal / due-diligence site, "làm sales proposal", "nghiên cứu khách hàng làm đề xuất", or when the request matches the client-research-to-proposal workflow (spin up agents, research a company, produce a growth plan with a big sidebar).
+description: Turn a prospective TechNext client (a company name, website, or short brief) into one comprehensive, bilingual (VI/EN toggle) HTML sales proposal website (all CSS/JS/charts inline, no CDN — opens correctly via file:// with no network) covering all three TechNext service lines — Odoo ERP implementation, AI Solutions, and Social Media Marketing — deep web/social research, a fixed sidebar covering Due Diligence, Strategic Analysis (competitors/market), Operations, a Recommendations section, and a Tools & Documents section (AI Build Playbook, Profit Estimator, Quotation, Meeting Minutes, Discovery Questions, etc). Use when asked to research a client and build a sales proposal / due-diligence site, "làm sales proposal", "nghiên cứu khách hàng làm đề xuất", or when the request matches the client-research-to-proposal workflow (spin up agents, research a company, produce a growth plan with a big sidebar).
 ---
 
 # Sales proposal skill — client research → TechNext sales proposal site (Odoo ERP · AI · Social Media)
@@ -14,8 +14,8 @@ readable, testable, and editable.
 ## What this is for
 
 TechNext sells three service lines: **Odoo ERP implementation, AI Solutions, and
-Social Media Marketing** — not just Odoo. Before pitching a prospective client, Trung
-researches them thoroughly and produces one big HTML "site" that doubles as a
+Social Media Marketing** — not just Odoo. Before pitching a prospective client, the
+salesperson researches them thoroughly and produces one big HTML "site" that doubles as a
 due-diligence report and a sales proposal: who the client is, their market and
 competitors, and a concrete plan across all three TechNext service lines for them.
 
@@ -23,9 +23,15 @@ competitors, and a concrete plan across all three TechNext service lines for the
 client's own research, never a generic three-service pitch copy-pasted across clients.
 Don't ask the user which service(s) to include — that decision was already made.
 
-**Output**: exactly one self-contained `.html` file, `<client-slug>-proposal.html`,
-with a fixed ~40-item sidebar (client-side JS nav, no page reloads), a VI/EN language
-toggle, and a light/dark theme toggle.
+**Output**: one `.html` file, `<client-slug>-proposal.html`, with a fixed ~40-item
+sidebar (client-side JS nav, no page reloads), a VI/EN language toggle, and a
+light/dark theme toggle. Its CSS and JS (including Chart.js, embedded inline — no
+CDN) are fully inside that one file, so it opens correctly via `file://` with no
+network needed for the page's own content or its 18 charts. It is **not** fully
+standalone, though: the 4 PWA companion files (`manifest.webmanifest`, `sw.js`,
+`icon-192.png`, `icon-512.png`) are separate files needed only if the Install-as-app
+feature matters — the page itself renders and every chart still works with just the
+single `.html` file if those 4 aren't deployed alongside it (see `assets/reference-files.md`).
 
 **Every factual claim must be verifiable, not just plausible-sounding.** Any claim
 from a real source gets a hover-card citation; any TechNext inference/estimate gets an
@@ -38,14 +44,40 @@ citation. Full rules: `~/.claude/skills/technext-sales-proposal/assets/research-
 |---|---|---|
 | 0 — Intake | Get client identifier, disambiguate, ask about checkpoint resume | Below on this page |
 | 0.5 — Company verification | Confirm the exact legal entity via GLEIF (free, no key) before research starts | Skill: `company-verifier` |
-| Checkpointing | Decide which phase/group/section actually needs to run; resume logic | Skill: `checkpoint-manager` |
-| 1 — Research fan-out | 4 parallel subagents, each researches + writes its own section group + charts | Agents: `research-due-diligence-agent`, `research-ops-tech-agent`, `research-delivery-growth-agent`, `tools-documents-agent` — shared rules in `assets/research-rules.md` |
-| Charts & diagrams manifest | Exact canvas ids/diagram slots, ownership, the 2026-09-23 boss-feedback section removals | `assets/charts-and-diagrams.md` |
+| 0.6 — Officers lookup | Resolve directors/officers/founders from official public registries (Companies House/OpenCorporates/SEC EDGAR + Wikidata + team page) before research starts — writes `officers.json`, replaces Apollo | Skill: `officers-lookup` |
+| 0.7 — Web/OSINT scan | Scan the client's own site + socials, categorize links (social/reviews/press), light tech scan — writes `web-scan.json`, the starting point every Phase 1 subagent reads first | Skill: `web-osint-scanner` |
+| Checkpointing | Decide which phase/group/section actually needs to run; resume logic; timeline/session_id bookkeeping for cost reporting; post-Phase-4 cleanup | Skill: `checkpoint-manager` |
+| 0.9 — Competitor research | 1 worker per identified competitor (hard-budgeted: ≤8 fetches, ≤8 min each), dispatched in parallel — the single shared source both Group A's `competitor-deep-dive` and Group C's `top3-competitor-deep-dive` read from. Immediately followed by `source-auditor`'s `bind_check.py --facts` gate on the resulting JSON, **before** Phase 1 is dispatched — a bad excerpt here would otherwise land in two sections at once | Agent named `competitor-research-worker`, dispatched once per competitor in `web-scan.json`'s new `competitors` array (written by `web-osint-scanner`'s own competitor-identification step) |
+| 1 — Research fan-out | 4 parallel subagents, each researches + writes its own section group + charts, reading `captures/*.md`/`officers.json`/`competitor-research/*.json` first (not live web fetches for anything already captured) | Agents named `research-due-diligence-agent`, `research-ops-tech-agent`, `research-delivery-growth-agent`, `tools-documents-agent` — find each one wherever this agent/tool keeps its own agent definitions (Claude Code: `~/.claude/agents/<name>.md`; a different tool may have no such file at all — see note below) — shared markup contract in `assets/section-shell.md` (not the full template — see note below), citation rules in `assets/research-rules.md` |
+| Charts & diagrams manifest | Exact canvas ids/diagram slots, ownership | `assets/charts-and-diagrams.md` |
 | Template/validator reference | The shell you must build from, the per-client palette rule, what `validate-proposal.py` checks | `assets/reference-files.md` |
 | 2 — Front matter | Overview/Executive Summary/Recommendations/3 Proposed Solutions, written directly (no agent) | Skill: `front-matter-writer` |
+| 2.5 — Source audit (hard gate) | Confirm every citation's excerpt is really on its source page (`bind_check.py`) before assembly proceeds — a blocking gate, not an FYI | Skill: `source-auditor` |
+| 2.6 — Chart data | Build the final `chart-manifest.json` from audited findings — only runs after `source-auditor` passes with an empty `blocking_issues` array | Skill: `chart-data-analyst` |
 | 3 — Assembly | Extract sections from Phase 1 previews, drop into the template in fixed order | Skill: `assembler` |
-| 4a — Mechanical validation | Run `validate-proposal.py`'s 11 hard checks | Skill: `mechanical-validator` |
-| 4b — Judgment review | Content/citation spot-check, devil's-advocate pass, then a `ccusage` cost report | Skill: `judgment-reviewer` |
+| 4a — Mechanical validation | Run `validate-proposal.py`'s 13 hard checks (incl. no-CDN gate) | Skill: `mechanical-validator` |
+| 4b — Judgment review | Content/citation spot-check, devil's-advocate pass, then a per-task `ccusage` cost report | Skill: `judgment-reviewer` |
+
+**Note on Phase 1's input cost.** Group agents no longer read the full
+`proposal-template.html` (~250KB/~65-70k tokens each, ×4 groups = ~260k tokens before
+any actual research happened, for output that's just a handful of `<section>`
+fragments) — they read `assets/section-shell.md` (~5KB) instead, and return raw
+fragments rather than a full-page copy. `checkpoint-manager` stitches those fragments
+into a real previewable `<client-slug>-p1-group{A,B,C,D}.html` mechanically (a
+find/replace against the template, not something needing an agent's own context) —
+see `checkpoint-manager`'s "Stitch Phase 1 fragments" section.
+
+**Portability note on the 4 research subagents.** Their definition files use `tools:`
+and `model:` frontmatter, which is Claude Code's own agent-definition convention —
+those two fields don't exist under Codex/Gemini CLI/other agents, which each have
+their own (different) mechanism for defining a sub-agent's toolset/model. Under a
+different agent/tool, don't expect that file format to exist or work as-is: read the
+*body* of each research subagent's instructions (what to research, which sections/
+charts it owns, what to return) as the portable part, and re-express the
+tools/model choice using whatever that agent's own sub-agent mechanism is — or, if
+that tool has no sub-agent concept at all, run all 4 groups' research directly in
+sequence instead of in parallel, clearly noting in the checkpoint that this run
+didn't fan out.
 
 ## Phase 0 — Intake
 
@@ -83,10 +115,56 @@ alongside the HTML at a real static path, not when the HTML is opened alone via
 came back thin or unverifiable, and include `judgment-reviewer`'s `ccusage` cost
 report for this run.
 
-Once Phase 4 passes and the file is handed over, the `-p1-group*.html`,
-`-p1-digests.json`, and `-p2-frontmatter.html` intermediate files are no longer needed
-for a fresh run — but don't delete them automatically; ask the user first in case they
-want to keep them for a future incremental re-run.
+## Clean up after yourself — don't leave a pile of scratch files behind
+
+Every phase/subagent creates intermediate files (group previews, digests, chart
+manifests, scratch drafts). Left alone across several runs these accumulate fast and
+nobody can tell which ones still matter. Once Phase 4 passes and the file is handed
+over, **default to deleting superseded intermediates automatically** — don't wait to
+be asked, that's exactly how they pile up. Only skip the delete if the user has
+explicitly said they want to keep them for a future incremental re-run.
+
+**Always keep** (the real deliverable + audit trail):
+- `<client-slug>-proposal.html` (final output)
+- `<client-slug>-findings.json` (citation source list — needed to answer "where did
+  this claim come from" later)
+- `<client-slug>-checkpoint.json` (resume + audit history)
+- `<client-slug>-cost-report.csv`
+- `web-scan.json`, `officers.json`, `competitor-research/*.json` (the raw research
+  inputs everything else cites back to — cheap to keep, expensive to re-derive)
+- `bind-check-report.json`, `competitor-facts-bind-check.json` (the citation
+  bind-check's own audit trail, for both gates)
+- `audited-findings.json` (the merged, re-graded findings `chart-data-analyst` and
+  `front-matter-writer` actually built from — this is the real audit trail behind
+  the final file's citations, `<client-slug>-findings.json` alone doesn't show what
+  `source-auditor` corrected)
+
+**Delete once Phase 4 passes** (fully superseded by the final file, keeping them adds
+no value):
+- `<client-slug>-p1-group{A,B,C,D}.html` (merged into the final file by `assembler`)
+- `<client-slug>-p1-digests.json` (only `front-matter-writer` needed this, already consumed)
+- `<client-slug>-p2-frontmatter.html` (merged into the final file)
+- `<client-slug>-findings-group{A,B,C,D}.json` (already merged into
+  `audited-findings.json`/`<client-slug>-findings.json` by `source-auditor` — the
+  per-group files themselves are superseded once merged)
+- `chart-manifest.json` (validated already, not needed once the final file has the charts)
+- **`captures/*.md`** (the full page-text cache from `web-osint-scanner`'s Phase 0.8
+  pre-fetch — this is a fetch cache, not a citable record; it's the largest
+  intermediate by far (~39 full pages of text) and keeping it around across runs is
+  exactly the pileup this cleanup rule exists to prevent). Keep `captures/manifest.json`
+  itself deleted too — it's meaningless without the `.md` files it points to. If the
+  user explicitly wants a fast incremental re-run later (skip re-fetching), that's the
+  one case to ask before deleting this specific directory, same as any other
+  keep-for-resume exception.
+- any one-off scratch/preview file a subagent wrote outside the session's own
+  scratchpad directory (e.g. a `*-preview.html` used mid-touch-up) — these should have
+  been written to the scratchpad in the first place; if one turns up in the project
+  directory instead, delete it as part of this same cleanup rather than leaving it.
+
+Every subagent (Group A–D, section-level touch-ups) should be told explicitly, as part
+of its dispatch instructions, to write its own scratch/preview files only under the
+session's scratchpad directory — never the project directory — so this cleanup step
+never has to go hunting for stragglers.
 
 ## Judgment calls
 

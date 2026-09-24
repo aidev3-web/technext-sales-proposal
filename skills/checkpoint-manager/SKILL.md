@@ -27,16 +27,87 @@ shouldn't be forced through everything again.
    2-4 vẫn đang pending."* This tracks **how many `Agent` calls were made**, a rough
    proxy for cost — not an exact token/dollar count.
 
+## Also log a timeline — and one rule that makes cost reporting work for ANY agent
+
+This pipeline may run under Claude Code, or under a different coding agent entirely
+(Codex, Gemini CLI, ...) — this skill's own instructions don't change based on that,
+but the cost-reporting mechanism only works if one rule is followed:
+
+**Every dispatched task (a Phase 1 group, a section-level touch-up, any phase run as
+its own `Agent` call or its own separate agent invocation) must run in its own
+isolated session/process — never share one session across two tasks.** This is what
+lets `ccusage` (which already reads 18+ agents' local logs, tagging each session with
+which agent produced it) report a task's cost with zero guessing: one task = one
+session = one row, no timestamp inference needed regardless of which agent ran it.
+
+Record a `timeline` array in `<client-slug>-checkpoint.json` alongside the phase
+statuses:
+
+```json
+"timeline": [
+  { "task": "phase0_verification", "started": "2026-09-24T02:40:00Z", "ended": "2026-09-24T02:48:00Z", "session_id": "5d1ccf19-67d1-4181-a3ee-eea2d287a7cf", "agent": "claude" },
+  { "task": "phase1_groupA", "started": "2026-09-24T02:49:00Z", "ended": "2026-09-24T03:15:00Z", "session_id": "a5249cf5-b07d-8064-5xxx", "agent": "claude" }
+]
+```
+
+**`session_id` is mandatory for every entry** — the exact session/conversation id
+that task's own agent reports for itself (for a Claude Code `Agent` call, this is the
+id the Task tool's own run is recorded under; ask the dispatching mechanism for its
+own session id rather than guessing it from a file path). **`agent`** names which
+coding agent ran it (`"claude"`, `"codex"`, etc.) — optional but recommended, since it
+disambiguates in the rare case two different agents ever produced the same-looking id.
+A task with no `session_id` recorded cannot be cost-reported at all — the script says
+so explicitly rather than guessing, so don't skip this field to save a step.
+
+## Report that task's cost immediately, not just at the end
+
+Right after writing a timeline entry's `ended`/`session_id`, run:
+```
+python <path-to-judgment-reviewer-skill>/assets/ccusage_to_csv.py --task "<task-name>" <client-slug>-checkpoint.json
+```
+`<path-to-judgment-reviewer-skill>` is wherever the `judgment-reviewer` skill is
+actually installed on this machine/agent (e.g. `~/.claude/skills/judgment-reviewer`
+for Claude Code, but skill install locations differ by agent/tool — resolve it from
+however this run located `judgment-reviewer` in the first place, don't hardcode a
+Claude-specific path). Show the user the result along with your normal "Đã chạy xong Phase X" message — e.g.
+*"Đã chạy xong Phase 1 Group A. Chi phí: $0.44 (Haiku), chạy mất 25m."* This is the
+whole point of logging the timeline: knowing exactly what each stage cost **as it
+finishes**, not only from one lump report at the very end of the pipeline. If the
+command prints a "⚠ CẢNH BÁO" line about a non-Claude model showing up inside a
+`"agent": "claude"` session, surface that warning to the user too — it means an
+internal tool (e.g. an MCP call) routed through a different provider mid-session,
+which needs a manual look before trusting the total (see `judgment-reviewer` for the
+full explanation).
+
+## Stitch Phase 1 fragments — mechanical, not the group agent's job
+
+Each Phase 1 group agent (A/B/C/D) now returns **raw `<section>` fragments only**
+(per `assets/section-shell.md`) — it never reads or copies the full
+`proposal-template.html` itself (that was ~65-70k tokens read for nothing per group,
+since the checkpoint only ever needed the fragments). Run the actual script for
+this, don't do it by hand or ask an agent to hold the whole template in context:
+```
+python <path-to-technext-sales-proposal-skill>/assets/stitch_group.py \
+  <path-to-technext-sales-proposal-skill>/assets/proposal-template.html \
+  <group's-returned-fragments.html> \
+  <client-slug>-p1-groupA.html
+```
+It finds each fragment's `section id="..."` and replaces that exact section in a
+fresh template copy, failing loudly (exit 1) if a fragment's id doesn't exist in the
+template — a real bug (typo, or a section this group doesn't actually own), not
+something to silently skip.
+
 ## Rules for what counts as a valid checkpoint file
 
 - **Every intermediate file must be a real, directly-openable HTML page — never a
   bare `<section>` fragment saved on its own.** A fragment can't be previewed in a
   browser, which is exactly when you most want to look at it. So
   `<client-slug>-p1-groupA.html` (and B/C/D) must be a **full copy of
-  `~/.claude/skills/technext-sales-proposal/assets/proposal-template.html`** with
-  that group's real sections filled in and every other section left as its original
-  `placeholder-note` — openable and previewable on its own, exactly like the final
-  deliverable, just with most sections still empty.
+  `~/.claude/skills/technext-sales-proposal/assets/proposal-template.html`** (see
+  "Stitch Phase 1 fragments" above for how — this is `checkpoint-manager`'s own step,
+  not the group agent's) with that group's real sections filled in and every other
+  section left as its original `placeholder-note` — openable and previewable on its
+  own, exactly like the final deliverable, just with most sections still empty.
 - A shared `<client-slug>-p1-digests.json` holds each group's 3–5-point digest (kept
   separate since the `front-matter-writer` skill only needs the digests, not full
   HTML).
@@ -49,6 +120,29 @@ shouldn't be forced through everything again.
 - **Phase 4 (`mechanical-validator` + `judgment-reviewer` skills)** only needs Phase
   3's `<client-slug>-proposal.html` to exist — it can be re-run alone any time (e.g.
   right after a manual fix) without touching Phases 1–3.
+
+## Clean up superseded intermediate files — after Phase 4 passes
+
+Once `judgment-reviewer` reports the proposal passed and is ready to hand over, delete
+the intermediate files Phase 3/4 already fully consumed — don't leave them to pile up
+across runs. See `~/.claude/skills/technext-sales-proposal/SKILL.md`'s "Clean up after
+yourself" section for the exact keep/delete list. In short: delete
+`<client-slug>-p1-group{A,B,C,D}.html`, `<client-slug>-findings-group{A,B,C,D}.json`,
+`<client-slug>-p1-digests.json`, `<client-slug>-p2-frontmatter.html`,
+`chart-manifest.json`, and — the largest one — `captures/*.md` + `captures/manifest.json`
+(the Phase 0.8 fetch cache; keeping ~39 full pages of text around after the run is
+exactly the pileup this rule exists to prevent). Keep the final `-proposal.html`,
+`-findings.json`, `audited-findings.json`, `-checkpoint.json`, `-cost-report.csv`,
+`web-scan.json`, `officers.json`, `competitor-research/*.json`, `bind-check-report.json`,
+and `competitor-facts-bind-check.json`. Do this automatically by default — only skip it
+if the user has explicitly said they want the intermediates kept for a future
+incremental re-run.
+
+Also check for stray scratch/preview files a subagent left in the **project
+directory** instead of its session scratchpad (this happens when a dispatch
+instruction forgot to say "write scratch files to the scratchpad only") — delete those
+too as part of the same pass, and note in your report to the orchestrator which
+subagent's dispatch instructions should be fixed so it doesn't happen again next run.
 
 ## Section-level touch-ups — smaller than a whole group
 

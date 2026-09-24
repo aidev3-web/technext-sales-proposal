@@ -1,0 +1,813 @@
+<title>Sales Proposal Skill Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --cream:#fbf3ea; --card:#fffaf3; --ink:#3a3a3a; --sub:#8a7f74;
+    --orange:#19a3a3; --orange-soft:#d6efee; --dash:#e3ceb8;
+    --green:#5a8f6b; --green-soft:#e7f1e9; --red:#c85c4a; --blue:#5b7fa6; --chip:#f2e9dd;
+    --serif:'Fraunces',Georgia,serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:'Inter',-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
+  .doc-main h2{font-family:var(--serif);font-weight:700}
+  .brand{font-family:var(--serif)}
+  .hero-title{font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,3.6vw,2.1rem);margin:2px 0 8px;color:#2b2b2b;text-wrap:balance}
+
+  .statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0 0}
+  @media (max-width:640px){.statrow{grid-template-columns:repeat(2,1fr)}}
+  .stat-tile{background:var(--card);border:1px solid var(--orange-soft);border-radius:14px;padding:14px 14px 12px}
+  .stat-tile .v{font-family:var(--serif);font-size:1.6rem;font-weight:700;color:var(--orange);line-height:1}
+  .stat-tile .l{color:var(--sub);font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;margin-top:5px}
+
+  .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
+  @media (max-width:760px){.chart-row{grid-template-columns:1fr}}
+  .chart-card{background:var(--card);border:1px solid var(--orange-soft);border-radius:14px;padding:16px}
+  .chart-card h4{margin:0 0 4px;font-size:.86rem;color:#2b2b2b}
+  .chart-card .cap{color:var(--sub);font-size:.76rem;margin:0 0 10px}
+  .chart-card .box{position:relative;height:220px}
+
+  .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 20px;background:var(--card);border-bottom:2px solid var(--orange-soft)}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:1rem;color:#333;white-space:nowrap}
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--orange)}
+  .topbar-sub{color:var(--sub);font-size:.78rem;display:none}
+  @media (min-width:760px){.topbar-sub{display:inline}}
+  .lang-toggle{display:inline-flex;border:2px solid var(--orange-soft);border-radius:999px;overflow:hidden;background:var(--card);flex:none}
+  .lang-toggle button{border:none;background:transparent;color:var(--sub);font-weight:700;font-size:.8rem;padding:6px 16px;cursor:pointer;letter-spacing:.03em}
+  .lang-toggle button.active{background:var(--orange);color:#fff}
+
+  .shell{max-width:1360px;margin:0 auto;display:grid;grid-template-columns:230px minmax(0,1fr) 220px;gap:0}
+  @media (max-width:1180px){.shell{grid-template-columns:210px minmax(0,1fr)}.side-right{display:none}}
+  @media (max-width:820px){.shell{grid-template-columns:1fr}}
+
+  .side-left{position:sticky;top:53px;align-self:start;height:calc(100vh - 53px);overflow-y:auto;padding:22px 14px;border-right:1px solid var(--dash)}
+  @media (max-width:820px){.side-left{position:static;height:auto;overflow:visible;border-right:none;border-bottom:2px solid var(--orange-soft);padding:14px 16px}}
+  .nav-group{margin-bottom:18px}
+  .nav-group-title{font-size:.68rem;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.05em;margin:0 0 6px 10px}
+  .nav-group ul{list-style:none;margin:0;padding:0}
+  .nav-group a{display:block;padding:6px 10px;border-radius:8px;font-size:.83rem;color:var(--ink);text-decoration:none;border-left:2px solid transparent}
+  .nav-group a:hover{background:var(--chip)}
+  .nav-group a.active{background:var(--orange-soft);color:#0d5a5a;font-weight:700;border-left:2px solid var(--orange)}
+
+  .doc-main{min-width:0;padding:28px 32px 70px}
+  @media (max-width:600px){.doc-main{padding:20px 16px 50px}}
+  .doc-main section{scroll-margin-top:68px;padding-top:6px}
+  .doc-main section + section{margin-top:34px;padding-top:34px;border-top:1px dashed var(--dash)}
+  .doc-main h2{margin:0 0 6px;font-size:1.28rem;letter-spacing:.01em;color:#2b2b2b}
+  .doc-main .lead{color:var(--sub);font-size:.92rem;margin:0 0 20px;max-width:70ch}
+  .doc-main h3{font-size:.98rem;color:#333;margin:26px 0 10px;scroll-margin-top:68px}
+  .breadcrumb{font-size:.72rem;color:var(--sub);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+
+  .side-right{position:sticky;top:53px;align-self:start;height:calc(100vh - 53px);overflow-y:auto;padding:22px 16px}
+  .toc-label{font-size:.68rem;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.05em;margin:0 0 8px}
+  .toc-group{display:none}
+  .toc-group.active{display:block}
+  .toc-group ul{list-style:none;margin:0;padding:0;border-left:2px solid var(--dash)}
+  .toc-group li{margin:0}
+  .toc-group a{display:block;padding:5px 0 5px 12px;font-size:.78rem;color:var(--sub);text-decoration:none;border-left:2px solid transparent;margin-left:-2px}
+  .toc-group a:hover{color:var(--orange)}
+  .toc-group a.active{color:var(--orange);font-weight:700;border-left:2px solid var(--orange)}
+  .toc-empty{font-size:.78rem;color:var(--sub);font-style:italic}
+
+  .concepts{list-style:none;margin:0;padding:0}
+  .concepts li{padding:10px 0;border-top:1px dashed var(--dash);font-size:.86rem}
+  .concepts li:first-child{border-top:none}
+  .concepts b{color:var(--orange)}
+  .concepts code{background:var(--chip);border-radius:4px;padding:0 4px;font-size:.9em}
+
+  .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media (max-width:900px){.row3{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:2px solid var(--orange-soft);border-radius:14px;padding:16px 14px;min-width:0}
+  .panel h4{font-size:.84rem;margin:0 0 10px;color:var(--orange);letter-spacing:.01em}
+  .panel ul{list-style:none;margin:0;padding:0;font-size:.8rem}
+  .panel li{padding:6px 0;border-top:1px dashed var(--dash)}
+  .panel li:first-child{border-top:none}
+  .panel code{background:var(--chip);border-radius:4px;padding:0 4px;font-size:.9em}
+
+  .stepper{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;align-items:stretch}
+  @media (max-width:900px){.stepper{grid-template-columns:repeat(2,1fr);gap:34px 22px}}
+  @media (max-width:560px){.stepper{grid-template-columns:1fr;gap:22px}}
+  .step-node{position:relative;display:flex;flex-direction:column;border:1px solid var(--orange-soft);border-radius:14px;padding:16px 16px 15px;min-width:0;background:var(--card);box-shadow:0 2px 10px rgba(180,110,60,.08);scroll-margin-top:68px}
+  .step-node:not(:last-child)::after{content:"";position:absolute;top:19px;right:-24px;width:24px;height:14px;background-repeat:no-repeat;background-position:center;background-size:24px 14px;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'><path d='M1 7h18M14 1l6 6-6 6' fill='none' stroke='%238a7f74' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>")}
+  @media (max-width:900px){.stepper > .step-node:nth-child(2)::after{display:none}}
+  @media (max-width:560px){.step-node::after{display:none}}
+  .step-head{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+  .step-circle{flex:none;width:28px;height:28px;border-radius:50%;background:linear-gradient(155deg,var(--orange),#0d7a7a);color:#fff;font-weight:800;font-size:.82rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(25,163,163,.4)}
+  .step-node h4{margin:0;font-size:.88rem;line-height:1.3;color:#2b2b2b}
+  .step-desc{margin:5px 0 0;font-size:.79rem;line-height:1.6;color:var(--ink)}
+  .step-desc .pill{display:inline-block;background:var(--chip);border:1px solid var(--dash);border-radius:6px;padding:1px 7px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em;white-space:normal;word-break:break-word}
+
+  .convo-grid{display:grid;grid-template-columns:1fr;gap:16px}
+  .convo{border:2px dashed var(--dash);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0;scroll-margin-top:68px}
+  .convo h4{margin:0;font-size:.9rem;color:var(--orange)}
+  .convo h4 .num{display:inline-block;background:var(--orange);color:#fff;border-radius:999px;width:20px;height:20px;line-height:20px;text-align:center;font-size:.72rem;margin-right:8px}
+  .turn{border-radius:10px;padding:8px 12px;font-size:.79rem;line-height:1.5}
+  .turn .role{display:block;font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+  .turn.you{background:var(--chip);align-self:flex-start;max-width:94%}
+  .turn.you .role{color:var(--ink)}
+  .turn.agent{background:var(--card);border:1px solid var(--orange-soft)}
+  .turn.agent .role{color:var(--orange)}
+  .turn.result{background:var(--green-soft);border:1px solid var(--green);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.74rem;white-space:pre-wrap;word-break:break-word}
+  .turn.result .role{color:var(--green)}
+  .turn code{background:rgba(0,0,0,.06);border-radius:4px;padding:0 4px;font-size:.92em}
+
+  .toollist{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  @media (max-width:640px){.toollist{grid-template-columns:1fr}}
+  .tool-chip{border:1px solid var(--orange-soft);border-radius:10px;padding:10px 12px;font-size:.76rem;min-width:0}
+  .tool-chip code{display:block;font-family:ui-monospace,monospace;color:var(--orange);font-size:.86em;margin-bottom:4px;word-break:break-word}
+
+  .flow-block{margin-bottom:26px}
+  .flow-title{font-size:.86rem;font-weight:700;color:#333;margin:0 0 10px}
+  .flow-title .flow-badge{display:inline-block;background:var(--orange);color:#fff;font-size:.64rem;font-weight:700;padding:2px 8px;border-radius:999px;margin-right:8px;text-transform:uppercase;letter-spacing:.03em}
+  .flow-svg-wrap{overflow-x:auto;margin:2px 0 4px;background:var(--card);border:1px solid var(--dash);border-radius:12px;padding:6px 10px}
+  .flow-svg-wrap svg{display:block;min-width:600px;width:100%;height:auto}
+  .flow-node rect{fill:#fff;stroke:var(--orange-soft);stroke-width:2}
+  .flow-node text{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;fill:var(--orange);font-weight:700}
+  .flow-node.optional rect{fill:transparent;stroke:var(--dash);stroke-dasharray:5 4}
+  .flow-node.optional text{fill:var(--sub)}
+  .flow-cap{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:10px;fill:var(--sub)}
+  .flow-edge{stroke:var(--sub);stroke-width:1.6;fill:none;opacity:.75}
+  .flow-edge.dashed{stroke-dasharray:4 4}
+  .flow-note{font-size:.78rem;color:var(--sub);margin-top:8px}
+
+  .flow-node.gate rect{stroke:var(--orange);stroke-width:2;stroke-dasharray:6 4}
+  .flow-node.refuse rect{fill:var(--red-soft,#fbe4de);stroke:var(--red,#c85c4a);stroke-width:1.6}
+  .flow-node.refuse text{fill:var(--red,#c85c4a);font-weight:700}
+  .flow-node.pass rect{fill:var(--green-soft);stroke:var(--green);stroke-width:1.6}
+  .flow-node.pass text{fill:var(--green);font-weight:700}
+  .flow-edge.refuse-edge{stroke:var(--red,#c85c4a);stroke-dasharray:3 3;opacity:.85}
+  .td-mini{margin:2px 0 14px}
+  .td-mini .flow-svg-wrap{background:radial-gradient(ellipse at 20% 0%,#fffdf9,var(--cream) 70%);border:1px solid var(--dash);border-radius:16px;padding:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.6);overflow-x:auto}
+  .td-mini .flow-svg-wrap svg{min-width:340px;height:auto;display:block}
+  .td-mini .flow-node rect{rx:14px;fill:var(--chip);stroke:var(--orange-soft);stroke-width:1.2;filter:drop-shadow(0 3px 6px rgba(180,110,60,.16))}
+  .td-mini .flow-node text{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:-.01em}
+  .td-mini .flow-node.gate rect{fill:#fffaf2;stroke:var(--orange);stroke-width:1.6;stroke-dasharray:1 5;stroke-linecap:round}
+  .td-mini .flow-node.refuse rect{rx:18px;fill:var(--red-soft,#fbe4de);stroke:var(--red,#c85c4a);stroke-width:1.3;filter:drop-shadow(0 3px 7px rgba(200,92,74,.2))}
+  .td-mini .flow-node.pass rect{rx:18px;fill:var(--green-soft);stroke:var(--green);stroke-width:1.3;filter:drop-shadow(0 3px 7px rgba(90,143,107,.2))}
+  .td-mini .flow-node.optional rect{rx:14px;fill:rgba(255,255,255,.5);stroke-dasharray:1 5;stroke-linecap:round;filter:none}
+  .td-mini .flow-edge{stroke-width:1.6;stroke-linecap:round}
+  .td-mini .flow-edge.refuse-edge{stroke-width:1.5;stroke-linecap:round}
+
+  .flow-legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0 18px;padding:10px 14px;background:var(--chip);border:1px solid var(--dash);border-radius:10px;font-size:.74rem;color:var(--sub)}
+  .flow-legend .lg-item{display:flex;align-items:center;gap:6px}
+  .flow-legend .lg-swatch{width:16px;height:12px;border-radius:4px;flex:none}
+  .flow-legend .lg-step{background:var(--chip);border:1px solid var(--orange-soft)}
+  .flow-legend .lg-gate{background:#fffaf2;border:1.6px dashed var(--orange)}
+  .flow-legend .lg-refuse{background:var(--red-soft,#fbe4de);border:1px solid var(--red,#c85c4a)}
+  .flow-legend .lg-pass{background:var(--green-soft);border:1px solid var(--green)}
+  .flow-legend .lg-optional{background:rgba(255,255,255,.6);border:1.6px dashed var(--dash)}
+
+  .layer-row{border:1px solid var(--orange-soft);border-radius:10px;padding:12px 14px;margin-bottom:10px;scroll-margin-top:68px}
+  .layer-row code{font-family:ui-monospace,monospace;color:var(--orange);font-weight:700}
+  .layer-row p{margin:6px 0 0;font-size:.82rem}
+
+  .tips4{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media (max-width:640px){.tips4{grid-template-columns:1fr}}
+  .tip-card{border:2px solid var(--orange-soft);border-radius:12px;padding:12px;min-width:0;scroll-margin-top:68px}
+  .tip-card h4{margin:0 0 8px;font-size:.84rem}
+  .badrow,.okrow{display:flex;gap:6px;align-items:flex-start;font-size:.76rem;margin:6px 0}
+  .badrow .x{color:var(--red);flex:none;font-weight:700}
+  .okrow .v{color:var(--green);flex:none;font-weight:700}
+  .tip-card code{background:var(--chip);border-radius:4px;padding:0 4px;font-size:.9em}
+
+  .filetbl{width:100%;border-collapse:collapse;font-size:.82rem}
+  .filetbl th,.filetbl td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--dash)}
+  .filetbl th{color:var(--sub);font-size:.72rem;text-transform:uppercase;letter-spacing:.03em}
+
+  .closing{text-align:center;padding:26px 24px;border:2px solid var(--orange);border-radius:16px;background:var(--card)}
+  .closing p{margin:6px 0;font-size:.95rem}
+  .closing .big{font-weight:700;font-size:1.05rem;color:#333}
+  .closing .quote{color:var(--sub)}
+
+  .tool-detail{margin-bottom:12px;border:1px solid var(--orange-soft);border-radius:12px;background:var(--card);scroll-margin-top:68px}
+  .tool-detail summary{cursor:pointer;padding:13px 16px;list-style:none;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .tool-detail summary::-webkit-details-marker{display:none}
+  .tool-detail summary:before{content:"▸";display:inline-block;color:var(--orange);font-size:.8rem;flex:none}
+  .tool-detail[open] summary:before{content:"▾"}
+  .tool-detail summary code{font-family:ui-monospace,monospace;color:var(--orange);font-weight:700;font-size:.88rem}
+  .tool-detail summary .td-desc{color:var(--sub);font-size:.8rem}
+  .tool-detail summary .gate-badge{margin-left:auto;flex:none;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding:2px 9px;border-radius:999px;background:var(--red-soft,#fbe4de);color:var(--red,#c85c4a);border:1px solid var(--red,#c85c4a)}
+  .tool-detail-body{padding:0 16px 16px 40px}
+  .step-list{margin:0;padding:0;list-style:none;counter-reset:tstep}
+  .step-list li{counter-increment:tstep;position:relative;padding:2px 0 10px 26px;font-size:.83rem;border-left:2px solid var(--dash);margin-left:9px}
+  .step-list li:last-child{border-left-color:transparent;padding-bottom:0}
+  .step-list li:before{content:counter(tstep);position:absolute;left:-11px;top:0;width:20px;height:20px;border-radius:50%;background:var(--orange);color:#fff;font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .step-list code{background:var(--chip);border-radius:4px;padding:0 4px;font-family:ui-monospace,monospace;font-size:.92em}
+  .step-list .refuse{color:var(--red,#c85c4a)}
+  .step-list .ok{color:var(--green,#5a8f6b)}
+  .td-io{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 12px;font-size:.76rem}
+  .td-io span{background:var(--chip);border:1px solid var(--dash);border-radius:6px;padding:3px 9px}
+  .td-io b{color:var(--orange);font-family:ui-monospace,monospace;font-weight:700}
+
+  [data-en]{display:none!important}
+  html[data-lang="en"] [data-vi]{display:none!important}
+  html[data-lang="en"] [data-en]{display:inline!important}
+  html[data-lang="en"] li[data-en],
+  html[data-lang="en"] div[data-en],
+  html[data-lang="en"] p[data-en]{display:block!important}
+  html[data-lang="en"] .badrow[data-en],
+  html[data-lang="en"] .okrow[data-en]{display:flex!important}
+</style>
+
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span>technext-sales-proposal <span class="topbar-sub">&nbsp;·&nbsp;<span data-vi>tài liệu</span><span data-en>docs</span></span></div>
+    <div class="lang-toggle">
+      <button id="btn-vi" onclick="setLang('vi')">VI</button>
+      <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+
+  <div class="shell">
+
+    <aside class="side-left">
+      <nav>
+        <div class="nav-group">
+          <div class="nav-group-title"><span data-vi>Bắt đầu</span><span data-en>Getting started</span></div>
+          <ul>
+            <li><a href="#overview" data-nav-link="overview"><span data-vi>Tổng quan</span><span data-en>Overview</span></a></li>
+            <li><a href="#numbers" data-nav-link="numbers"><span data-vi>Số liệu pipeline</span><span data-en>Pipeline numbers</span></a></li>
+            <li><a href="#quick-start" data-nav-link="quick-start"><span data-vi>Cách chạy</span><span data-en>How to run it</span></a></li>
+          </ul>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title"><span data-vi>Quy trình</span><span data-en>Pipeline</span></div>
+          <ul>
+            <li><a href="#tools" data-nav-link="tools"><span data-vi>Danh sách skill</span><span data-en>List of skills</span></a></li>
+            <li><a href="#tool-internals" data-nav-link="tool-internals"><span data-vi>Bên trong từng bước</span><span data-en>Inside each step</span></a></li>
+            <li><a href="#workflow" data-nav-link="workflow"><span data-vi>Sơ đồ quy trình</span><span data-en>Workflow diagram</span></a></li>
+          </ul>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title"><span data-vi>Tham khảo</span><span data-en>Reference</span></div>
+          <ul>
+            <li><a href="#usage" data-nav-link="usage"><span data-vi>Cách dùng thật</span><span data-en>Real usage</span></a></li>
+            <li><a href="#files" data-nav-link="files"><span data-vi>File nhận được</span><span data-en>Files you get</span></a></li>
+            <li><a href="#troubleshooting" data-nav-link="troubleshooting"><span data-vi>Sự cố thường gặp</span><span data-en>Troubleshooting</span></a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="doc-main">
+
+      <section id="overview" data-nav="overview">
+        <div class="breadcrumb"><span data-vi>Bắt đầu</span><span data-en>Getting started</span></div>
+        <h2><span data-vi>Tổng quan</span><span data-en>Overview</span></h2>
+        <p class="lead"><span data-vi>technext-sales-proposal biến 1 cái tên công ty thành 1 bản đề xuất bán hàng đầy đủ, song ngữ (VI/EN), pitch 3 dịch vụ của TechNext (Odoo ERP, AI, Social Media). Bạn không gọi tool nào trực tiếp — chỉ cần nói với agent bằng lời thường, nó tự chạy đúng 15 bước phía dưới.</span><span data-en>technext-sales-proposal turns one company name into a complete, bilingual (VI/EN) sales proposal pitching TechNext's 3 service lines (Odoo ERP, AI, Social Media). You never call a tool directly — just tell the agent in plain language, and it runs the 15 steps below itself.</span></p>
+
+        <div class="statrow">
+          <div class="stat-tile"><div class="v">15</div><div class="l"><span data-vi>Bước quy trình</span><span data-en>Pipeline steps</span></div></div>
+          <div class="stat-tile"><div class="v">39</div><div class="l"><span data-vi>Section bắt buộc</span><span data-en>Required sections</span></div></div>
+          <div class="stat-tile"><div class="v">18+4</div><div class="l"><span data-vi>Chart + Diagram</span><span data-en>Charts + Diagrams</span></div></div>
+          <div class="stat-tile"><div class="v">3</div><div class="l"><span data-vi>Cổng chặn cứng</span><span data-en>Hard gates</span></div></div>
+        </div>
+
+        <h3 id="key-concepts"><span data-vi>Khái niệm chính</span><span data-en>Key concepts</span></h3>
+        <ul class="concepts">
+          <li><b><span data-vi>Orchestrator</span><span data-en>Orchestrator</span></b> — <span data-vi>1 skill "điều phối" đọc bản đồ 15 bước, quyết định bước nào chạy khi nào, không tự chứa toàn bộ chi tiết.</span><span data-en>the coordinating skill that reads the 15-step map and decides what runs when — it doesn't hold every detail itself.</span></li>
+          <li><b><span data-vi>Subagent</span><span data-en>Subagent</span></b> — <span data-vi>1 "nhân viên ảo" riêng biệt, được giao 1 phần nghiên cứu cụ thể, chạy song song với các nhân viên khác.</span><span data-en>a separate virtual worker assigned one specific research slice, running in parallel with the others.</span></li>
+          <li><b><code>checkpoint.json</code></b> — <span data-vi>file nhớ đã chạy tới đâu — cho phép chạy lại từ giữa thay vì làm lại từ đầu.</span><span data-en>the file that remembers how far a run got — lets you resume mid-way instead of starting over.</span></li>
+          <li><b><span data-vi>Citation (trích dẫn)</span><span data-en>Citation</span></b> — <span data-vi>mỗi số liệu/câu trích trong bản đề xuất phải kèm link nguồn thật — không bịa, không ngoại lệ.</span><span data-en>every number/quote in the proposal must carry a real source link — nothing invented, no exceptions.</span></li>
+          <li><b><span data-vi>Gate (cổng chặn)</span><span data-en>Gate</span></b> — <span data-vi>1 bước có quyền <b>dừng cả pipeline</b> nếu dữ liệu chưa đạt, khác với 1 bước chỉ "auto" chạy xong là qua.</span><span data-en>a step that can <b>stop the whole pipeline</b> if the data isn't good enough — unlike an "auto" step that just runs through.</span></li>
+        </ul>
+
+        <h3 id="before-you-start"><span data-vi>Trước khi dùng</span><span data-en>Before you start</span></h3>
+        <div class="row3">
+          <div class="panel">
+            <h4><span data-vi>1. Có gì đưa hết</span><span data-en>1. Give it what you have</span></h4>
+            <ul><li><span data-vi>Tên công ty, website nếu có, ghi chú họp nếu có — không cần chuẩn bị gì thêm.</span><span data-en>Company name, website if known, meeting notes if any — nothing else to prepare.</span></li></ul>
+          </div>
+          <div class="panel">
+            <h4><span data-vi>2. Không cần biết code</span><span data-en>2. No coding needed</span></h4>
+            <ul><li><span data-vi>Toàn bộ tương tác là hội thoại bằng lời thường với Claude Code.</span><span data-en>The whole interaction is plain-language chat with Claude Code.</span></li></ul>
+          </div>
+          <div class="panel">
+            <h4><span data-vi>3. Chờ vài phút thật</span><span data-en>3. Expect real minutes, not seconds</span></h4>
+            <ul><li><span data-vi>Pipeline làm nghiên cứu thật, không phải điền mẫu — nên mất nhiều phút, không phải giây.</span><span data-en>The pipeline does real research, not template-filling — so it takes minutes, not seconds.</span></li></ul>
+          </div>
+        </div>
+
+        <h3 id="situations"><span data-vi>4 tình huống thường gặp</span><span data-en>4 common situations</span></h3>
+        <ul class="concepts">
+          <li><span data-vi>Chạy toàn bộ pipeline cho khách mới — xem <a href="#case-1">case 1</a></span><span data-en>Run the full pipeline for a new client — see <a href="#case-1">case 1</a></span></li>
+          <li><span data-vi>Chỉ muốn chạy lại 1 phần — <a href="#case-2">case 2</a></span><span data-en>Only want to re-run one part — <a href="#case-2">case 2</a></span></li>
+          <li><span data-vi>Có ghi chú họp thật, muốn ưu tiên nó — <a href="#case-3">case 3</a></span><span data-en>Have real meeting notes, want them prioritized — <a href="#case-3">case 3</a></span></li>
+          <li><span data-vi>Muốn biết chi phí thật của lần chạy — <a href="#case-4">case 4</a></span><span data-en>Want to know the run's real cost — <a href="#case-4">case 4</a></span></li>
+        </ul>
+      </section>
+
+      <section id="numbers" data-nav="numbers">
+        <div class="breadcrumb"><span data-vi>Bắt đầu</span><span data-en>Getting started</span></div>
+        <h2><span data-vi>Số liệu thật của pipeline</span><span data-en>Real pipeline numbers</span></h2>
+        <p class="lead"><span data-vi>2 số liệu đo được thật từ các fix gần đây, không phải ước lượng.</span><span data-en>2 real measured numbers from recent fixes, not estimates.</span></p>
+        <div class="chart-row">
+          <div class="chart-card">
+            <h4><span data-vi>Thời gian fetch citation, trước/sau Phase 0.8</span><span data-en>Citation fetch time, before/after Phase 0.8</span></h4>
+            <p class="cap"><span data-vi>Pre-fetch 1 lần + cache giúp bind-check giảm từ ~17.5 phút xuống vài giây</span><span data-en>A one-time pre-fetch + cache cuts the bind-check from ~17.5 minutes to a few seconds</span></p>
+            <div class="box"><canvas id="cTime"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h4><span data-vi>Chart/diagram sở hữu theo nhóm nghiên cứu</span><span data-en>Charts/diagrams owned per research group</span></h4>
+            <p class="cap"><span data-vi>Nhóm A sở hữu 12/18 chart — nặng nhất trong 4 nhóm</span><span data-en>Group A owns 12 of 18 charts — the heaviest of the 4 groups</span></p>
+            <div class="box"><canvas id="cOwn"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="quick-start" data-nav="quick-start">
+        <div class="breadcrumb"><span data-vi>Bắt đầu</span><span data-en>Getting started</span></div>
+        <h2><span data-vi>Cách chạy — 3 bước</span><span data-en>How to run it — 3 steps</span></h2>
+        <p class="lead"><span data-vi>Không có nút bấm, không cần cài gì — chỉ cần đưa thông tin và trả lời 1-2 câu hỏi.</span><span data-en>No button, nothing to install — just give it the info and answer 1-2 questions.</span></p>
+        <div class="stepper">
+          <div class="step-node" id="step-1">
+            <div class="step-head"><span class="step-circle">1</span><h4><span data-vi>Đưa thông tin khách hàng</span><span data-en>Give it the client info</span></h4></div>
+            <p class="step-desc"><span data-vi>Tên công ty + website/social nếu có + ghi chú họp nếu có, dán thẳng vào chat.</span><span data-en>Company name + website/socials if known + meeting notes if any — paste it straight into chat.</span></p>
+          </div>
+          <div class="step-node" id="step-2">
+            <div class="step-head"><span class="step-circle">2</span><h4><span data-vi>Trả lời 1-2 câu hỏi</span><span data-en>Answer 1-2 questions</span></h4></div>
+            <p class="step-desc"><span data-vi>Xác nhận đúng pháp nhân, và có muốn chạy <span class="pill">toàn bộ</span> hay chỉ <span class="pill">resume</span> 1 phần đã lỡ dừng.</span><span data-en>Confirm the right legal entity, and whether to run <span class="pill">everything</span> or just <span class="pill">resume</span> one part that stopped early.</span></p>
+          </div>
+          <div class="step-node" id="step-3">
+            <div class="step-head"><span class="step-circle">3</span><h4><span data-vi>Nhận file &amp; chi phí</span><span data-en>Get the file &amp; cost</span></h4></div>
+            <p class="step-desc"><span data-vi>1 file <span class="pill">.html</span> mở trực tiếp bằng browser + báo cáo chi phí thật của lần chạy.</span><span data-en>One <span class="pill">.html</span> file that opens directly in a browser + a real cost report for this run.</span></p>
+          </div>
+        </div>
+      </section>
+
+      <section id="tools" data-nav="tools">
+        <div class="breadcrumb"><span data-vi>Quy trình</span><span data-en>Pipeline</span></div>
+        <h2><span data-vi>Các skill/agent đứng sau (bạn không cần gọi tay)</span><span data-en>The skills/agents behind it (you never call these by hand)</span></h2>
+        <div class="toollist">
+          <div class="tool-chip"><code>company-verifier</code><span data-vi>Xác thực đúng pháp nhân qua GLEIF</span><span data-en>Confirms the exact legal entity via GLEIF</span></div>
+          <div class="tool-chip"><code>officers-lookup</code><span data-vi>Tra ban lãnh đạo từ đăng ký công khai</span><span data-en>Looks up leadership from public registries</span></div>
+          <div class="tool-chip"><code>web-osint-scanner</code><span data-vi>Quét site, tìm link, tìm đối thủ, pre-fetch</span><span data-en>Scans the site, finds links, finds competitors, pre-fetches</span></div>
+          <div class="tool-chip"><code>competitor-research-worker</code><span data-vi>1 worker/đối thủ, budget cứng</span><span data-en>1 worker per competitor, hard budget</span></div>
+          <div class="tool-chip"><code>checkpoint-manager</code><span data-vi>Quyết định bước nào cần chạy, resume, dọn rác</span><span data-en>Decides what needs to run, resume, cleanup</span></div>
+          <div class="tool-chip"><code>research-*-agent</code> ×4<span data-vi>4 nhóm nghiên cứu song song</span><span data-en>4 parallel research groups</span></div>
+          <div class="tool-chip"><code>front-matter-writer</code><span data-vi>Viết Tóm tắt điều hành &amp; Khuyến nghị</span><span data-en>Writes Executive Summary &amp; Recommendations</span></div>
+          <div class="tool-chip"><code>source-auditor</code><span data-vi>Kiểm chứng lại toàn bộ trích dẫn — cổng chặn</span><span data-en>Re-verifies every citation — a gate</span></div>
+          <div class="tool-chip"><code>chart-data-analyst</code><span data-vi>Build chart-manifest sau khi audit sạch</span><span data-en>Builds the chart manifest once audit is clean</span></div>
+          <div class="tool-chip"><code>assembler</code><span data-vi>Ghép tất cả thành 1 file cuối</span><span data-en>Merges everything into one final file</span></div>
+          <div class="tool-chip"><code>mechanical-validator</code><span data-vi>13 kiểm tra máy — cổng chặn</span><span data-en>13 mechanical checks — a gate</span></div>
+          <div class="tool-chip"><code>judgment-reviewer</code><span data-vi>Đọc lại như khách hàng khó tính + báo chi phí</span><span data-en>Reads it back like a skeptical client + reports cost</span></div>
+        </div>
+      </section>
+
+      <section id="tool-internals" data-nav="tool-internals">
+        <div class="breadcrumb"><span data-vi>Quy trình</span><span data-en>Pipeline</span></div>
+        <h2><span data-vi>Bên trong từng bước hoạt động ra sao</span><span data-en>What happens inside each step</span></h2>
+        <p class="lead"><span data-vi>Không phải hộp đen — dưới đây là đúng các bước mỗi skill làm thật bên trong. Bấm vào tên để xổ ra.</span><span data-en>Not a black box — below is exactly what each skill does internally. Click a name to expand.</span></p>
+
+        <div class="flow-legend">
+          <div class="lg-item"><span class="lg-swatch lg-step"></span><span data-vi>Bước xử lý</span><span data-en>Processing step</span></div>
+          <div class="lg-item"><span class="lg-swatch lg-gate"></span><span data-vi>Điểm kiểm tra (có thể rẽ)</span><span data-en>Check point (can branch)</span></div>
+          <div class="lg-item"><span class="lg-swatch lg-refuse"></span><span data-vi>Từ chối / dừng lại</span><span data-en>Refused / stopped</span></div>
+          <div class="lg-item"><span class="lg-swatch lg-pass"></span><span data-vi>Hoàn tất</span><span data-en>Completed</span></div>
+          <div class="lg-item"><span class="lg-swatch lg-optional"></span><span data-vi>Xảy ra ngoài bước này</span><span data-en>Happens outside this step</span></div>
+        </div>
+
+        <details class="tool-detail">
+          <summary><code>company-verifier</code><span class="td-desc" data-vi>Xác thực pháp nhân qua GLEIF</span><span class="td-desc" data-en>Confirms the legal entity via GLEIF</span></summary>
+          <div class="tool-detail-body">
+            <div class="td-io"><span><b data-vi>Vào</b><b data-en>In</b>: <span data-vi>tên công ty</span><span data-en>company name</span></span><span><b data-vi>Ra</b><b data-en>Out</b>: company-identity.json</span></div>
+            <div class="td-mini"><div class="flow-svg-wrap"><svg viewBox="0 0 700 66" role="img" aria-label="company-verifier flow">
+              <defs><marker id="c1a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--sub)"/></marker></defs>
+              <path class="flow-edge" d="M180,33 L196,33" marker-end="url(#c1a)"/>
+              <path class="flow-edge" d="M356,33 L372,33" marker-end="url(#c1a)"/>
+              <g class="flow-node"><rect x="8" y="10" width="172" height="46" rx="10"/><text x="94" y="30" text-anchor="middle" style="font-size:10px">GLEIF fulltext</text><text x="94" y="44" text-anchor="middle" style="font-size:10px">search (free, no key)</text></g>
+              <g class="flow-node optional"><rect x="196" y="10" width="160" height="46" rx="10"/><text x="276" y="30" text-anchor="middle" style="font-size:10px">Wikidata</text><text x="276" y="44" text-anchor="middle" style="font-size:10px">(supplement only)</text></g>
+              <g class="flow-node pass"><rect x="372" y="10" width="180" height="46" rx="10"/><text x="462" y="37" text-anchor="middle" style="font-size:10.5px">company-identity.json</text></g>
+            </svg></div></div>
+            <ol class="step-list">
+              <li><span data-vi>Tra GLEIF bằng <code>filter[fulltext]</code> — không dùng <code>filter[entity.legalName]</code> (cần khớp gần chính xác, hay bị miss với công ty thật).</span><span data-en>Queries GLEIF via <code>filter[fulltext]</code> — never <code>filter[entity.legalName]</code> (needs a near-exact match, silently misses real entities).</span></li>
+              <li><span data-vi>Nếu kết quả mơ hồ, thử nhiều biến thể từ (ghép/tách, số ít/nhiều) trước khi báo "không tìm thấy".</span><span data-en>If results are ambiguous, tries several word-shape variants (compound/split, singular/plural) before concluding "not found".</span></li>
+              <li><span data-vi>Wikidata chỉ bổ sung (ngày thành lập, người sáng lập) — không bao giờ thay GLEIF để xác nhận danh tính.</span><span data-en>Wikidata only supplements (founding date, founder) — never replaces GLEIF for identity confirmation.</span></li>
+            </ol>
+          </div>
+        </details>
+
+        <details class="tool-detail">
+          <summary><code>web-osint-scanner</code><span class="td-desc" data-vi>Quét site, tìm link, tìm đối thủ</span><span class="td-desc" data-en>Scans the site, finds links, finds competitors</span></summary>
+          <div class="tool-detail-body">
+            <div class="td-io"><span><b data-vi>Vào</b><b data-en>In</b>: company-identity.json</span><span><b data-vi>Ra</b><b data-en>Out</b>: web-scan.json, captures/*.md</span></div>
+            <div class="td-mini"><div class="flow-svg-wrap"><svg viewBox="0 0 880 66" role="img" aria-label="web-osint-scanner flow">
+              <defs><marker id="c2a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--sub)"/></marker></defs>
+              <path class="flow-edge" d="M170,33 L186,33" marker-end="url(#c2a)"/>
+              <path class="flow-edge" d="M346,33 L362,33" marker-end="url(#c2a)"/>
+              <path class="flow-edge" d="M522,33 L538,33" marker-end="url(#c2a)"/>
+              <path class="flow-edge" d="M698,33 L714,33" marker-end="url(#c2a)"/>
+              <g class="flow-node"><rect x="8" y="10" width="162" height="46" rx="10"/><text x="89" y="30" text-anchor="middle" style="font-size:10px">read site via</text><text x="89" y="44" text-anchor="middle" style="font-size:10px">Jina Reader</text></g>
+              <g class="flow-node"><rect x="186" y="10" width="160" height="46" rx="10"/><text x="266" y="30" text-anchor="middle" style="font-size:10px">extract links</text><text x="266" y="44" text-anchor="middle" style="font-size:10px">+ find competitors</text></g>
+              <g class="flow-node"><rect x="362" y="10" width="160" height="46" rx="10"/><text x="442" y="30" text-anchor="middle" style="font-size:10px">pre-fetch all</text><text x="442" y="44" text-anchor="middle" style="font-size:10px">urls (parallel)</text></g>
+              <g class="flow-node pass"><rect x="538" y="10" width="160" height="46" rx="10"/><text x="618" y="30" text-anchor="middle" style="font-size:10px">web-scan.json</text><text x="618" y="44" text-anchor="middle" style="font-size:10px">+ captures/*.md</text></g>
+            </svg></div></div>
+            <ol class="step-list">
+              <li><span data-vi>Đọc site qua Jina Reader (free, không cần key) — không dùng Firecrawl/Crawl4AI.</span><span data-en>Reads the site via Jina Reader (free, no key) — not Firecrawl/Crawl4AI.</span></li>
+              <li><span data-vi>Trích mọi link social/review/press, và tìm 2-4 đối thủ thật qua 1 lần <code>WebSearch</code>.</span><span data-en>Extracts every social/review/press link, and finds 2-4 real competitors via one <code>WebSearch</code>.</span></li>
+              <li><span data-vi><b>Pre-fetch 1 lần cho cả pipeline:</b> tải song song ~39 trang liên quan vào <code>captures/*.md</code> — cắt ~29 phút fetch live của các bước sau xuống ~1-2 phút.</span><span data-en><b>Pre-fetches once for the whole pipeline:</b> ~39 related pages fetched in parallel into <code>captures/*.md</code> — cuts later steps' ~29-minute live-fetch fan-out down to ~1-2 minutes.</span></li>
+            </ol>
+          </div>
+        </details>
+
+        <details class="tool-detail">
+          <summary><code>competitor-research-worker</code><span class="td-desc" data-vi>1 worker/đối thủ, budget cứng</span><span class="td-desc" data-en>1 worker per competitor, hard budget</span></summary>
+          <div class="tool-detail-body">
+            <div class="td-io"><span><b data-vi>Vào</b><b data-en>In</b>: <span data-vi>tên 1 đối thủ</span><span data-en>one competitor's name</span></span><span><b data-vi>Ra</b><b data-en>Out</b>: competitor-research/&lt;slug&gt;.json</span></div>
+            <div class="td-mini"><div class="flow-svg-wrap"><svg viewBox="0 0 700 66" role="img" aria-label="competitor-research-worker flow">
+              <defs><marker id="c3a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--sub)"/></marker></defs>
+              <path class="flow-edge" d="M180,33 L196,33" marker-end="url(#c3a)"/>
+              <path class="flow-edge" d="M356,33 L372,33" marker-end="url(#c3a)"/>
+              <g class="flow-node gate"><rect x="8" y="10" width="172" height="46" rx="10"/><text x="94" y="30" text-anchor="middle" style="font-size:10px">≤8 fetch</text><text x="94" y="44" text-anchor="middle" style="font-size:10px">≤8 minutes</text></g>
+              <g class="flow-node"><rect x="196" y="10" width="160" height="46" rx="10"/><text x="276" y="30" text-anchor="middle" style="font-size:10px">structured facts</text><text x="276" y="44" text-anchor="middle" style="font-size:10px">+ excerpt only</text></g>
+              <g class="flow-node pass"><rect x="372" y="10" width="180" height="46" rx="10"/><text x="462" y="37" text-anchor="middle" style="font-size:10.5px">1 JSON per competitor</text></g>
+            </svg></div></div>
+            <ol class="step-list">
+              <li><span data-vi>1 worker riêng cho mỗi đối thủ, chạy song song với nhau — dừng ngay ở 8 phút dù chưa xong, không cố "hoàn thiện".</span><span data-en>One dedicated worker per competitor, running in parallel — stops at 8 minutes regardless, doesn't chase completeness.</span></li>
+              <li><span data-vi>Chỉ trả về JSON có cấu trúc (claim + source_url + excerpt), không viết văn xuôi.</span><span data-en>Returns only structured JSON (claim + source_url + excerpt), never prose.</span></li>
+              <li><span data-vi>File này là nguồn chung — cả nhóm A và nhóm C đọc cùng file này, không nghiên cứu đối thủ 2 lần.</span><span data-en>This file is the shared source — both Group A and Group C read the same file, no duplicate competitor research.</span></li>
+            </ol>
+          </div>
+        </details>
+
+        <details class="tool-detail">
+          <summary><code>source-auditor</code><span class="td-desc" data-vi>Kiểm chứng lại toàn bộ trích dẫn</span><span class="td-desc" data-en>Re-verifies every citation</span><span class="gate-badge" data-vi>Cổng chặn</span><span class="gate-badge" data-en>Gate</span></summary>
+          <div class="tool-detail-body">
+            <div class="td-io"><span><b data-vi>Vào</b><b data-en>In</b>: findings-group{A,B,C,D}.json</span><span><b data-vi>Ra</b><b data-en>Out</b>: audited-findings.json + blocking_issues[]</span></div>
+            <div class="td-mini"><div class="flow-svg-wrap"><svg viewBox="0 0 880 118" role="img" aria-label="source-auditor flow">
+              <defs>
+                <marker id="c4a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--sub)"/></marker>
+                <marker id="c4r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--red,#c85c4a)"/></marker>
+              </defs>
+              <path class="flow-edge" d="M170,33 L186,33" marker-end="url(#c4a)"/>
+              <path class="flow-edge" d="M346,33 L362,33" marker-end="url(#c4a)"/>
+              <path class="flow-edge refuse-edge" d="M622,56 L622,92" marker-end="url(#c4r)"/>
+              <path class="flow-edge" d="M712,33 L728,33" marker-end="url(#c4a)"/>
+              <g class="flow-node"><rect x="8" y="10" width="162" height="46" rx="10"/><text x="89" y="30" text-anchor="middle" style="font-size:10px">merge 4 group</text><text x="89" y="44" text-anchor="middle" style="font-size:10px">findings files</text></g>
+              <g class="flow-node"><rect x="186" y="10" width="160" height="46" rx="10"/><text x="266" y="30" text-anchor="middle" style="font-size:10px">re-grade</text><text x="266" y="44" text-anchor="middle" style="font-size:10px">confidence</text></g>
+              <g class="flow-node gate"><rect x="362" y="10" width="180" height="46" rx="10"/><text x="452" y="30" text-anchor="middle" style="font-size:10px">bind_check.py</text><text x="452" y="44" text-anchor="middle" style="font-size:10px">excerpt really on source?</text></g>
+              <g class="flow-node pass"><rect x="638" y="10" width="180" height="46" rx="10"/><text x="728" y="37" text-anchor="middle" style="font-size:10.5px">audited-findings.json</text></g>
+              <g class="flow-node refuse"><rect x="538" y="92" width="180" height="26" rx="13"/><text x="628" y="110" text-anchor="middle" style="font-size:9.5px">blocking_issues → back to owning agent</text></g>
+            </svg></div></div>
+            <ol class="step-list">
+              <li><span data-vi>Gộp 4 file <code>findings-group{A,B,C,D}.json</code> — mỗi nhóm ghi file riêng, không ghi chung (tránh race condition).</span><span data-en>Merges the 4 <code>findings-group{A,B,C,D}.json</code> files — each group writes its own, never a shared one (avoids a race condition).</span></li>
+              <li><span data-vi>Chấm lại độ tin cậy độc lập — không tin điểm agent tự chấm.</span><span data-en>Independently re-grades confidence — doesn't trust the writing agent's own score.</span></li>
+              <li><span class="refuse"><span data-vi><b>Tải lại từng trang nguồn</b> (qua cache <code>captures/</code> hoặc live) để xác nhận trích dẫn thật có trên trang — trang không tải được cũng <b>chặn</b>, không chỉ trích dẫn sai.</span><span data-en><b>Re-fetches every source page</b> (via <code>captures/</code> cache or live) to confirm the quote is really there — an unreachable page <b>blocks</b> too, not just a wrong quote.</span></span></li>
+              <li><span class="refuse"><span data-vi>Có <code>blocking_issues</code> → dừng, trả đúng agent đã viết để sửa — <b>không</b> cho phép bước sau chạy với data chưa audit.</span><span data-en>Any <code>blocking_issues</code> → stops, routes back to the agent that wrote it — later steps are <b>not</b> allowed to run on un-audited data.</span></span></li>
+            </ol>
+          </div>
+        </details>
+
+        <details class="tool-detail">
+          <summary><code>mechanical-validator</code><span class="td-desc" data-vi>13 kiểm tra máy</span><span class="td-desc" data-en>13 mechanical checks</span><span class="gate-badge" data-vi>Cổng chặn</span><span class="gate-badge" data-en>Gate</span></summary>
+          <div class="tool-detail-body">
+            <div class="td-io"><span><b data-vi>Vào</b><b data-en>In</b>: &lt;slug&gt;-proposal.html</span><span><b data-vi>Ra</b><b data-en>Out</b>: PASS/FAIL + <span data-vi>lý do</span><span data-en>reasons</span></span></div>
+            <ol class="step-list">
+              <li><span data-vi>Không thiếu section nào trong 39 section bắt buộc, không citation trỏ về anchor nội bộ, không placeholder còn sót.</span><span data-en>No missing section among the required 39, no citation pointing at an internal anchor, no leftover placeholder.</span></li>
+              <li><span data-vi>Đúng 18 chart + 4 diagram, không có Mermaid, không có script/stylesheet CDN ngoài (phải tự chứa để mở offline).</span><span data-en>Exactly 18 charts + 4 diagrams, no Mermaid, no external CDN script/stylesheet (must be self-contained to open offline).</span></li>
+              <li><span data-vi>HTML hợp lệ về cấu trúc (không id trùng, không section rỗng do lỗi đóng tag) — kiểm bằng parser thật, không chỉ regex.</span><span data-en>Structurally valid HTML (no duplicate ids, no section empty from a tag-closing bug) — checked with a real parser, not just regex.</span></li>
+            </ol>
+          </div>
+        </details>
+
+        <details class="tool-detail">
+          <summary><code>judgment-reviewer</code><span class="td-desc" data-vi>Đọc lại + báo chi phí thật</span><span class="td-desc" data-en>Reads it back + reports real cost</span></summary>
+          <div class="tool-detail-body">
+            <div class="td-io"><span><b data-vi>Vào</b><b data-en>In</b>: &lt;slug&gt;-proposal.html, checkpoint.json</span><span><b data-vi>Ra</b><b data-en>Out</b>: &lt;slug&gt;-cost-report.csv</span></div>
+            <ol class="step-list">
+              <li><span data-vi>Đọc như 1 khách hàng khó tính thật — spot-check trích dẫn, phản biện phần Khuyến nghị.</span><span data-en>Reads it as a genuinely skeptical client would — spot-checks citations, argues against the Recommendations section.</span></li>
+              <li><span data-vi>Báo chi phí theo <b>từng task</b> (không phải cả session gộp), hoạt động với <b>mọi agent</b> (Claude Code, Codex...) chứ không chỉ Claude — bằng cách khớp đúng <code>session_id</code> mỗi task đã ghi lại.</span><span data-en>Reports cost <b>per task</b> (not one lumped session), works for <b>any agent</b> (Claude Code, Codex...), not just Claude — by matching each task's recorded <code>session_id</code> exactly.</span></li>
+            </ol>
+          </div>
+        </details>
+      </section>
+
+      <section id="workflow" data-nav="workflow">
+        <div class="breadcrumb"><span data-vi>Quy trình</span><span data-en>Pipeline</span></div>
+        <h2><span data-vi>Sơ đồ toàn bộ quy trình</span><span data-en>The full pipeline diagram</span></h2>
+        <p class="lead"><span data-vi>15 bước không đứng riêng lẻ — chúng nối vào nhau theo đúng 1 luồng cố định dưới đây, với 1 điểm rẽ 4 nhánh song song ở Phase 1.</span><span data-en>The 15 steps don't stand alone — they chain into exactly the one fixed flow below, with a 4-way parallel fork at Phase 1.</span></p>
+
+        <div class="flow-block" id="flow-a">
+          <div class="flow-title"><span class="flow-badge">0 → 0.9</span><span data-vi>Chuẩn bị trước khi nghiên cứu</span><span data-en>Setup before research</span></div>
+          <div class="flow-svg-wrap">
+            <svg viewBox="0 0 900 66" role="img" aria-label="setup flow">
+              <defs><marker id="fa-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--sub)"/></marker></defs>
+              <path class="flow-edge" d="M138,33 L154,33" marker-end="url(#fa-arrow)"/>
+              <path class="flow-edge" d="M294,33 L310,33" marker-end="url(#fa-arrow)"/>
+              <path class="flow-edge" d="M450,33 L466,33" marker-end="url(#fa-arrow)"/>
+              <path class="flow-edge" d="M606,33 L622,33" marker-end="url(#fa-arrow)"/>
+              <path class="flow-edge" d="M762,33 L778,33" marker-end="url(#fa-arrow)"/>
+              <g class="flow-node"><rect x="8" y="10" width="130" height="46" rx="9"/><text x="73" y="30" text-anchor="middle" style="font-size:10px">0 Intake</text></g>
+              <g class="flow-node gate"><rect x="154" y="10" width="140" height="46" rx="9"/><text x="224" y="30" text-anchor="middle" style="font-size:10px">0.5 company-</text><text x="224" y="44" text-anchor="middle" style="font-size:10px">verifier</text></g>
+              <g class="flow-node"><rect x="310" y="10" width="140" height="46" rx="9"/><text x="380" y="30" text-anchor="middle" style="font-size:10px">0.6 officers-</text><text x="380" y="44" text-anchor="middle" style="font-size:10px">lookup</text></g>
+              <g class="flow-node"><rect x="466" y="10" width="140" height="46" rx="9"/><text x="536" y="30" text-anchor="middle" style="font-size:10px">0.7-0.8 web-</text><text x="536" y="44" text-anchor="middle" style="font-size:10px">osint-scanner</text></g>
+              <g class="flow-node gate"><rect x="622" y="10" width="140" height="46" rx="9"/><text x="692" y="30" text-anchor="middle" style="font-size:10px">0.9 competitor-</text><text x="692" y="44" text-anchor="middle" style="font-size:10px">research</text></g>
+              <g class="flow-node pass"><rect x="778" y="10" width="114" height="46" rx="9"/><text x="835" y="37" text-anchor="middle" style="font-size:10px">Phase 1</text></g>
+            </svg>
+          </div>
+          <div class="flow-note"><span data-vi>2 ô viền đứt (gate) có thể dừng ngay tại đây nếu xác thực thất bại — trước khi tốn bất kỳ chi phí nghiên cứu nào.</span><span data-en>The 2 dashed-outline boxes (gates) can stop right here if verification fails — before any research cost is spent.</span></div>
+        </div>
+
+        <div class="flow-block" id="flow-b">
+          <div class="flow-title"><span class="flow-badge">1</span><span data-vi>4 nhóm nghiên cứu song song</span><span data-en>4 parallel research groups</span></div>
+          <div class="flow-svg-wrap">
+            <svg viewBox="0 0 760 250" role="img" aria-label="parallel research flow">
+              <defs><marker id="fb-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--sub)"/></marker></defs>
+              <path class="flow-edge" d="M120,125 C170,125 170,35 220,35" marker-end="url(#fb-arrow)"/>
+              <path class="flow-edge" d="M120,125 C170,125 170,113 220,113" marker-end="url(#fb-arrow)"/>
+              <path class="flow-edge" d="M120,125 C170,125 170,191 220,191" marker-end="url(#fb-arrow)"/>
+              <path class="flow-edge" d="M120,125 C170,125 170,113 220,113" marker-end="url(#fb-arrow)"/>
+              <path class="flow-edge" d="M360,35 C450,35 450,125 500,125" marker-end="url(#fb-arrow)"/>
+              <path class="flow-edge" d="M360,113 C450,113 450,125 500,125" marker-end="url(#fb-arrow)"/>
+              <path class="flow-edge" d="M360,191 C450,191 450,125 500,125" marker-end="url(#fb-arrow)"/>
+              <g class="flow-node pass"><rect x="10" y="105" width="110" height="40" rx="9"/><text x="65" y="129" text-anchor="middle" style="font-size:10px">Phase 0.9 done</text></g>
+              <g class="flow-node"><rect x="220" y="15" width="140" height="40" rx="9"/><text x="290" y="39" text-anchor="middle">Group A</text></g>
+              <text class="flow-cap" x="290" y="8" text-anchor="middle">due-diligence</text>
+              <g class="flow-node"><rect x="220" y="93" width="140" height="40" rx="9"/><text x="290" y="117" text-anchor="middle">Group B</text></g>
+              <text class="flow-cap" x="290" y="150" text-anchor="middle">operations</text>
+              <g class="flow-node"><rect x="220" y="171" width="140" height="40" rx="9"/><text x="290" y="195" text-anchor="middle">Group C</text></g>
+              <text class="flow-cap" x="290" y="228" text-anchor="middle"><tspan data-vi>tăng trưởng</tspan><tspan data-en>growth</tspan></text>
+              <g class="flow-node optional"><rect x="220" y="211" width="140" height="0" rx="9"/></g>
+              <g class="flow-node pass"><rect x="500" y="105" width="150" height="40" rx="9"/><text x="575" y="129" text-anchor="middle" style="font-size:10px">Phase 2 (front matter)</text></g>
+            </svg>
+          </div>
+          <div class="flow-note"><span data-vi>Group D (tools/documents) cũng chạy song song cùng lúc, không vẽ riêng ở đây để đỡ rối — xem đầy đủ 4 nhóm ở mục <a href="#tools">Danh sách skill</a>.</span><span data-en>Group D (tools/documents) also runs in the same parallel batch, omitted here to keep the diagram readable — see all 4 groups in <a href="#tools">List of skills</a>.</span></div>
+        </div>
+
+        <div class="flow-block" id="flow-c">
+          <div class="flow-title"><span class="flow-badge">2.5 → 4</span><span data-vi>Kiểm chứng → Ghép → Kiểm tra cuối</span><span data-en>Audit → Assemble → Final checks</span></div>
+          <div class="flow-svg-wrap">
+            <svg viewBox="0 0 900 118" role="img" aria-label="audit to final flow">
+              <defs>
+                <marker id="fc-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--sub)"/></marker>
+                <marker id="fc-refuse" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--red,#c85c4a)"/></marker>
+              </defs>
+              <path class="flow-edge" d="M170,33 L186,33" marker-end="url(#fc-arrow)"/>
+              <path class="flow-edge refuse-edge" d="M85,56 L85,92" marker-end="url(#fc-refuse)"/>
+              <path class="flow-edge" d="M346,33 L362,33" marker-end="url(#fc-arrow)"/>
+              <path class="flow-edge" d="M522,33 L538,33" marker-end="url(#fc-arrow)"/>
+              <path class="flow-edge refuse-edge" d="M613,56 L613,92" marker-end="url(#fc-refuse)"/>
+              <path class="flow-edge" d="M698,33 L714,33" marker-end="url(#fc-arrow)"/>
+              <g class="flow-node gate"><rect x="8" y="10" width="154" height="46" rx="10"/><text x="85" y="30" text-anchor="middle" style="font-size:10px">2.5 source-</text><text x="85" y="44" text-anchor="middle" style="font-size:10px">auditor</text></g>
+              <g class="flow-node"><rect x="186" y="10" width="160" height="46" rx="10"/><text x="266" y="30" text-anchor="middle" style="font-size:10px">2.6 chart-data-</text><text x="266" y="44" text-anchor="middle" style="font-size:10px">analyst</text></g>
+              <g class="flow-node"><rect x="362" y="10" width="160" height="46" rx="10"/><text x="442" y="30" text-anchor="middle" style="font-size:10px">3 assembler</text></g>
+              <g class="flow-node gate"><rect x="538" y="10" width="160" height="46" rx="10"/><text x="618" y="30" text-anchor="middle" style="font-size:10px">4a mechanical-</text><text x="618" y="44" text-anchor="middle" style="font-size:10px">validator</text></g>
+              <g class="flow-node pass"><rect x="714" y="10" width="178" height="46" rx="10"/><text x="803" y="30" text-anchor="middle" style="font-size:10px">4b judgment-</text><text x="803" y="44" text-anchor="middle" style="font-size:10px">reviewer → file</text></g>
+              <g class="flow-node refuse"><rect x="8" y="92" width="154" height="26" rx="13"/><text x="85" y="110" text-anchor="middle" style="font-size:9.5px">back to owning agent</text></g>
+              <g class="flow-node refuse"><rect x="538" y="92" width="160" height="26" rx="13"/><text x="618" y="110" text-anchor="middle" style="font-size:9.5px">fix &amp; re-validate</text></g>
+            </svg>
+          </div>
+          <div class="flow-note"><span data-vi>2 gate ở đây (viền cam đứt) đều có thể đẩy công việc quay lại — không có bước nào "cho qua vì đang trễ".</span><span data-en>Both gates here (dashed orange outline) can send work backward — nothing gets waved through just because it's running late.</span></div>
+        </div>
+      </section>
+
+      <section id="usage" data-nav="usage">
+        <div class="breadcrumb"><span data-vi>Tham khảo</span><span data-en>Reference</span></div>
+        <h2><span data-vi>Cách dùng thật — gõ y vậy là được</span><span data-en>Real usage — type this as-is</span></h2>
+        <p class="lead"><span data-vi>4 tình huống hay gặp nhất, kèm câu bạn gõ, việc agent tự làm, và kết quả trả về.</span><span data-en>The 4 most common situations, with what you type, what the agent does, and what comes back.</span></p>
+        <div class="convo-grid">
+
+          <div class="convo" id="case-1">
+            <h4><span class="num">1</span><span data-vi>Chạy toàn bộ pipeline cho khách mới</span><span data-en>Run the full pipeline for a new client</span></h4>
+            <div class="turn you"><span class="role" data-vi>Bạn gõ</span><span class="role" data-en>You type</span><span data-vi>"Làm sales proposal cho JR-Tech Solution Sdn Bhd, website jrtech.com.my"</span><span data-en>"Build a sales proposal for JR-Tech Solution Sdn Bhd, website jrtech.com.my"</span></div>
+            <div class="turn agent"><span class="role" data-vi>Agent tự làm</span><span class="role" data-en>Agent does</span><span data-vi>Hỏi có ghi chú họp không → <code>company-verifier</code> → toàn bộ 15 bước tự chạy, báo lại sau mỗi phase</span><span data-en>Asks for meeting notes → <code>company-verifier</code> → all 15 steps run themselves, reporting back after each phase</span></div>
+            <div class="turn result"><span class="role" data-vi>Kết quả</span><span class="role" data-en>Result</span>jrtech-proposal.html
+jrtech-findings.json
+jrtech-cost-report.csv</div>
+          </div>
+
+          <div class="convo" id="case-2">
+            <h4><span class="num">2</span><span data-vi>Chỉ muốn chạy lại 1 phần</span><span data-en>Only re-run one part</span></h4>
+            <div class="turn you"><span class="role" data-vi>Bạn gõ</span><span class="role" data-en>You type</span><span data-vi>"Chỉ chạy lại nhóm B (vận hành) cho JR-Tech thôi, phần khác giữ nguyên"</span><span data-en>"Just re-run Group B (operations) for JR-Tech, keep everything else as-is"</span></div>
+            <div class="turn agent"><span class="role" data-vi>Agent tự làm</span><span class="role" data-en>Agent does</span><span data-vi><code>checkpoint-manager</code> đọc <code>checkpoint.json</code>, thấy A/C/D đã <code>done</code> → chỉ dispatch lại nhóm B</span><span data-en><code>checkpoint-manager</code> reads <code>checkpoint.json</code>, sees A/C/D already <code>done</code> → only re-dispatches Group B</span></div>
+            <div class="turn result"><span class="role" data-vi>Kết quả</span><span class="role" data-en>Result</span>phase1_groupB: done (re-run)
+phase1_groupA/C/D: unchanged</div>
+          </div>
+
+          <div class="convo" id="case-3">
+            <h4><span class="num">3</span><span data-vi>Có ghi chú họp thật</span><span data-en>Have real meeting notes</span></h4>
+            <div class="turn you"><span class="role" data-vi>Bạn gõ</span><span class="role" data-en>You type</span><span data-vi>Dán transcript buổi họp vào chat cùng lúc với tên công ty</span><span data-en>Paste the meeting transcript into chat along with the company name</span></div>
+            <div class="turn agent"><span class="role" data-vi>Agent tự làm</span><span class="role" data-en>Agent does</span><span data-vi>Đánh dấu mọi thông tin từ ghi chú này là <code>Confirmed</code> — cao hơn bất kỳ thông tin tự tìm trên mạng</span><span data-en>Tags everything from these notes as <code>Confirmed</code> — trusted higher than anything found on the web</span></div>
+            <div class="turn result"><span class="role" data-vi>Kết quả</span><span class="role" data-en>Result</span><span data-vi>Mọi fact từ họp có badge riêng, không bị hạ xuống .assess</span><span data-en>Every meeting fact carries its own badge, never downgraded to .assess</span></div>
+          </div>
+
+          <div class="convo" id="case-4">
+            <h4><span class="num">4</span><span data-vi>Muốn biết chi phí thật</span><span data-en>Want the real cost</span></h4>
+            <div class="turn you"><span class="role" data-vi>Bạn gõ</span><span class="role" data-en>You type</span><span data-vi>"Chạy xong Phase 1 Group A tốn bao nhiêu?"</span><span data-en>"How much did Phase 1 Group A cost?"</span></div>
+            <div class="turn agent"><span class="role" data-vi>Agent tự làm</span><span class="role" data-en>Agent does</span><span data-vi>Chạy <code>ccusage_to_csv.py --task "phase1_groupA"</code> — khớp đúng <code>session_id</code> đã ghi, không đoán theo giờ</span><span data-en>Runs <code>ccusage_to_csv.py --task "phase1_groupA"</code> — matches the exact recorded <code>session_id</code>, no timestamp guessing</span></div>
+            <div class="turn result"><span class="role" data-vi>Kết quả</span><span class="role" data-en>Result</span>=== phase1_groupA (25m00s) ===
+claude-haiku-4-5: $0.44
+TỔNG: $0.44</div>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="files" data-nav="files">
+        <div class="breadcrumb"><span data-vi>Tham khảo</span><span data-en>Reference</span></div>
+        <h2><span data-vi>File bạn nhận được</span><span data-en>Files you get</span></h2>
+        <table class="filetbl">
+          <thead><tr><th><span data-vi>File</span><span data-en>File</span></th><th><span data-vi>Dùng để làm gì</span><span data-en>What it's for</span></th></tr></thead>
+          <tbody>
+            <tr><td><code>&lt;slug&gt;-proposal.html</code></td><td><span data-vi>Bản đề xuất hoàn chỉnh — gửi trực tiếp cho khách.</span><span data-en>The finished proposal — send straight to the client.</span></td></tr>
+            <tr><td><code>&lt;slug&gt;-findings.json</code></td><td><span data-vi>Mọi nguồn trích dẫn — dùng khi cần trả lời "số này lấy từ đâu?"</span><span data-en>Every citation's source — for "where did this come from?"</span></td></tr>
+            <tr><td><code>&lt;slug&gt;-cost-report.csv</code></td><td><span data-vi>Chi phí thật, tách theo từng task.</span><span data-en>Real cost, broken down per task.</span></td></tr>
+            <tr><td><code>&lt;slug&gt;-checkpoint.json</code></td><td><span data-vi>Lịch sử đã chạy tới đâu — resume được nếu bị ngắt.</span><span data-en>History of how far it got — resumable if interrupted.</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="troubleshooting" data-nav="troubleshooting">
+        <div class="breadcrumb"><span data-vi>Tham khảo</span><span data-en>Reference</span></div>
+        <h2><span data-vi>Lưu ý &amp; sự cố có thể xảy ra</span><span data-en>Notes &amp; possible issues</span></h2>
+        <div class="tips4">
+          <div class="tip-card" id="issue-1">
+            <h4><span data-vi>1. 1 section báo "mỏng/không xác thực"</span><span data-en>1. A section is flagged thin/unverifiable</span></h4>
+            <div class="badrow"><span class="x" data-vi>Nguyên nhân</span><span class="x" data-en>Cause</span> <span data-vi>Khách hàng thật sự ít hiện diện công khai — không phải lỗi</span><span data-en>The client genuinely has little public footprint — not a bug</span></div>
+            <div class="okrow"><span class="v" data-vi>Xử lý</span><span class="v" data-en>Fix</span> <span data-vi>Đây là thông tin thật, cứ để nguyên và giao hàng kèm ghi chú đó</span><span data-en>This is real information — keep it and deliver with that note intact</span></div>
+          </div>
+          <div class="tip-card" id="issue-2">
+            <h4><span data-vi>2. Chi phí "$40" bất thường xuất hiện</span><span data-en>2. A surprising "$40" cost appears</span></h4>
+            <div class="badrow"><span class="x" data-vi>Nguyên nhân</span><span class="x" data-en>Cause</span> <span data-vi>Model không phải Claude (vd deepseek/gpt) xuất hiện trong 1 session gắn "claude"</span><span data-en>A non-Claude model (e.g. deepseek/gpt) shows up inside a session tagged "claude"</span></div>
+            <div class="okrow"><span class="v" data-vi>Xử lý</span><span class="v" data-en>Fix</span> <span data-vi>Đây là bug trộn provider thật — kiểm tra thủ công trước khi báo giá cho khách</span><span data-en>This is a real provider-mixing bug — verify manually before quoting the client</span></div>
+          </div>
+          <div class="tip-card" id="issue-3">
+            <h4><span data-vi>3. Pipeline dừng ở "blocking_issues"</span><span data-en>3. Pipeline stops at "blocking_issues"</span></h4>
+            <div class="badrow"><span class="x" data-vi>Nguyên nhân</span><span class="x" data-en>Cause</span> <span data-vi><code>source-auditor</code> tìm thấy trích dẫn sai/không xác thực được</span><span data-en><code>source-auditor</code> found a wrong/unverifiable citation</span></div>
+            <div class="okrow"><span class="v" data-vi>Xử lý</span><span class="v" data-en>Fix</span> <span data-vi>Đây là gate hoạt động đúng — đợi agent liên quan sửa lại, không tự ép cho qua</span><span data-en>This is the gate working correctly — wait for the owning agent to fix it, don't force it through</span></div>
+          </div>
+          <div class="tip-card" id="issue-4">
+            <h4><span data-vi>4. File giao ra vẫn dùng CDN/Mermaid cũ</span><span data-en>4. Delivered file still uses old CDN/Mermaid</span></h4>
+            <div class="badrow"><span class="x" data-vi>Nguyên nhân</span><span class="x" data-en>Cause</span> <span data-vi>File được dựng từ bản template cũ, trước khi template được sửa</span><span data-en>The file was built from an old template copy, before the template was fixed</span></div>
+            <div class="okrow"><span class="v" data-vi>Xử lý</span><span class="v" data-en>Fix</span> <span data-vi>Chạy lại Phase 3 (assembler) để dựng lại từ template mới nhất</span><span data-en>Re-run Phase 3 (assembler) to rebuild from the latest template</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="closing" data-nav="closing">
+        <div class="closing">
+          <p class="big"><span data-vi>Không cần nhớ hết 15 bước,</span><span data-en>You don't need to memorize all 15 steps —</span></p>
+          <p class="quote"><span data-vi>chỉ cần đưa tên công ty + bất kỳ thông tin gì bạn có.</span><span data-en>just give it the company name + whatever you have.</span></p>
+          <p class="quote" style="margin-top:14px">
+            <span data-vi>Skill tự nghiên cứu, tự kiểm chứng, tự viết —<br>và tự dừng lại nếu dữ liệu chưa đủ tin, chứ không bao giờ "cho qua vì đang trễ".</span>
+            <span data-en>The skill researches, verifies, and writes itself —<br>and stops itself if the data isn't trustworthy enough, never waving it through just because it's running late.</span>
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+    <aside class="side-right">
+      <div class="toc-label"><span data-vi>Trên trang này</span><span data-en>On this page</span></div>
+
+      <div class="toc-group" data-for="overview">
+        <ul>
+          <li><a href="#key-concepts" data-toc-link><span data-vi>Khái niệm chính</span><span data-en>Key concepts</span></a></li>
+          <li><a href="#before-you-start" data-toc-link><span data-vi>Trước khi dùng</span><span data-en>Before you start</span></a></li>
+          <li><a href="#situations" data-toc-link><span data-vi>4 tình huống</span><span data-en>4 situations</span></a></li>
+        </ul>
+      </div>
+      <div class="toc-group" data-for="numbers">
+        <div class="toc-empty"><span data-vi>2 chart số liệu</span><span data-en>2 data charts</span></div>
+      </div>
+      <div class="toc-group" data-for="quick-start">
+        <ul>
+          <li><a href="#step-1" data-toc-link><span data-vi>Bước 1</span><span data-en>Step 1</span></a></li>
+          <li><a href="#step-2" data-toc-link><span data-vi>Bước 2</span><span data-en>Step 2</span></a></li>
+          <li><a href="#step-3" data-toc-link><span data-vi>Bước 3</span><span data-en>Step 3</span></a></li>
+        </ul>
+      </div>
+      <div class="toc-group" data-for="tools">
+        <ul><li><a href="#tools" data-toc-link><span data-vi>Danh sách skill</span><span data-en>List of skills</span></a></li></ul>
+      </div>
+      <div class="toc-group" data-for="workflow">
+        <ul>
+          <li><a href="#flow-a" data-toc-link><span data-vi>0 → 0.9 Chuẩn bị</span><span data-en>0 → 0.9 Setup</span></a></li>
+          <li><a href="#flow-b" data-toc-link><span data-vi>1 Nghiên cứu song song</span><span data-en>1 Parallel research</span></a></li>
+          <li><a href="#flow-c" data-toc-link><span data-vi>2.5 → 4 Kiểm chứng → cuối</span><span data-en>2.5 → 4 Audit → final</span></a></li>
+        </ul>
+      </div>
+      <div class="toc-group" data-for="usage">
+        <ul>
+          <li><a href="#case-1" data-toc-link><span data-vi>Case 1 — chạy hết</span><span data-en>Case 1 — run all</span></a></li>
+          <li><a href="#case-2" data-toc-link><span data-vi>Case 2 — resume</span><span data-en>Case 2 — resume</span></a></li>
+          <li><a href="#case-3" data-toc-link><span data-vi>Case 3 — ghi chú họp</span><span data-en>Case 3 — meeting notes</span></a></li>
+          <li><a href="#case-4" data-toc-link><span data-vi>Case 4 — chi phí</span><span data-en>Case 4 — cost</span></a></li>
+        </ul>
+      </div>
+      <div class="toc-group" data-for="troubleshooting">
+        <ul>
+          <li><a href="#issue-1" data-toc-link><span data-vi>1. Section mỏng</span><span data-en>1. Thin section</span></a></li>
+          <li><a href="#issue-2" data-toc-link><span data-vi>2. Chi phí lạ</span><span data-en>2. Odd cost</span></a></li>
+          <li><a href="#issue-3" data-toc-link><span data-vi>3. Blocking issue</span><span data-en>3. Blocking issue</span></a></li>
+          <li><a href="#issue-4" data-toc-link><span data-vi>4. CDN cũ</span><span data-en>4. Old CDN</span></a></li>
+        </ul>
+      </div>
+      <div class="toc-group" data-for="closing">
+        <div class="toc-empty"><span data-vi>Hết trang</span><span data-en>End of page</span></div>
+      </div>
+
+    </aside>
+
+  </div>
+
+<script>
+function setLang(lang){
+  document.documentElement.setAttribute('data-lang', lang);
+  document.getElementById('btn-vi').classList.toggle('active', lang==='vi');
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  try{ localStorage.setItem('sp-docs-lang', lang); }catch(e){}
+}
+(function(){
+  var saved = 'vi';
+  try{ saved = localStorage.getItem('sp-docs-lang') || 'vi'; }catch(e){}
+  setLang(saved);
+})();
+
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main.doc-main > section[data-nav]'));
+  var navLinks = document.querySelectorAll('[data-nav-link]');
+  var tocGroups = document.querySelectorAll('.toc-group');
+
+  function setActive(id){
+    navLinks.forEach(function(a){ a.classList.toggle('active', a.getAttribute('data-nav-link') === id); });
+    tocGroups.forEach(function(g){ g.classList.toggle('active', g.getAttribute('data-for') === id); });
+  }
+
+  if ('IntersectionObserver' in window){
+    var observer = new IntersectionObserver(function(entries){
+      var visible = entries.filter(function(e){ return e.isIntersecting; });
+      if (visible.length){
+        visible.sort(function(a,b){ return a.boundingClientRect.top - b.boundingClientRect.top; });
+        setActive(visible[0].target.getAttribute('data-nav'));
+      }
+    }, { rootMargin: '-70px 0px -70% 0px', threshold: 0 });
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+
+  setActive('overview');
+
+  document.querySelectorAll('[data-toc-link]').forEach(function(a){
+    a.addEventListener('click', function(){
+      document.querySelectorAll('[data-toc-link]').forEach(function(x){ x.classList.remove('active'); });
+      a.classList.add('active');
+    });
+  });
+})();
+
+(function(){
+  if (typeof Chart === 'undefined') return;
+  var ink = '#3a3a3a', sub = '#8a7f74', orange = '#19a3a3', red = '#c85c4a';
+  Chart.defaults.color = sub;
+  Chart.defaults.font.family = "'Inter',-apple-system,sans-serif";
+
+  var elTime = document.getElementById('cTime');
+  if (elTime){
+    new Chart(elTime, {
+      type: 'bar',
+      data: {
+        labels: [
+          [document.documentElement.getAttribute('data-lang')==='en' ? 'Before' : 'Trước', '(--from-cache)'],
+          [document.documentElement.getAttribute('data-lang')==='en' ? 'After' : 'Sau', '(--from-cache)']
+        ],
+        datasets: [{
+          label: 'seconds',
+          data: [1050, 4],
+          backgroundColor: [red, orange],
+          borderRadius: 8,
+          maxBarThickness: 70
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: 'seconds (log-ish scale by value)' }, grid: { color: '#e3ceb8' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  var elOwn = document.getElementById('cOwn');
+  if (elOwn){
+    new Chart(elOwn, {
+      type: 'doughnut',
+      data: {
+        labels: ['Group A', 'Group B', 'Group C', 'Group D'],
+        datasets: [{
+          data: [12, 3, 1, 0].map(function(n){ return n || 0.001; }),
+          backgroundColor: ['#19a3a3', '#5b7fa6', '#c8853c', '#e3ceb8'],
+          borderColor: '#fffaf3',
+          borderWidth: 3
+        }]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 14 } } },
+        cutout: '62%'
+      }
+    });
+  }
+})();
+</script>

@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light" data-lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Review — Tools Summary &amp; Digital-Web vs full1 sample</title>
+<style>
+:root{
+  --bg:#fbf3ea; --panel:#fffaf3; --panel2:#f2e9dd; --line:#e3ceb8;
+  --ink:#3a3a3a; --ink2:#5c5147; --muted:#8a7f74;
+  --accent:#e8734a; --amber:#c8853c; --red:#c85c4a; --green:#5a8f6b; --blue:#3f6fa8;
+  --radius:12px;
+}
+:root[data-theme="dark"]{
+  --bg:#1c1712; --panel:#241d17; --panel2:#2e251d; --line:#4a3c30;
+  --ink:#ece6dc; --ink2:#c2b9ac; --muted:#a89a89;
+  --accent:#f08a5f; --amber:#e0ac6b; --red:#e08072; --green:#7bbf8e; --blue:#8ab4e6;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6}
+a{color:var(--accent)}
+#navfab{position:fixed;top:14px;left:14px;z-index:100000;background:transparent;color:var(--accent);border:none;border-radius:10px;width:36px;height:36px;font-size:1.15rem;cursor:pointer;transition:background .15s}
+#navfab:hover{background:rgba(128,128,128,.15)}
+.side{position:fixed;top:0;left:0;bottom:0;width:82vw;max-width:290px;background:#241d17;color:#ece6dc;padding:64px 22px 24px;z-index:99998;transform:translateX(-105%);transition:transform .25s ease;overflow-y:auto;box-shadow:0 0 40px rgba(0,0,0,.4)}
+body.nav-open .side{transform:none}
+#scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:99997;opacity:0;pointer-events:none;transition:opacity .25s}
+body.nav-open #scrim{opacity:1;pointer-events:auto}
+.side .brand{font-weight:800;letter-spacing:.01em;margin-bottom:18px}
+.side a.backlink{display:block;color:#ece6dc;opacity:.85;text-decoration:none;font-size:.86rem;padding:7px 0}
+.side a.backlink:hover{opacity:1;color:var(--accent)}
+.side .grp-label{color:#a89a89;font-size:.66rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin:22px 0 8px}
+.side nav a{display:block;color:#ece6dc;opacity:.82;text-decoration:none;font-size:.84rem;padding:6px 0}
+.side nav a:hover{opacity:1;color:var(--accent)}
+.pill-toggle{display:inline-flex;border:2px solid #4a3c30;border-radius:999px;overflow:hidden;background:#2e251d}
+.pill-toggle button{border:none;background:transparent;color:#a89a89;font-weight:700;font-size:.78rem;padding:6px 14px;cursor:pointer;letter-spacing:.03em}
+.pill-toggle button.active{background:var(--accent);color:#fff}
+.wrap{max-width:1040px;margin:0 auto;padding:56px 20px 80px}
+.eyebrow{color:var(--accent);font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+h1{font-size:clamp(1.5rem,3vw,2.05rem);line-height:1.2;margin:0 0 10px;letter-spacing:-.01em}
+h2{font-size:1.22rem;margin:2.2em 0 .5em;padding-bottom:8px;border-bottom:1px solid var(--line)}
+h3{font-size:1rem;margin:1.6em 0 .4em}
+p{margin:0 0 1em;color:var(--ink2)}
+.lead{color:var(--ink2);font-size:1.02rem}
+.sub{color:var(--muted);font-size:.86rem}
+code{background:var(--panel2);padding:.1em .4em;border-radius:6px;font-size:.85em;color:var(--accent)}
+.meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:22px 0 6px}
+.meta div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.84rem}
+.meta b{display:block;color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:3px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:26px 0}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 14px;position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent)}
+.kpi .num{font-size:1.75rem;font-weight:900;letter-spacing:-.02em;line-height:1.1}
+.kpi .lbl{color:var(--ink2);font-size:.82rem;margin-top:4px}
+.kpi .sm{color:var(--muted);font-size:.72rem;margin-top:3px}
+/* ---- table standard: same convention as the full1 sample ---- */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin:16px 0 26px}
+.tbl{width:100%;border-collapse:collapse;font-size:.86rem;margin:0}
+.tbl th,.tbl td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl th{color:var(--accent);text-transform:uppercase;letter-spacing:.06em;font-size:.7rem;font-weight:800;background:var(--panel2);white-space:nowrap}
+.tbl tbody td{color:var(--ink2)}
+.tbl tbody td:first-child{color:var(--ink);font-weight:700}
+.tbl tbody tr:hover td{background:var(--panel2)}
+.tbl tbody tr:nth-child(even) td{background:rgba(128,128,128,.045)}
+.tbl tbody tr:last-child td{border-bottom:none}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.72rem;font-weight:700;white-space:nowrap}
+.p-green{background:rgba(90,143,107,.16);color:var(--green)}
+.p-amber{background:rgba(200,133,60,.18);color:var(--amber)}
+.p-red{background:rgba(200,92,74,.16);color:var(--red)}
+.p-blue{background:rgba(63,111,168,.16);color:var(--blue)}
+.p-grey{background:var(--panel2);color:var(--muted)}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:.82em}
+.box{border:1px solid var(--line);border-left:4px solid var(--accent);background:var(--panel2);padding:16px 20px;border-radius:8px;margin:24px 0}
+.box h3{margin:0 0 8px}
+.box p:last-child{margin-bottom:0}
+.foot{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.78rem}
+@media(max-width:820px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.meta{grid-template-columns:1fr}}
+@media(max-width:520px){.kpis{grid-template-columns:1fr}.wrap{padding:44px 16px 70px}}
+html[data-lang="vi"] [data-en]{display:none}
+html[data-lang="en"] [data-vi]{display:none}
+</style>
+</head>
+<body>
+<button id="navfab" onclick="document.body.classList.toggle('nav-open')" aria-label="Toggle menu">☰</button>
+<div id="scrim" onclick="document.body.classList.remove('nav-open')"></div>
+<aside class="side">
+  <div class="brand">technext-sales-proposal</div>
+  <a class="backlink" href="../index.html">← Dashboard</a>
+  <a class="backlink" href="sales-proposal-pipeline-workflow.html">→ Pipeline diagram &amp; tool decisions</a>
+  <a class="backlink" href="sales-proposal-docs.html">→ Skill docs</a>
+  <div class="grp-label">Language</div>
+  <div class="pill-toggle">
+    <button id="btn-vi" class="active" onclick="setLang('vi')">VI</button>
+    <button id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+  <div class="grp-label">Theme</div>
+  <div class="pill-toggle">
+    <button id="btn-light" class="active" onclick="setTheme('light')">☼ Light</button>
+    <button id="btn-dark" onclick="setTheme('dark')">☾ Dark</button>
+  </div>
+  <div class="grp-label">Nội dung · Contents</div>
+  <nav>
+    <a href="#s0">0 · <span data-vi>Bảng gốc</span><span data-en>Source tables</span></a>
+    <a href="#s1">1 · <span data-vi>Tóm tắt điều hành</span><span data-en>Executive summary</span></a>
+    <a href="#s2">2 · <span data-vi>Phạm vi & phương pháp</span><span data-en>Scope & method</span></a>
+    <a href="#s3">3 · <span data-vi>Chuẩn mẫu full1</span><span data-en>The full1 standard</span></a>
+    <a href="#s4">4 · <span data-vi>Đối chiếu tiêu chí</span><span data-en>Criteria comparison</span></a>
+    <a href="#s5">5 · <span data-vi>Phát hiện chi tiết</span><span data-en>Detailed findings</span></a>
+    <a href="#s6">6 · <span data-vi>Khuyến nghị</span><span data-en>Recommendations</span></a>
+    <a href="#s9">9 · <span data-vi>3 bản proposal thật (Digital &amp; Web)</span><span data-en>3 real proposals (Digital &amp; Web)</span></a>
+    <a href="#s10">10 · <span data-vi>Chi phí các lần chạy thật</span><span data-en>Real per-run cost report</span></a>
+    <a href="#s7">7 · <span data-vi>Kết luận</span><span data-en>Conclusion</span></a>
+    <a href="#s8">8 · <span data-vi>Nguồn kiểm chứng</span><span data-en>Evidence</span></a>
+  </nav>
+</aside>
+
+<div class="wrap">
+  <div class="eyebrow">● <span data-vi>Báo cáo đánh giá nội bộ</span><span data-en>Internal review report</span></div>
+  <h1>
+    <span data-vi>Đánh giá tài liệu &amp; đầu ra thật so với chuẩn mẫu full1</span>
+    <span data-en>Review of documentation &amp; real output against the full1 sample</span>
+  </h1>
+  <p class="lead">
+    <span data-vi>Gộp 2 review: <b>(A)</b> 3 bảng trong <code>report/tools-summary.html</code> so với <code>full1/#web</code>, và <b>(B)</b> section &ldquo;Digital &amp; Web Presence&rdquo; của <b>3 bản proposal thật</b> (casa-escondida, jrtech, kitchen-arena trong <code>_runs/</code>) so với chính section <code>#web</code> đó. Kết luận chung: <b>nội dung đúng và kiểm chứng được ở cả hai phía</b>, phần A còn thiếu lớp trình bày trực quan, phần B phát hiện <b>1 lỗi encoding thật</b> cần sửa trước khi giao khách.</span>
+    <span data-en>Merges 2 reviews: <b>(A)</b> the 3 tables in <code>report/tools-summary.html</code> against <code>full1/#web</code>, and <b>(B)</b> the &ldquo;Digital &amp; Web Presence&rdquo; section of <b>3 real proposal outputs</b> (casa-escondida, jrtech, kitchen-arena in <code>_runs/</code>) against that same <code>#web</code> section. Combined verdict: <b>content is accurate and verifiable on both sides</b>; part A still lacks a visual presentation layer, part B found <b>1 real encoding bug</b> to fix before client delivery.</span>
+  </p>
+
+  <div class="meta">
+    <div><b><span data-vi>Người thực hiện</span><span data-en>Prepared by</span></b>Nguyễn Thành Trung · TechNext Asia</div>
+    <div><b><span data-vi>Ngày</span><span data-en>Date</span></b>2026-09-24</div>
+    <div><b><span data-vi>Đối tượng so sánh</span><span data-en>Objects compared</span></b><span data-vi>3 bảng Tool (T1/T2/T3) + 3 bản proposal thật ⟷ mục Web audit của full1</span><span data-en>3 Tool tables (T1/T2/T3) + 3 real proposals ⟷ full1 Web audit section</span></div>
+    <div><b><span data-vi>Trạng thái</span><span data-en>Status</span></b><span data-vi>Nội dung ĐẠT · Trình bày CHƯA ĐẠT chuẩn mẫu</span><span data-en>Content PASS · Presentation NOT at sample standard</span></div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="num">3</div><div class="lbl"><span data-vi>Bảng được đánh giá</span><span data-en>Tables reviewed</span></div><div class="sm"><span data-vi>17 hàng dữ liệu · tất cả đã kiểm chứng</span><span data-en>17 data rows · all verified</span></div></div>
+    <div class="kpi"><div class="num">0</div><div class="lbl"><span data-vi>Bảng trong mẫu <code>#web</code></span><span data-en>Tables inside sample <code>#web</code></span></div><div class="sm"><span data-vi>Mẫu dùng KPI + chart + sơ đồ, không dùng bảng</span><span data-en>Sample uses KPI + chart + diagram, not a table</span></div></div>
+    <div class="kpi"><div class="num">23</div><div class="lbl"><span data-vi>Bảng <code>.tbl</code> trong full1</span><span data-en><code>.tbl</code> tables in full1</span></div><div class="sm"><span data-vi>Đây mới là chuẩn bảng thật của mẫu</span><span data-en>This is the sample&rsquo;s real table standard</span></div></div>
+    <div class="kpi"><div class="num">5/9</div><div class="lbl"><span data-vi>Tiêu chí chưa đạt</span><span data-en>Criteria not met</span></div><div class="sm"><span data-vi>2 đạt một phần · 2 đạt/vượt</span><span data-en>2 partial · 2 met or exceeded</span></div></div>
+  </div>
+
+  <h2 id="s0">0 · <span data-vi>Bảng gốc — Tools Summary</span><span data-en>Source tables — Tools Summary</span></h2>
+  <p class="sub"><span data-vi>Dữ liệu gốc của 3 bảng đang được đánh giá ở các mục dưới đây. Dòng chi phí đã được sửa theo khuyến nghị F1 (tách chi phí tool $0 khỏi chi phí token thật $3,83).</span><span data-en>The source data for the 3 tables reviewed below. The cost row has been fixed per recommendation F1 (splitting $0 tool cost from the real $3.83 token cost).</span></p>
+<h2><span data-vi>Bảng 1 — Tool đang dùng thật</span><span data-en>Table 1 — Tools actually in use</span></h2>
+  <p class="tbl-sub"><span data-vi>Tất cả đã tích hợp vào code + test chạy thật, không phải kế hoạch.</span><span data-en>All wired into real code + tested working, not just planned.</span></p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr>
+      <th><span data-vi>Tool</span><span data-en>Tool</span></th>
+      <th><span data-vi>Dùng ở đâu</span><span data-en>Used in</span></th>
+      <th><span data-vi>Làm gì</span><span data-en>Does what</span></th>
+      <th><span data-vi>Chi phí</span><span data-en>Cost</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td>GLEIF</td><td>company-verifier</td><td><span data-vi>Xác thực pháp nhân công ty (tên, quốc gia, tình trạng hoạt động)</span><span data-en>Verifies company legal entity (name, country, active status)</span></td><td><span class="pill p-green"><span data-vi>Miễn phí</span><span data-en>FREE</span></span></td></tr>
+      <tr><td>Wikidata</td><td>company-verifier</td><td><span data-vi>Bổ sung năm thành lập/founder mà GLEIF không có</span><span data-en>Supplements founding year/founders GLEIF doesn't carry</span></td><td><span class="pill p-green"><span data-vi>Miễn phí</span><span data-en>FREE</span></span></td></tr>
+      <tr><td>Jina Reader</td><td>web-osint-scanner</td><td><span data-vi>Đọc nội dung website khách hàng, trích xuất link mạng xã hội/review</span><span data-en>Reads client website content, extracts social/review links</span></td><td><span class="pill p-green"><span data-vi>Miễn phí</span><span data-en>FREE</span></span></td></tr>
+      <tr><td>Companies House / OpenCorporates / SEC EDGAR</td><td>officers-lookup</td><td><span data-vi>Tra founder/officer từ đăng ký doanh nghiệp chính thức theo quốc gia</span><span data-en>Looks up founders/officers from official business registries, country-routed</span></td><td><span class="pill p-green"><span data-vi>Miễn phí</span><span data-en>FREE</span></span></td></tr>
+      <tr><td>bind_check.py <span style="font-weight:400;color:var(--muted)">(<span data-vi>tự viết</span><span data-en>self-written</span>)</span></td><td>source-auditor</td><td><span data-vi>Kiểm tra trích dẫn có thật khớp với nguồn không, qua Jina Reader</span><span data-en>Checks that citations really match their source, via Jina Reader</span></td><td><span class="pill p-green"><span data-vi>Miễn phí</span><span data-en>FREE</span></span></td></tr>
+      <tr><td>BeautifulSoup4 + html5lib</td><td>mechanical-validator</td><td><span data-vi>Bắt lỗi id trùng/section rỗng bằng cách đọc đúng cấu trúc DOM</span><span data-en>Catches duplicate ids/empty sections by reading the real DOM structure</span></td><td><span class="pill p-green"><span data-vi>Miễn phí</span><span data-en>FREE</span></span></td></tr>
+      <tr><td>ccusage</td><td>judgment-reviewer</td><td><span data-vi>Xuất CSV chi phí thật theo từng giai đoạn (token, model, thời gian)</span><span data-en>Exports a real per-phase cost CSV (tokens, model, duration)</span></td><td><span class="pill p-green"><span data-vi>Miễn phí</span><span data-en>FREE</span></span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2><span data-vi>Bảng 2 — Tool đã cân nhắc, không dùng</span><span data-en>Table 2 — Tools evaluated, not adopted</span></h2>
+  <p class="tbl-sub"><span data-vi>Đã tìm hiểu kỹ, có lý do cụ thể tại sao không đưa vào pipeline.</span><span data-en>Researched in depth, with a specific reason each was left out.</span></p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr>
+      <th><span data-vi>Tool</span><span data-en>Tool</span></th>
+      <th><span data-vi>Lý do không dùng</span><span data-en>Why not used</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Firecrawl</td><td><span data-vi>Cần đăng ký + giới hạn credit/tháng — Jina Reader làm được việc tương tự, miễn phí hoàn toàn</span><span data-en>Needs signup + monthly credit cap — Jina Reader does the same job, fully free</span></td></tr>
+      <tr><td>Crawl4AI</td><td><span data-vi>Bị chính sách bảo mật (Application Control) của máy chặn cài đặt — không phải lỗi code</span><span data-en>Blocked by this machine's security policy (Application Control) — not a code bug</span></td></tr>
+      <tr><td>Apollo MCP</td><td><span data-vi>Chỉ mạnh về tìm liên hệ (email/SĐT) — pipeline không cần, chỉ cần tên/chức vụ công khai → dùng officers-lookup thay thế</span><span data-en>Mainly strong at contact-finding (email/phone) — pipeline doesn't need that, only public name/title → replaced by officers-lookup</span></td></tr>
+      <tr><td>Webcite</td><td><span data-vi>Tool trả phí — thay bằng script tự viết <code>bind_check.py</code> làm đúng việc tương tự, miễn phí</span><span data-en>Paid tool — replaced by the self-written <code>bind_check.py</code> doing the same job, free</span></td></tr>
+      <tr><td>Langfuse / Helicone</td><td><span data-vi>Dùng để theo dõi app tự viết gọi API LLM — không áp dụng được cho Claude Code CLI</span><span data-en>Built to track a hand-written app calling an LLM API — doesn't apply to the Claude Code CLI</span></td></tr>
+      <tr><td>SEC EDGAR (dùng riêng)</td><td><span data-vi>Chỉ có công ty đại chúng Mỹ — khách SME hầu như không thuộc nhóm này (vẫn giữ làm nguồn phụ trong officers-lookup)</span><span data-en>Only covers US public companies — SME clients rarely qualify (still kept as a fallback source inside officers-lookup)</span></td></tr>
+      <tr><td>lxml</td><td><span data-vi>Chỉ cần khi tốc độ là vấn đề — 1 file proposal vài trăm KB không cần tối ưu tốc độ</span><span data-en>Only needed when speed matters — a proposal file at a few hundred KB doesn't need the speed boost</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2><span data-vi>Bảng 3 — Tổng hợp chi phí & truy cập</span><span data-en>Table 3 — Cost & access summary</span></h2>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr>
+      <th><span data-vi>Loại</span><span data-en>Category</span></th>
+      <th><span data-vi>Số lượng</span><span data-en>Count</span></th>
+      <th><span data-vi>Chi tiết</span><span data-en>Detail</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td><span data-vi>Tool đang dùng</span><span data-en>Tools in use</span></td><td>7</td><td><span data-vi>Tất cả miễn phí, không cần đăng ký tài khoản (GLEIF/Wikidata/Jina Reader/registries đều gọi trực tiếp qua API công khai)</span><span data-en>All free, no account signup needed (GLEIF/Wikidata/Jina Reader/registries all called directly via public APIs)</span></td></tr>
+      <tr><td><span data-vi>Tool đã cân nhắc, bỏ</span><span data-en>Tools evaluated, dropped</span></td><td>7</td><td><span data-vi>Đều có lý do kỹ thuật/chi phí cụ thể (xem Bảng 2)</span><span data-en>Each has a specific technical/cost reason (see Table 2)</span></td></tr>
+      <tr><td><span data-vi>Chi phí công cụ (tool)</span><span data-en>Tool cost</span></td><td>$0</td><td><span data-vi>Toàn bộ 7 tool bên ngoài đều miễn phí — không tính chi phí token</span><span data-en>All 7 external tools are free — this excludes token cost</span></td></tr>
+      <tr><td><span data-vi>Chi phí token (thật, đo được)</span><span data-en>Token cost (real, measured)</span></td><td>$3,83</td><td><span data-vi>Run Casa Escondida 2026-09-24: điều phối $2,85 + 4 nhóm nghiên cứu $0,98 + 4 worker đối thủ $0,10 (xem F1, mục 5)</span><span data-en>Casa Escondida run, 2026-09-24: orchestrator $2.85 + 4 research groups $0.98 + 4 competitor workers $0.10 (see F1, section 5)</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="summary-box">
+    <h3><span data-vi>Kết luận</span><span data-en>Bottom line</span></h3>
+    <p><span data-vi>Pipeline hiện tại dùng 7 tool bên ngoài, tất cả miễn phí và không cần đăng ký tài khoản. Chi phí thật duy nhất là token Claude Code, đo được chính xác theo từng giai đoạn qua ccusage. Sơ đồ đầy đủ (thứ tự chạy, node nào gọi tool nào): xem <a href="sales-proposal-pipeline-workflow.html">Pipeline diagram</a>.</span><span data-en>The pipeline currently uses 7 external tools, all free and requiring no account signup. The only real cost is Claude Code tokens, measurable precisely per phase via ccusage. Full diagram (run order, which node calls which tool): see <a href="sales-proposal-pipeline-workflow.html">Pipeline diagram</a>.</span></p>
+  </div>
+
+  
+
+  <h2 id="s1">1 · <span data-vi>Tóm tắt điều hành</span><span data-en>Executive summary</span></h2>
+  <p>
+    <span data-vi>Ba bảng trong <code>report/tools-summary.html</code> trả lời đúng ba câu hỏi mà người quản lý cần: <b>đang dùng tool gì</b>, <b>bỏ tool gì và vì sao</b>, <b>tốn bao nhiêu</b>. Nội dung <b>khớp với thực tế repo</b>: 7 tool ở Bảng 1 đều ánh xạ tới 6 skill đang tồn tại thật (<code>company-verifier</code>, <code>web-osint-scanner</code>, <code>officers-lookup</code>, <code>source-auditor</code>, <code>mechanical-validator</code>, <code>judgment-reviewer</code>), và con số 7/7 ở Bảng 3 khớp đúng Bảng 1 và Bảng 2.</span>
+    <span data-en>The three tables in <code>report/tools-summary.html</code> answer exactly the three questions a manager asks: <b>what we use</b>, <b>what we dropped and why</b>, <b>what it costs</b>. The content <b>matches the repository reality</b>: all 7 tools in Table 1 map to 6 skills that actually exist (<code>company-verifier</code>, <code>web-osint-scanner</code>, <code>officers-lookup</code>, <code>source-auditor</code>, <code>mechanical-validator</code>, <code>judgment-reviewer</code>), and the 7/7 counts in Table 3 match Tables 1 and 2 exactly.</span>
+  </p>
+  <p>
+    <span data-vi>Ba điểm chưa đạt chuẩn mẫu: <b>(1)</b> không có lớp trực quan hoá nào (0 biểu đồ, 0 KPI, 0 sơ đồ) trong khi mẫu <code>#web</code> trình bày đúng chừng đó nội dung bằng 4 thẻ KPI + 2 biểu đồ + 1 sơ đồ luồng + 3 thẻ việc-cần-làm; <b>(2)</b> 3 bảng thiếu khung cuộn ngang và toàn bộ trang <b>không có một <code>@media</code> nào</b> — trên điện thoại bảng 4 cột sẽ tràn ra ngoài; <b>(3)</b> kiểu header/hàng kẻ chưa theo token của mẫu (mẫu: chữ hoa màu accent, có kẻ sọc, có hover từng hàng).</span>
+    <span data-en>Three gaps against the sample: <b>(1)</b> no visual layer at all (0 charts, 0 KPIs, 0 diagrams) while the <code>#web</code> sample presents a comparable amount of content as 4 KPI tiles + 2 charts + 1 flow diagram + 3 action cards; <b>(2)</b> the 3 tables have no horizontal-scroll wrapper and the whole page carries <b>zero <code>@media</code> rules</b> — on a phone a 4-column table overflows; <b>(3)</b> header and row styling doesn&rsquo;t follow the sample tokens (sample: uppercase accent headers, zebra striping, per-row hover).</span>
+  </p>
+  <div class="box">
+    <h3><span data-vi>Phát hiện quan trọng nhất</span><span data-en>The single most important finding</span></h3>
+    <p>
+      <span data-vi>Yêu cầu nói &ldquo;so với <b>bảng mẫu</b> ở <code>full1/#web</code>&rdquo; — nhưng <b>mục <code>#web</code> của full1 không chứa bất kỳ thẻ <code>&lt;table&gt;</code> nào</b> (đã kiểm chứng trực tiếp trên bản live: 0 bảng, 2 canvas, 4 KPI, 1 khối Mermaid). Vì vậy phép so sánh đúng phải chia làm 2 lớp: <b>lớp trình bày</b> (mẫu <code>#web</code> dùng gì) và <b>lớp bảng</b> (chuẩn <code>.tbl</code> — 23 bảng rải khắp full1). Báo cáo này đánh giá cả hai lớp.</span>
+      <span data-en>The request refers to the &ldquo;<b>sample table</b>&rdquo; at <code>full1/#web</code> — but <b>the <code>#web</code> section of full1 contains no <code>&lt;table&gt;</code> element at all</b> (verified live: 0 tables, 2 canvases, 4 KPIs, 1 Mermaid block). The comparison therefore has to run on two levels: the <b>presentation layer</b> (what <code>#web</code> uses) and the <b>table layer</b> (the <code>.tbl</code> standard — 23 tables across full1). This report assesses both.</span>
+    </p>
+  </div>
+
+  <h2 id="s2">2 · <span data-vi>Phạm vi &amp; phương pháp</span><span data-en>Scope &amp; method</span></h2>
+  <h3><span data-vi>A. Ba bảng được đánh giá</span><span data-en>A. The three tables under review</span></h3>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr>
+        <th><span data-vi>Bảng</span><span data-en>Table</span></th>
+        <th><span data-vi>Tiêu đề</span><span data-en>Title</span></th>
+        <th><span data-vi>Cột</span><span data-en>Columns</span></th>
+        <th><span data-vi>Hàng</span><span data-en>Rows</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td>T1</td><td><span data-vi>Tool đang dùng thật</span><span data-en>Tools actually in use</span></td><td>Tool · <span data-vi>Dùng ở đâu</span><span data-en>Used in</span> · <span data-vi>Làm gì</span><span data-en>Does what</span> · <span data-vi>Chi phí</span><span data-en>Cost</span></td><td>7</td></tr>
+        <tr><td>T2</td><td><span data-vi>Tool đã cân nhắc, không dùng</span><span data-en>Tools evaluated, not adopted</span></td><td>Tool · <span data-vi>Lý do không dùng</span><span data-en>Why not used</span></td><td>7</td></tr>
+        <tr><td>T3</td><td><span data-vi>Tổng hợp chi phí &amp; truy cập</span><span data-en>Cost &amp; access summary</span></td><td><span data-vi>Loại</span><span data-en>Category</span> · <span data-vi>Số lượng</span><span data-en>Count</span> · <span data-vi>Chi tiết</span><span data-en>Detail</span></td><td>3</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3><span data-vi>B. Mẫu tham chiếu</span><span data-en>B. The reference sample</span></h3>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr>
+        <th><span data-vi>Lớp</span><span data-en>Layer</span></th>
+        <th><span data-vi>Nội dung thực tế của full1</span><span data-en>What full1 actually contains</span></th>
+        <th><span data-vi>Dùng để so gì</span><span data-en>Used to compare</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><span data-vi>Lớp trình bày<br>(mục #web)</span><span data-en>Presentation layer<br>(section #web)</span></td>
+          <td><span class="mono">sec-tag</span> · <span class="mono">h2 + span.sec-num</span> · <span class="mono">p.lead</span> · <span class="mono">div.grid.g4</span> (4 <span class="mono">.kpi</span> <span data-vi>có đếm số động</span><span data-en>with animated counters</span>) · <span class="mono">div.grid.g2</span> (2 <span class="mono">.chartbox</span> + <span class="mono">canvas</span> #cChannel/#cDigital) · <span class="mono">div.mermaid</span> (flowchart LR) · <span class="mono">div.grid.g3</span> (3 <span class="mono">.card</span> + <span class="mono">span.pill.p-green/p-amber</span>)</td>
+          <td><span data-vi>Cách kể chuyện thị giác cho cùng loại nội dung audit</span><span data-en>How the same kind of audit content is told visually</span></td>
+        </tr>
+        <tr>
+          <td><span data-vi>Lớp bảng<br>(23 bảng <code>.tbl</code>)</span><span data-en>Table layer<br>(23 <code>.tbl</code> tables)</span></td>
+          <td><span class="mono">div.tbl-wrap</span> → <span class="mono">table.tbl</span> → <span class="mono">thead</span>/<span class="mono">tbody</span>; th chữ hoa màu accent, kẻ sọc chẵn, hover hàng, pill ngữ nghĩa trong ô (<span class="mono">p-green/p-amber/p-blue</span>)</td>
+          <td><span data-vi>Chuẩn hình thức bảng mà 3 bảng của ta nên theo</span><span data-en>The table look-and-feel our 3 tables should follow</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="sub">
+    <span data-vi>Phương pháp: đọc bản live của full1 (3.720.647 byte) và tách riêng mục <code>#web</code> (3.439 byte) để phân tích; đối chiếu với mã nguồn <code>report/tools-summary.html</code> (14.662 byte) và danh sách skill thật trong <code>skills/</code>. Mọi con số trong báo cáo đều đếm được từ các tệp đó.</span>
+    <span data-en>Method: fetched the live full1 page (3,720,647 bytes) and isolated the <code>#web</code> section (3,439 bytes); cross-checked against the source of <code>report/tools-summary.html</code> (14,662 bytes) and the real skill list in <code>skills/</code>. Every figure in this report is counted from those files.</span>
+  </p>
+
+  <h2 id="s3">3 · <span data-vi>Chuẩn mẫu full1 là gì</span><span data-en>What the full1 standard actually is</span></h2>
+  <p>
+    <span data-vi>Mục <code>#web</code> của full1 là <b>&ldquo;06 Digital &amp; Web Presence Audit&rdquo;</b> thuộc nhóm Due Diligence. Nó <b>không có bảng</b>. Nó kể câu chuyện bằng 6 khối, theo đúng thứ tự: nhãn mục → tiêu đề có số thứ tự → đoạn dẫn 1 khối → 4 KPI → 2 biểu đồ → 1 sơ đồ luồng → 3 thẻ việc-cần-làm có gắn nhãn ưu tiên. Đó là lý do vì sao so &ldquo;bảng của ta&rdquo; với &ldquo;bảng ở <code>#web</code>&rdquo; là so sai đối tượng — đúng ra phải so <b>cách trình bày</b> ở <code>#web</code> và <b>chuẩn bảng</b> ở 22 mục còn lại.</span>
+    <span data-en>The <code>#web</code> section of full1 is <b>&ldquo;06 Digital &amp; Web Presence Audit&rdquo;</b> under Due Diligence. It <b>contains no table</b>. It tells the story in 6 blocks, in order: section tag → numbered heading → one lead paragraph → 4 KPIs → 2 charts → 1 flow diagram → 3 action cards with priority pills. That is why comparing &ldquo;our table&rdquo; to &ldquo;the table at <code>#web</code>&rdquo; compares the wrong objects — the right comparison is <b>the presentation style at <code>#web</code></b> and <b>the table standard used elsewhere</b>.</span>
+  </p>
+  <h3><span data-vi>Chuẩn bảng <code>.tbl</code> của mẫu (đối chiếu trực tiếp)</span><span data-en>The sample&rsquo;s <code>.tbl</code> standard (direct comparison)</span></h3>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr>
+        <th><span data-vi>Thành phần</span><span data-en>Element</span></th>
+        <th><span data-vi>Mẫu full1 quy định</span><span data-en>full1 sample</span></th>
+        <th><span data-vi>Ba bảng của ta</span><span data-en>Our three tables</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td><span data-vi>Khung ngoài</span><span data-en>Outer wrapper</span></td><td><span class="mono">.tbl-wrap{overflow-x:auto;border:1px solid;border-radius:14px}</span> — <span data-vi>bảng tự cuộn trong khung, không làm tràn trang</span><span data-en>table scrolls inside its own frame, never breaks the page</span></td><td><span class="pill p-red"><span data-vi>Thiếu</span><span data-en>Missing</span></span> — 0 lần xuất hiện <span class="mono">tbl-wrap</span></td></tr>
+        <tr><td><span data-vi>Ngữ nghĩa</span><span data-en>Semantics</span></td><td><span class="mono">&lt;thead&gt;</span> + <span class="mono">&lt;tbody&gt;</span> (22/23 bảng)</td><td><span class="pill p-green"><span data-vi>Đạt</span><span data-en>Met</span></span> — 3/3 <span data-vi>bảng đều có đủ</span><span data-en>tables have both</span></td></tr>
+        <tr><td><span data-vi>Header cột</span><span data-en>Column header</span></td><td><span class="mono">.tbl th{color:var(--aqua);text-transform:uppercase;letter-spacing:.06em;font-size:.7rem;font-weight:700}</span></td><td><span class="pill p-amber"><span data-vi>Một phần</span><span data-en>Partial</span></span> — <span data-vi>có chữ hoa + giãn chữ, nhưng màu <span class="mono">--muted</span> (xám) và 0.66rem, nhạt hơn mẫu</span><span data-en>uppercase + letterspacing present, but colour is grey <span class="mono">--muted</span> at 0.66rem — weaker than the sample</span></td></tr>
+        <tr><td><span data-vi>Kẻ sọc hàng</span><span data-en>Zebra rows</span></td><td><span class="mono">tbody tr:nth-child(even) td</span></td><td><span class="pill p-red"><span data-vi>Thiếu</span><span data-en>Missing</span></span></td></tr>
+        <tr><td><span data-vi>Hover hàng</span><span data-en>Row hover</span></td><td><span class="mono">.tbl tr:hover td{background:var(--panel2)}</span></td><td><span class="pill p-red"><span data-vi>Thiếu</span><span data-en>Missing</span></span></td></tr>
+        <tr><td><span data-vi>Pill ngữ nghĩa</span><span data-en>Semantic pills</span></td><td><span data-vi>Pill mang <b>đánh giá</b>: <span class="mono">p-green</span> Low-Med · <span class="mono">p-amber</span> High · <span class="mono">p-blue</span> Med</span><span data-en>Pills carry <b>judgement</b>: <span class="mono">p-green</span> Low-Med · <span class="mono">p-amber</span> High · <span class="mono">p-blue</span> Med</span></td><td><span class="pill p-amber"><span data-vi>Một phần</span><span data-en>Partial</span></span> — <span data-vi>có <span class="mono">.badge.free</span> nhưng chỉ mã hoá được 1 trạng thái (chi phí), lặp y hệt 7/7 hàng</span><span data-en>has <span class="mono">.badge.free</span> but encodes only one state (cost) and repeats identically 7/7 rows</span></td></tr>
+        <tr><td><span data-vi>Nội dung định lượng</span><span data-en>Quantified content</span></td><td><span data-vi>Cột số/ước lượng + cột phán đoán cuối bảng (Effort, Horizon, Rate ₱, Priority)</span><span data-en>numeric/estimate column + a judgement column at the end (Effort, Horizon, Rate ₱, Priority)</span></td><td><span class="pill p-red"><span data-vi>Thiếu</span><span data-en>Missing</span></span> — T1/T2 <span data-vi>không có cột định lượng nào; T3 chỉ có cột đếm</span><span data-en>T1/T2 have no quantified column; T3 only has a count</span></td></tr>
+        <tr><td><span data-vi>Song ngữ theo ô</span><span data-en>Per-cell bilingual</span></td><td><span data-vi>Không — mẫu chỉ có tiếng Anh tĩnh</span><span data-en>No — the sample is static English only</span></td><td><span class="pill p-blue"><span data-vi>Vượt mẫu</span><span data-en>Exceeds</span></span> — <span data-vi>VI/EN chuyển được ngay trong từng ô, đã kiểm chứng hoạt động đúng</span><span data-en>VI/EN switch works inside every cell, verified working</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="s4">4 · <span data-vi>Đối chiếu theo tiêu chí</span><span data-en>Criteria-by-criteria comparison</span></h2>
+  <p>
+    <span data-vi>Chín tiêu chí, chấm theo 4 mức: <span class="pill p-green">Đạt</span> <span class="pill p-amber">Một phần</span> <span class="pill p-red">Chưa đạt</span> <span class="pill p-blue">Vượt mẫu</span>. Kết quả: <b>1 vượt · 1 đạt · 2 một phần · 5 chưa đạt</b>.</span>
+    <span data-en>Nine criteria scored on four levels: <span class="pill p-green">Met</span> <span class="pill p-amber">Partial</span> <span class="pill p-red">Not met</span> <span class="pill p-blue">Exceeds</span>. Result: <b>1 exceeds · 1 met · 2 partial · 5 not met</b>.</span>
+  </p>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr>
+        <th>#</th>
+        <th><span data-vi>Tiêu chí</span><span data-en>Criterion</span></th>
+        <th><span data-vi>Chuẩn mẫu</span><span data-en>Sample standard</span></th>
+        <th><span data-vi>Ba bảng của ta</span><span data-en>Our tables</span></th>
+        <th><span data-vi>Kết quả</span><span data-en>Result</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span data-vi>Cấu trúc bảng chuẩn</span><span data-en>Correct table structure</span></td><td>thead/tbody <span data-vi>đầy đủ</span><span data-en>complete</span></td><td>3/3 <span data-vi>đầy đủ</span><span data-en>complete</span></td><td><span class="pill p-green"><span data-vi>Đạt</span><span data-en>Met</span></span></td></tr>
+        <tr><td>2</td><td><span data-vi>Cuộn ngang an toàn trên mobile</span><span data-en>Safe horizontal scroll on mobile</span></td><td><span class="mono">.tbl-wrap</span> <span data-vi>cho mọi bảng</span><span data-en>on every table</span></td><td>0 <span data-vi>khung cuộn</span><span data-en>scroll frames</span></td><td><span class="pill p-red"><span data-vi>Chưa đạt</span><span data-en>Not met</span></span></td></tr>
+        <tr><td>3</td><td><span data-vi>Responsive toàn trang</span><span data-en>Page-wide responsiveness</span></td><td><span data-vi>nhiều breakpoint, có <span class="mono">@media(max-width:820px)</span></span><span data-en>multiple breakpoints, incl. <span class="mono">@media(max-width:820px)</span></span></td><td><b>0</b> <span class="mono">@media</span> <span data-vi>trong cả tệp</span><span data-en>in the whole file</span></td><td><span class="pill p-red"><span data-vi>Chưa đạt</span><span data-en>Not met</span></span></td></tr>
+        <tr><td>4</td><td><span data-vi>Khả năng dò hàng (zebra + hover)</span><span data-en>Scanability (zebra + hover)</span></td><td><span data-vi>có cả hai</span><span data-en>both present</span></td><td><span data-vi>không có cả hai</span><span data-en>neither present</span></td><td><span class="pill p-red"><span data-vi>Chưa đạt</span><span data-en>Not met</span></span></td></tr>
+        <tr><td>5</td><td><span data-vi>Header cột nổi bật</span><span data-en>Prominent column header</span></td><td><span data-vi>chữ hoa, giãn chữ, màu accent</span><span data-en>uppercase, letterspaced, accent colour</span></td><td><span data-vi>chữ hoa + giãn, nhưng màu xám</span><span data-en>uppercase + letterspaced, but grey</span></td><td><span class="pill p-amber"><span data-vi>Một phần</span><span data-en>Partial</span></span></td></tr>
+        <tr><td>6</td><td><span data-vi>Pill mang thông tin phán đoán</span><span data-en>Pills carrying judgement</span></td><td><span data-vi>mức độ / ưu tiên / độ khó</span><span data-en>level / priority / effort</span></td><td><span data-vi>chỉ trạng thái chi phí, lặp lại</span><span data-en>cost state only, repetitive</span></td><td><span class="pill p-amber"><span data-vi>Một phần</span><span data-en>Partial</span></span></td></tr>
+        <tr><td>7</td><td><span data-vi>Lớp trực quan hoá (KPI/chart/sơ đồ)</span><span data-en>Visual layer (KPI/chart/diagram)</span></td><td><span data-vi>4 KPI + 2 chart + 1 sơ đồ + 3 thẻ ưu tiên ngay tại <code>#web</code></span><span data-en>4 KPIs + 2 charts + 1 diagram + 3 priority cards right in <code>#web</code></span></td><td>0 <span data-vi>KPI · 0 chart · 0 sơ đồ</span><span data-en>KPIs · 0 charts · 0 diagrams</span></td><td><span class="pill p-red"><span data-vi>Chưa đạt</span><span data-en>Not met</span></span></td></tr>
+        <tr><td>8</td><td><span data-vi>Nhãn mục &amp; nhịp thị giác</span><span data-en>Section labels &amp; visual rhythm</span></td><td><span class="mono">sec-tag</span> + <span class="mono">sec-num</span> + <span class="mono">.reveal</span> <span data-vi>xuất hiện dần</span><span data-en>fade-in</span></td><td><span data-vi>chỉ có h1/h2 và một dòng phụ</span><span data-en>only h1/h2 plus one sub-line</span></td><td><span class="pill p-red"><span data-vi>Chưa đạt</span><span data-en>Not met</span></span></td></tr>
+        <tr><td>9</td><td><span data-vi>Song ngữ VI/EN theo từng ô</span><span data-en>Per-cell VI/EN bilingual</span></td><td><span data-vi>không hỗ trợ</span><span data-en>not supported</span></td><td><span data-vi>hoạt động đúng ở mọi ô và mọi tiêu đề</span><span data-en>works in every cell and header</span></td><td><span class="pill p-blue"><span data-vi>Vượt mẫu</span><span data-en>Exceeds</span></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="s5">5 · <span data-vi>Phát hiện chi tiết</span><span data-en>Detailed findings</span></h2>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr>
+        <th>ID</th>
+        <th><span data-vi>Vị trí</span><span data-en>Where</span></th>
+        <th><span data-vi>Phát hiện</span><span data-en>Finding</span></th>
+        <th><span data-vi>Mức độ</span><span data-en>Severity</span></th>
+        <th><span data-vi>Cách xử lý</span><span data-en>Fix</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>F1</td><td>T3 · <span data-vi>dòng chi phí</span><span data-en>cost row</span></td>
+          <td><span data-vi>&ldquo;Tổng chi phí vận hành hiện tại = <b>$0</b>&rdquo; dễ bị đọc thành &ldquo;pipeline miễn phí hoàn toàn&rdquo;. Thực tế chỉ <b>chi phí tool</b> bằng 0; <b>chi phí token là tiền thật</b>. Run Casa Escondida ngày 2026-09-24 tốn <b>$3,83</b> (điều phối $2,85 + 4 nhóm nghiên cứu $0,98 + 4 worker đối thủ $0,10), dài 4h04m.</span><span data-en>&ldquo;Current total operating cost = <b>$0</b>&rdquo; reads as &ldquo;the pipeline is completely free&rdquo;. In reality only the <b>tool cost</b> is zero; <b>token cost is real money</b>. The Casa Escondida run on 2026-09-24 cost <b>$3.83</b> (orchestrator $2.85 + 4 research groups $0.98 + 4 competitor workers $0.10) over 4h04m.</span></td>
+          <td><span class="pill p-red"><span data-vi>Cao</span><span data-en>High</span></span></td>
+          <td><span data-vi>Tách thành 2 dòng: &ldquo;Chi phí tool = $0&rdquo; và &ldquo;Chi phí token = đo được, ví dụ $3,83/proposal (run Casa Escondida)&rdquo;. Số liệu đã có sẵn trong <code>_runs/casa-escondida/casa-escondida-cost-report.csv</code>.</span><span data-en>Split it into two rows: &ldquo;Tool cost = $0&rdquo; and &ldquo;Token cost = measurable, e.g. $3.83 per proposal (Casa Escondida run)&rdquo;. The figures already exist in <code>_runs/casa-escondida/casa-escondida-cost-report.csv</code>.</span></td>
+        </tr>
+        <tr>
+          <td>F2</td><td>T1 · <span data-vi>cột Chi phí</span><span data-en>Cost column</span></td>
+          <td><span data-vi>Badge <span class="mono">FREE</span> lặp y hệt <b>7/7 hàng</b> → cả một cột không mang thêm thông tin nào.</span><span data-en>The <span class="mono">FREE</span> badge repeats identically in <b>7 of 7 rows</b> &mdash; so the entire column adds no information.</span></td>
+          <td><span class="pill p-amber"><span data-vi>Thấp</span><span data-en>Low</span></span></td>
+          <td><span data-vi>Gộp thành một dòng chú thích dưới bảng (&ldquo;tất cả miễn phí, không cần tài khoản&rdquo;), dùng chỗ đó cho một cột có ích hơn (ví dụ: nếu bỏ tool này thì mất gì).</span><span data-en>Collapse it into one note under the table (&ldquo;all free, no account needed&rdquo;) and spend the space on something useful (e.g. what is lost if the tool is removed).</span></td>
+        </tr>
+        <tr>
+          <td>F3</td><td>T1 · <span data-vi>phạm vi</span><span data-en>scope</span></td>
+          <td><span data-vi>Bảng trộn 2 loại đối tượng: 6 <b>dịch vụ bên ngoài</b> (GLEIF, Wikidata, Jina Reader, registries, BeautifulSoup4 + html5lib, ccusage) và 1 <b>script tự viết</b> (<code>bind_check.py</code>).</span><span data-en>The table mixes two kinds of object: 6 <b>external services</b> (GLEIF, Wikidata, Jina Reader, registries, BeautifulSoup4 + html5lib, ccusage) and 1 <b>self-written script</b> (<code>bind_check.py</code>).</span></td>
+          <td><span class="pill p-amber"><span data-vi>Thấp</span><span data-en>Low</span></span></td>
+          <td><span data-vi>Thêm cột &ldquo;Loại&rdquo; (external service / in-house script) — vì hai loại này có rủi ro bảo trì rất khác nhau.</span><span data-en>Add a &ldquo;Type&rdquo; column (external service / in-house script) &mdash; the two carry very different maintenance risk.</span></td>
+        </tr>
+        <tr>
+          <td>F4</td><td>T2 · <span data-vi>hàng Crawl4AI</span><span data-en>Crawl4AI row</span></td>
+          <td><span data-vi>Lý do &ldquo;bị chính sách Application Control của máy chặn cài&rdquo; là <b>giới hạn môi trường</b>, không phải một quyết định kiến trúc. Đặt cùng nhóm với Firecrawl/Webcite (lý do thật sự là chi phí/kỹ thuật) làm sai bản chất bảng.</span><span data-en>The reason &ldquo;blocked by this machine&rsquo;s Application Control policy&rdquo; is an <b>environment limit</b>, not an architecture decision. Filing it with Firecrawl/Webcite (whose reasons really are cost and technical fit) misrepresents the table.</span></td>
+          <td><span class="pill p-amber"><span data-vi>Trung bình</span><span data-en>Medium</span></span></td>
+          <td><span data-vi>Tách ra một nhóm riêng &ldquo;bị chặn bởi môi trường, cần mở lại nếu chạy trên máy khác&rdquo; — đây cũng chính là điều kiện để skill dùng được trên nhiều máy.</span><span data-en>Split it into its own group: &ldquo;blocked by the environment, revisit on another machine&rdquo; &mdash; which is exactly the condition for running this skill across multiple devices.</span></td>
+        </tr>
+        <tr>
+          <td>F5</td><td>T2 · <span data-vi>cấu trúc</span><span data-en>structure</span></td>
+          <td><span data-vi>Không có cột mức độ / rủi ro / chi phí thay thế, nên người đọc không biết &ldquo;bỏ tool đó có an toàn không&rdquo;. Bảng mẫu luôn kết thúc bằng một cột phán đoán (Effort / Horizon / Priority).</span><span data-en>There is no severity / risk / replacement-cost column, so a reader cannot tell whether dropping a tool is safe. The sample table always ends with a judgement column (Effort / Horizon / Priority).</span></td>
+          <td><span class="pill p-amber"><span data-vi>Trung bình</span><span data-en>Medium</span></span></td>
+          <td><span data-vi>Thêm 1 cột: &ldquo;Thay thế bằng gì&rdquo; hoặc &ldquo;Rủi ro nếu cần lại&rdquo;, kèm pill 3 mức.</span><span data-en>Add one column: &ldquo;Replaced by&rdquo; or &ldquo;Risk if needed again&rdquo;, carrying a 3-level pill.</span></td>
+        </tr>
+        <tr>
+          <td>F6</td><td><span data-vi>Cả 3 bảng · hiển thị</span><span data-en>All 3 tables · rendering</span></td>
+          <td><span data-vi>Không có <code>tbl-wrap</code> và cả tệp có <b>0 <code>@media</code></b>. T1 có ô đầu dài 44 ký tự và bị <code>white-space:nowrap</code> → trên màn hình ~360px bảng sẽ đẩy tràn cả trang, buộc cuộn ngang toàn trang.</span><span data-en>No <code>tbl-wrap</code>, and the whole file has <b>0 <code>@media</code></b>. T1&rsquo;s first cell is 44 characters long and is set to <code>white-space:nowrap</code> &mdash; on a ~360px screen the table pushes the whole page wide and forces page-level horizontal scrolling.</span></td>
+          <td><span class="pill p-red"><span data-vi>Cao</span><span data-en>High</span></span></td>
+          <td><span data-vi>Bọc cả 3 bảng trong <code>.tbl-wrap</code> (đúng chuẩn mẫu) và thêm 2 breakpoint 820px / 520px.</span><span data-en>Wrap all 3 tables in <code>.tbl-wrap</code> (exactly the sample standard) and add 820px / 520px breakpoints.</span></td>
+        </tr>
+        <tr>
+          <td>F7</td><td><span data-vi>Trang · trình bày</span><span data-en>Page · presentation</span></td>
+          <td><span data-vi>Toàn trang có <b>0 KPI, 0 biểu đồ, 0 sơ đồ, 0 nhãn mục, 0 hiệu ứng</b>. Mẫu tham chiếu dùng đúng lớp này để người quản lý nắm ý chính trong vài giây trước khi đọc bảng.</span><span data-en>The whole page has <b>0 KPIs, 0 charts, 0 diagrams, 0 section labels, 0 transitions</b>. The reference sample uses precisely this layer so a manager grasps the main point in seconds before reading any table.</span></td>
+          <td><span class="pill p-amber"><span data-vi>Trung bình</span><span data-en>Medium</span></span></td>
+          <td><span data-vi>Thêm một dải 4 KPI (7 dùng / 7 bỏ / $0 tool / $3,83 token) và 1 biểu đồ chi phí theo giai đoạn, theo đúng mẫu <code>#web</code>.</span><span data-en>Add a 4-KPI strip (7 in use / 7 dropped / $0 tool cost / $3.83 tokens) plus one chart of cost per phase, following the <code>#web</code> pattern.</span></td>
+        </tr>
+        <tr>
+          <td>F8</td><td><span data-vi>Chứng cứ chi phí</span><span data-en>Cost evidence</span></td>
+          <td><span data-vi>File chi phí chưa xuất nhất quán: <code>kitchen-arena-cost-report.csv</code> chỉ có <b>3 hàng</b> (thiếu nhóm C và thiếu hàng điều phối), trong khi <code>casa-escondida-cost-report.csv</code> có <b>9 hàng</b> đầy đủ. Nếu đem số này đi báo cáo ngân sách thì phải kiểm lại.</span><span data-en>Cost exports are inconsistent: <code>kitchen-arena-cost-report.csv</code> has only <b>3 rows</b> (group C and the orchestrator row are missing) while <code>casa-escondida-cost-report.csv</code> has <b>9 complete rows</b>. Any budget figure taken from these files needs re-checking first.</span></td>
+          <td><span class="pill p-amber"><span data-vi>Trung bình</span><span data-en>Medium</span></span></td>
+          <td><span data-vi>Chốt trước khi công bố: mỗi run phải xuất đủ hàng điều phối + 4 nhóm; thiếu hàng thì ghi rõ &ldquo;chưa đo&rdquo; thay vì để trống.</span><span data-en>Settle this before publishing: every run must emit the orchestrator row plus all 4 groups; where a row is missing, write &ldquo;not measured&rdquo; rather than leaving it out.</span></td>
+        </tr>
+        <tr>
+          <td>F9</td><td><span data-vi>Bảng màu</span><span data-en>Colour set</span></td>
+          <td><span data-vi>Các trang <code>report/</code> dùng tông beige/terracotta của dashboard, còn bản proposal mẫu (full1) dùng tông navy/teal. Hai bên tự nhất quán nhưng nhìn khác hệ.</span><span data-en><code>report/</code> pages use the dashboard&rsquo;s beige/terracotta tone while the sample proposal (full1) uses navy/teal. Each is internally consistent, but they read as two different systems.</span></td>
+          <td><span class="pill p-grey"><span data-vi>Thấp</span><span data-en>Low</span></span></td>
+          <td><span data-vi>Quyết định có chủ đích: giữ tách (report = nội bộ, proposal = khách hàng) và ghi rõ trong tài liệu, hoặc đồng bộ về một hệ.</span><span data-en>Make it a deliberate choice: keep them split (report = internal, proposal = client-facing) and document it, or unify on a single system.</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="s6">6 · <span data-vi>Khuyến nghị theo thứ tự ưu tiên</span><span data-en>Recommendations in priority order</span></h2>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr>
+        <th>#</th>
+        <th><span data-vi>Việc cần làm</span><span data-en>Action</span></th>
+        <th><span data-vi>Vì sao</span><span data-en>Why</span></th>
+        <th><span data-vi>Công</span><span data-en>Effort</span></th>
+        <th><span data-vi>Ưu tiên</span><span data-en>Priority</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span data-vi>Bọc 3 bảng trong <code>.tbl-wrap</code></span><span data-en>Wrap the 3 tables in <code>.tbl-wrap</code></span></td><td><span data-vi>Lỗi hiển thị thật trên điện thoại (F6)</span><span data-en>A real mobile rendering bug (F6)</span></td><td><span data-vi>~5 phút</span><span data-en>~5 min</span></td><td><span class="pill p-red">P0</span></td></tr>
+        <tr><td>2</td><td><span data-vi>Sửa dòng &ldquo;$0&rdquo; ở Bảng 3 thành 2 dòng: tool $0 / token đo được</span><span data-en>Split the &ldquo;$0&rdquo; row in Table 3 into tool cost $0 / measurable token cost</span></td><td><span data-vi>Tránh hiểu sai về ngân sách (F1)</span><span data-en>Avoids a budget misreading (F1)</span></td><td><span data-vi>~10 phút</span><span data-en>~10 min</span></td><td><span class="pill p-red">P0</span></td></tr>
+        <tr><td>3</td><td><span data-vi>Thêm breakpoint 820 / 520px cho cả trang</span><span data-en>Add 820/520px breakpoints for the whole page</span></td><td><span data-vi>Trang hiện không có responsive nào (F6)</span><span data-en>Page currently has no responsive rules (F6)</span></td><td><span data-vi>~10 phút</span><span data-en>~10 min</span></td><td><span class="pill p-red">P0</span></td></tr>
+        <tr><td>4</td><td><span data-vi>Bảng 1: gộp cột FREE + thêm cột &ldquo;Loại&rdquo;</span><span data-en>Table 1: collapse the FREE column + add a &ldquo;Type&rdquo; column</span></td><td><span data-vi>Cột đang vô thông tin, và trộn 2 loại đối tượng (F2, F3)</span><span data-en>Column carries no information and mixes two object types (F2, F3)</span></td><td><span data-vi>~15 phút</span><span data-en>~15 min</span></td><td><span class="pill p-amber">P1</span></td></tr>
+        <tr><td>5</td><td><span data-vi>Bảng 2: thêm cột phán đoán; tách hàng Crawl4AI khỏi nhóm &ldquo;đã bỏ&rdquo;</span><span data-en>Table 2: add a judgement column; move Crawl4AI out of &ldquo;dropped&rdquo;</span></td><td><span data-vi>Đúng bản chất vấn đề (F4, F5)</span><span data-en>Reflects the real nature of each case (F4, F5)</span></td><td><span data-vi>~20 phút</span><span data-en>~20 min</span></td><td><span class="pill p-amber">P1</span></td></tr>
+        <tr><td>6</td><td><span data-vi>Thêm dải KPI + 1 biểu đồ theo mẫu <code>#web</code></span><span data-en>Add a KPI strip + one chart following the <code>#web</code> pattern</span></td><td><span data-vi>Đối tượng đọc là quản lý, cần nắm ý trong vài giây (F7)</span><span data-en>The audience is management and needs the point in seconds (F7)</span></td><td><span data-vi>~1 giờ</span><span data-en>~1 h</span></td><td><span class="pill p-blue">P2</span></td></tr>
+        <tr><td>7</td><td><span data-vi>Chuẩn hoá mọi bảng trong <code>report/</code> về <code>.tbl</code> + <code>.tbl-wrap</code> (đưa vào một khối CSS dùng chung)</span><span data-en>Standardise every table under <code>report/</code> on <code>.tbl</code> + <code>.tbl-wrap</code> via one shared CSS block</span></td><td><span data-vi>Để lần sau không lặp lại 5 tiêu chí chưa đạt</span><span data-en>Prevents the same 5 failed criteria next time</span></td><td><span data-vi>~1 giờ</span><span data-en>~1 h</span></td><td><span class="pill p-blue">P2</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="s9">9 · <span data-vi>Đối chiếu thêm: 3 bản proposal thật (Digital &amp; Web Presence)</span><span data-en>Additional comparison: 3 real proposals (Digital &amp; Web Presence)</span></h2>
+  <p>
+    <span data-vi>Phần 1-8 trên so <b>tài liệu nội bộ</b> (<code>report/tools-summary.html</code>) với <code>#web</code>. Phần này so <b>đầu ra thật của pipeline</b> — section <code>digital-web</code> trong 3 file <code>_runs/&lt;slug&gt;/&lt;slug&gt;-proposal.html</code> — với chính section <code>#web</code> đó, để biết pipeline đang tạo ra sản phẩm gần hay xa chuẩn mẫu.</span>
+    <span data-en>Sections 1-8 above compare <b>internal documentation</b> (<code>report/tools-summary.html</code>) against <code>#web</code>. This section compares the <b>pipeline's real output</b> &mdash; the <code>digital-web</code> section in 3 files, <code>_runs/&lt;slug&gt;/&lt;slug&gt;-proposal.html</code> &mdash; against that same <code>#web</code> section, to see how close the pipeline's actual product is to the sample.</span>
+  </p>
+
+  <h3><span data-vi>A. Khác biệt cấu trúc</span><span data-en>A. Structural differences</span></h3>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr>
+        <th><span data-vi>Tiêu chí</span><span data-en>Criterion</span></th>
+        <th>full1 <code>#web</code> <span data-vi>(mẫu gốc)</span><span data-en>(original sample)</span></th>
+        <th><span data-vi>3 bản proposal thật</span><span data-en>3 real proposals</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td><span data-vi>Bảng dữ liệu</span><span data-en>Data tables</span></td><td><span class="pill p-red"><span data-vi>Không có</span><span data-en>None</span></span> — 0 <code>&lt;table&gt;</code>, chỉ 4 KPI + 2 chart</td><td><span class="pill p-green"><span data-vi>Có</span><span data-en>Present</span></span> — 1-3 bảng <code>.tbl</code>/bản, severity <code>.pill</code> theo dòng</td></tr>
+        <tr><td><span data-vi>Trích dẫn nguồn</span><span data-en>Sourced citations</span></td><td><span class="pill p-red"><span data-vi>Không có</span><span data-en>None</span></span> — chỉ nhắc &ldquo;Per Scoping Meeting 2&rdquo; trong văn xuôi</td><td><span class="pill p-green"><span data-vi>Có</span><span data-en>Present</span></span> — <code>.cite-wrap</code> hover-card kèm excerpt thật từ trang nguồn</td></tr>
+        <tr><td><span data-vi>Tách ước tính khỏi sự thật</span><span data-en>Estimate vs. fact separation</span></td><td><span class="pill p-red"><span data-vi>Không có</span><span data-en>None</span></span></td><td><span class="pill p-green"><span data-vi>Có</span><span data-en>Present</span></span> — nhãn <code>.assess</code> rõ ràng ở mọi số liệu suy đoán</td></tr>
+        <tr><td><span data-vi>Diagram</span><span data-en>Diagram</span></td><td><span class="pill p-amber"><span data-vi>Dùng Mermaid</span><span data-en>Uses Mermaid</span></span></td><td><span class="pill p-blue"><span data-vi>Vượt mẫu</span><span data-en>Exceeds</span></span> — không Mermaid, đúng yêu cầu đã chốt trước đó</td></tr>
+        <tr><td><span data-vi>Ví dụ trước/sau</span><span data-en>Before/after examples</span></td><td><span class="pill p-red"><span data-vi>Không có</span><span data-en>None</span></span></td><td><span class="pill p-amber"><span data-vi>Chỉ jrtech có</span><span data-en>jrtech only</span></span> — 3 cặp before/after thật</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span data-vi>B. Từng bản proposal — cụ thể tìm thấy gì</span><span data-en>B. Each proposal — specific findings</span></h3>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr>
+        <th><span data-vi>Bản</span><span data-en>Proposal</span></th>
+        <th><span data-vi>Số bảng</span><span data-en>Tables</span></th>
+        <th><span data-vi>Bằng chứng đáng chú ý</span><span data-en>Notable evidence</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td>casa-escondida <span class="sub">(856,6 KB)</span></td><td>1</td><td><span data-vi>Phát hiện đúng vấn đề kinh doanh cụ thể — CTA duy nhất là &ldquo;chờ 24 giờ&rdquo;, mất khách nước ngoài lệch múi giờ.</span><span data-en>Correctly identifies a concrete business problem — the only CTA is &ldquo;wait 24 hours&rdquo;, losing overseas guests in other time zones.</span></td></tr>
+        <tr><td>jrtech <span class="sub">(679,3 KB)</span></td><td>2 <span data-vi>+ 3 before/after</span><span data-en>+ 3 before/after</span></td><td><span data-vi>Audit sâu nhất — trích nguyên văn lỗi PHP rò ra HTML công khai kèm đường dẫn server tuyệt đối.</span><span data-en>The deepest audit — quotes the actual PHP warning leaking into public HTML, with the absolute server path.</span></td></tr>
+        <tr><td>kitchen-arena <span class="sub">(765,5 KB)</span></td><td>3</td><td><span data-vi>So sánh chéo với thương hiệu chị (murahkitchen.my) để chỉ ra bất đối xứng kênh (TikTok) — dùng dữ liệu thật của khách, không giả định chung.</span><span data-en>Cross-references the sister brand (murahkitchen.my) to show a channel asymmetry (TikTok) — uses the client's own real data, not a generic assumption.</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="box" style="border-left-color:var(--red)">
+    <h3><span data-vi>⚠ Lỗi thật tìm thấy — cần sửa trước khi giao khách</span><span data-en>⚠ Real bug found — fix before client delivery</span></h3>
+    <p>
+      <span data-vi><b><code>jrtech-proposal.html</code>, cuối section <code>digital-web</code>:</b> đoạn <code>.assess</code> tiếng Việt bị lỗi encoding, hiển thị ký tự vô nghĩa và lồng sai cấu trúc <code>t-vi</code>/<code>t-en</code>:</span>
+      <span data-en><b><code>jrtech-proposal.html</code>, end of the <code>digital-web</code> section:</b> the Vietnamese <code>.assess</code> paragraph has an encoding bug, showing garbled characters nested incorrectly inside the <code>t-vi</code>/<code>t-en</code> structure:</span>
+    </p>
+    <p class="mono" style="background:var(--panel2);padding:10px 14px;border-radius:8px;font-size:.78rem;overflow-x:auto">"??c t?nh c?a TechNext" — &lt;span class="t-vi"&gt;??c t?nh c?a TechNext&lt;/span&gt;&lt;span class="t-en"&gt;TechNext estimate&lt;/span&gt; <span data-vi>(lồng sai bên trong span <code>data-en</code>)</span><span data-en>(nested incorrectly inside the <code>data-en</code> span)</span></p>
+    <p>
+      <span data-vi>Dấu hiệu 1 bước ghi file bị sai charset (thiếu UTF-8) khi build đoạn văn có tiếng Việt có dấu. Nên chạy lại <code>mechanical-validator</code> trên đúng file này sau khi sửa, và kiểm tra xem còn đoạn nào khác trong cùng file bị lỗi tương tự không.</span>
+      <span data-en>Symptomatic of a file-write step using the wrong charset (missing UTF-8) while building a paragraph with Vietnamese diacritics. Re-run <code>mechanical-validator</code> on this exact file after fixing, and check for any other paragraph in the same file with the same corruption.</span>
+    </p>
+  </div>
+
+  <h2 id="s10">10 · <span data-vi>Chi phí các lần chạy thật</span><span data-en>Real per-run cost report</span></h2>
+  <p>
+    <span data-vi>Đọc trực tiếp <code>_runs/&lt;slug&gt;/&lt;slug&gt;-cost-report.csv</code> của 3 lần chạy. Kết quả: <b>1/3 file dùng được, 1/3 dùng được một phần, 1/3 gần như là rác</b> — do file dùng schema cũ (trước khi cơ chế 1-task-1-session được chốt).</span>
+    <span data-en>Read directly from <code>_runs/&lt;slug&gt;/&lt;slug&gt;-cost-report.csv</code> for all 3 runs. Result: <b>1 of 3 files is usable, 1 of 3 partially usable, 1 of 3 is close to garbage</b> — because it uses the old schema (before the one-task-one-session rule was locked in).</span>
+  </p>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr>
+        <th><span data-vi>Lần chạy</span><span data-en>Run</span></th>
+        <th><span data-vi>Số dòng</span><span data-en>Rows</span></th>
+        <th><span data-vi>Agent thật</span><span data-en>Real agent</span></th>
+        <th><span data-vi>Tổng chi phí</span><span data-en>Total cost</span></th>
+        <th><span data-vi>Đánh giá</span><span data-en>Verdict</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>casa-escondida</td><td>9</td><td>codex · deepseek-v4-flash</td><td>$3,8315</td>
+          <td><span class="pill p-green"><span data-vi>Dùng được</span><span data-en>Usable</span></span></td>
+        </tr>
+        <tr>
+          <td>kitchen-arena</td><td>3 <span class="sub">(<span data-vi>thiếu nhóm C + hàng điều phối</span><span data-en>missing group C + orchestrator row</span>)</span></td><td>codex · deepseek-v4-flash</td><td>$1,0831 <span class="sub">(<span data-vi>chưa đủ</span><span data-en>incomplete</span>)</span></td>
+          <td><span class="pill p-amber"><span data-vi>Một phần</span><span data-en>Partial</span></span></td>
+        </tr>
+        <tr>
+          <td>jrtech</td><td>237+ <span class="sub">(<span data-vi>hầu hết không liên quan</span><span data-en>mostly unrelated</span>)</span></td><td><span data-vi>lẫn 10+ agent khác nhau</span><span data-en>mixed, 10+ different agents</span></td><td><span data-vi>không xác định được</span><span data-en>indeterminate</span></td>
+          <td><span class="pill p-red"><span data-vi>Không dùng được</span><span data-en>Unusable</span></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span data-vi>Phát hiện quan trọng — casa-escondida chạy dưới Codex, không phải Claude Code</span><span data-en>Important finding — casa-escondida ran under Codex, not Claude Code</span></h3>
+  <p>
+    <span data-vi>Cả 9/9 dòng trong <code>casa-escondida-cost-report.csv</code> đều ghi <code>agent=codex</code>, <code>model_name=deepseek-v4-flash</code> — nghĩa là <b>toàn bộ lần chạy này được thực thi bởi phiên Codex+DeepSeek song song</b>, không phải Claude Code. Số liệu tự nhất quán (tổng $3,8315 khớp đúng tổng từng dòng) nên vẫn dùng được để báo cáo chi phí, nhưng cần biết rõ đây không phải 1 lần chạy Claude Code thật.</span>
+    <span data-en>All 9 of 9 rows in <code>casa-escondida-cost-report.csv</code> record <code>agent=codex</code>, <code>model_name=deepseek-v4-flash</code> — meaning <b>this entire run was executed by the parallel Codex+DeepSeek session</b>, not Claude Code. The figures are internally consistent (the $3.8315 total matches the row sum exactly) so it's still usable for cost reporting, but it needs to be understood as not a real Claude Code run.</span>
+  </p>
+
+  <h3><span data-vi>Phát hiện quan trọng — jrtech chứng minh đúng lỗi mà bản thiết kế mới đã sửa</span><span data-en>Important finding — jrtech proves exactly the bug the new design fixed</span></h3>
+  <p>
+    <span data-vi><code>jrtech-cost-report.csv</code> dùng schema cũ (<code>session_id, last_activity, task_label, task_duration, model_name...</code>) — bản trước khi chốt luật &ldquo;1 task = 1 session&rdquo;. File có <b>237+ dòng</b>, phần lớn ghi <code>(outside this pipeline's recorded timeline)</code> — tức là log của rất nhiều session không liên quan gì tới lần chạy jrtech (thấy cả <code>gpt-5.6-sol</code>, <code>gemini-3.5-flash</code>, <code>glm-5.3</code>, các phiên từ tháng 6-8/2026). Tệ hơn: nhãn <code>phase1_groupC</code> xuất hiện <b>3 lần với 3 session_id hoàn toàn khác nhau</b> — một trong số đó là <b>chính session Claude Code đang gõ báo cáo này</b> (<code>5d1ccf19...</code>), bị gán nhầm <b>toàn bộ chi phí phiên đó ($220,90)</b> vào 1 task, đúng loại lỗi &ldquo;đoán theo khung giờ, không phải session riêng&rdquo; mà thiết kế mới (bắt buộc ghi <code>session_id</code> đúng, 1 task = 1 session) đã sửa.</span>
+    <span data-en><code>jrtech-cost-report.csv</code> uses the old schema (<code>session_id, last_activity, task_label, task_duration, model_name...</code>) — the version before the &ldquo;1 task = 1 session&rdquo; rule was locked in. The file has <b>237+ rows</b>, most tagged <code>(outside this pipeline's recorded timeline)</code> — logs from many unrelated sessions with nothing to do with the jrtech run (<code>gpt-5.6-sol</code>, <code>gemini-3.5-flash</code>, <code>glm-5.3</code>, sessions from June-August 2026). Worse: the <code>phase1_groupC</code> label appears <b>3 times under 3 completely different session_ids</b> — one of them is <b>the very Claude Code session writing this report</b> (<code>5d1ccf19...</code>), which got <b>its entire session cost ($220.90)</b> misattributed to one task — exactly the &ldquo;guessed by time window, not a dedicated session&rdquo; failure mode the new design (mandatory correct <code>session_id</code>, one task per session) was built to fix.</span>
+  </p>
+  <div class="box">
+    <h3><span data-vi>Khuyến nghị</span><span data-en>Recommendation</span></h3>
+    <p>
+      <span data-vi>Xóa/lưu trữ riêng <code>jrtech-cost-report.csv</code> hiện tại (không dùng để báo giá) và chạy lại <code>ccusage_to_csv.py</code> bản hiện hành trên checkpoint jrtech thật để có số liệu đáng tin. Với kitchen-arena, chạy bổ sung nhóm C + hàng điều phối còn thiếu trước khi báo tổng chi phí.</span>
+      <span data-en>Archive/discard the current <code>jrtech-cost-report.csv</code> (don't quote it) and re-run the current <code>ccusage_to_csv.py</code> against the real jrtech checkpoint for trustworthy figures. For kitchen-arena, run the missing group C + orchestrator row before reporting a total cost.</span>
+    </p>
+  </div>
+
+  <h2 id="s7">7 · <span data-vi>Kết luận &amp; việc cần quyết</span><span data-en>Conclusion &amp; decisions needed</span></h2>
+  <div class="box">
+    <h3><span data-vi>Kết luận</span><span data-en>Verdict</span></h3>
+    <p>
+      <span data-vi><b>Nội dung: đạt.</b> 17 hàng dữ liệu trong 3 bảng đều kiểm chứng được và tự khớp với nhau (7 tool ↔ 7 skill thật; 7/7/7 ↔ nhau). Đây là tài liệu đủ tin để đưa cho quản lý đọc về mặt số liệu.<br><b>Trình bày: chưa đạt chuẩn mẫu.</b> 5/9 tiêu chí chưa đạt — đều là hình thức và sửa nhanh (ước tính khoảng 2,5 giờ cho toàn bộ 7 việc, trong đó 3 việc P0 chưa tới 30 phút).</span>
+      <span data-en><b>Content: pass.</b> All 17 data rows across the 3 tables are verifiable and self-consistent (7 tools ↔ 7 real skills; 7/7/7 ↔ each other). It is trustworthy enough to hand to management on the numbers.<br><b>Presentation: not at the sample standard.</b> 5 of 9 criteria are unmet — all cosmetic and fast to fix (about 2.5 h for all 7 actions, with the 3 P0 items under 30 min combined).</span>
+    </p>
+  </div>
+  <h3><span data-vi>Ba việc cần quyết</span><span data-en>Three decisions requested</span></h3>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr>
+        <th>#</th>
+        <th><span data-vi>Câu hỏi</span><span data-en>Question</span></th>
+        <th><span data-vi>Ảnh hưởng</span><span data-en>Impact</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span data-vi>Chuẩn hoá mọi bảng trong <code>report/</code> về <code>.tbl</code> + <code>.tbl-wrap</code>? (khuyến nghị: có)</span><span data-en>Standardise every table under <code>report/</code> on <code>.tbl</code> + <code>.tbl-wrap</code>? (recommended: yes)</span></td><td><span data-vi>Sửa 5 tiêu chí chưa đạt một lần, dùng lại cho các báo cáo sau</span><span data-en>Fixes 5 unmet criteria at once, reusable for later reports</span></td></tr>
+        <tr><td>2</td><td><span data-vi>Các trang <code>report/</code> có cần thêm dải KPI / biểu đồ như <code>#web</code> không? (khuyến nghị: có 1 dải KPI + 1 biểu đồ)</span><span data-en>Should <code>report/</code> pages gain a KPI strip / charts like <code>#web</code>? (recommended: 1 KPI strip + 1 chart)</span></td><td><span data-vi>Quyết định tốc độ tiếp nhận thông tin của người đọc cấp quản lý</span><span data-en>Decides how fast a management reader absorbs the point</span></td></tr>
+        <tr><td>3</td><td><span data-vi>Giữ tông màu beige cho <code>report/</code> hay đồng bộ tông teal của bản proposal?</span><span data-en>Keep the beige tone for <code>report/</code> or unify with the proposal&rsquo;s teal tone?</span></td><td><span data-vi>Nhất quán thương hiệu giữa tài liệu nội bộ và tài liệu khách hàng</span><span data-en>Brand consistency between internal and client-facing documents</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="sub">
+    <span data-vi><b>Lưu ý đính chính:</b> mục <code>#web</code> của full1 <b>không có bảng nào</b>. Nếu trước đó có trao đổi &ldquo;3 bảng của ta theo đúng bảng mẫu ở #web&rdquo; thì câu đó chưa khớp thực tế — bảng mẫu đúng nằm ở 22 mục khác của full1.</span>
+    <span data-en><b>Correction note:</b> the <code>#web</code> section of full1 <b>contains no table</b>. If it was previously stated that &ldquo;our 3 tables follow the sample table at #web&rdquo;, that statement does not match reality — the real table samples sit in the other 22 sections of full1.</span>
+  </p>
+
+  <h2 id="s8">8 · <span data-vi>Nguồn &amp; cách kiểm chứng</span><span data-en>Sources &amp; how to verify</span></h2>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr>
+        <th><span data-vi>Nguồn</span><span data-en>Source</span></th>
+        <th><span data-vi>Số liệu đã đếm</span><span data-en>Counted figures</span></th>
+        <th><span data-vi>Cách kiểm lại</span><span data-en>How to re-check</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td><code>report/tools-summary.html</code></td><td>14.662 byte · 3 bảng · 17 hàng · 0 <code>@media</code> · 0 <code>overflow-x</code> · 0 <code>tbl-wrap</code></td><td><span data-vi>mở tệp, tìm từ khoá</span><span data-en>open the file, search the keywords</span></td></tr>
+        <tr><td><code>https://skytechnext.github.io/full1/#web</code></td><td><span data-vi>mục <code>#web</code>: 3.439 byte · 0 <code>&lt;table&gt;</code> · 2 <code>canvas</code> · 4 <code>.kpi</code> · 1 khối Mermaid · 3 thẻ quick-win</span><span data-en><code>#web</code> section: 3,439 bytes · 0 <code>&lt;table&gt;</code> · 2 <code>canvas</code> · 4 <code>.kpi</code> · 1 Mermaid block · 3 quick-win cards</span></td><td><span data-vi>mở đúng link <code>#web</code> và đếm</span><span data-en>open the exact <code>#web</code> link and count</span></td></tr>
+        <tr><td><span data-vi>Toàn trang full1</span><span data-en>full1 whole page</span></td><td>3.720.647 byte · <b>23</b> bảng <code>&lt;table class=&quot;tbl&quot;&gt;</code> · 22 <code>&lt;thead&gt;</code> · 23 <code>&lt;tbody&gt;</code> · 9 khối Mermaid</td><td><span data-vi>tải trang và đếm thẻ</span><span data-en>download the page and count tags</span></td></tr>
+        <tr><td><code>skills/</code></td><td>10 skill: <span class="mono">assembler, chart-data-analyst, checkpoint-manager, company-verifier, front-matter-writer, judgment-reviewer, mechanical-validator, officers-lookup, source-auditor, web-osint-scanner</span></td><td><span data-vi>liệt kê thư mục <code>skills/</code></span><span data-en>list the <code>skills/</code> directory</span></td></tr>
+        <tr><td><code>_runs/casa-escondida/casa-escondida-cost-report.csv</code></td><td><span data-vi>9 hàng · tổng <b>$3,8315</b> · điều phối $2,8489 · 4 nhóm $0,8844 · 4 worker đối thủ $0,0982</span><span data-en>9 rows · total <b>$3.8315</b> · orchestrator $2.8489 · 4 groups $0.8844 · 4 competitor workers $0.0982</span></td><td><span data-vi>cộng cột <code>cost_usd</code></span><span data-en>sum the <code>cost_usd</code> column</span></td></tr>
+        <tr><td><code>_runs/kitchen-arena/kitchen-arena-cost-report.csv</code></td><td><span data-vi>chỉ 3 hàng (groupA/B/D) — thiếu nhóm C và hàng điều phối</span><span data-en>only 3 rows (groupA/B/D) — missing group C and the orchestrator row</span></td><td><span data-vi>đếm số hàng</span><span data-en>count the rows</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="foot">technext-sales-proposal · <span data-vi>báo cáo đánh giá nội bộ</span><span data-en>internal review report</span> · 2026-09-24</div>
+</div>
+
+<script>
+function setLang(l){
+  document.documentElement.setAttribute('data-lang', l);
+  document.getElementById('btn-vi').classList.toggle('active', l==='vi');
+  document.getElementById('btn-en').classList.toggle('active', l==='en');
+  try{localStorage.setItem('tsr_lang', l);}catch(e){}
+}
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('btn-light').classList.toggle('active', t==='light');
+  document.getElementById('btn-dark').classList.toggle('active', t==='dark');
+  try{localStorage.setItem('tsr_theme', t);}catch(e){}
+}
+(function(){
+  try{
+    var l = localStorage.getItem('tsr_lang'); if(l) setLang(l);
+    var t = localStorage.getItem('tsr_theme'); if(t) setTheme(t);
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

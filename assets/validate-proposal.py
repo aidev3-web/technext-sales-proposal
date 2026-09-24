@@ -18,6 +18,12 @@ import re
 import sys
 from pathlib import Path
 
+try:
+    from bs4 import BeautifulSoup
+    HAS_BS4 = True
+except ImportError:
+    HAS_BS4 = False
+
 REQUIRED_ASSESS_SECTIONS = ["recommendations"]
 
 MENU_STRUCTURE_PATH = Path(__file__).parent / "menu-structure.md"
@@ -174,8 +180,8 @@ def main():
     print(f"\n=== 9. Full chart & diagram manifest present (18 canvases + 4 static diagram blocks, exact ids) ===")
     # SKILL.md's "Charts & diagrams" manifest requires this skill's output to match this
     # count and these exact canvas ids (content adapted per client, but the slot itself
-    # must exist). Diagrams are static HTML (boss feedback 2026-09-23: no Mermaid),
-    # wrapped in <div class="diagram-block">. This does not judge whether the plotted
+    # must exist). Diagrams are static HTML (no Mermaid), wrapped in
+    # <div class="diagram-block">. This does not judge whether the plotted
     # data is any good — that's a judgment call.
     REQUIRED_CANVAS_IDS = [
         "cRevMix", "cScorecard", "cRevStream", "cHeadcount", "cSeasonStaff", "cChannel",
@@ -198,7 +204,7 @@ def main():
     else:
         ok(f"{canvas_count} chart canvas(es) found")
     if mermaid_count:
-        passed = fail(f"{mermaid_count} Mermaid diagram(s) found — Mermaid is banned (boss feedback 2026-09-23), rebuild as static diagram-block HTML") and passed
+        passed = fail(f"{mermaid_count} Mermaid diagram(s) found — Mermaid is banned, rebuild as static diagram-block HTML") and passed
     if diagram_count < 4:
         passed = fail(f"only {diagram_count} diagram-block(s) found (manifest requires 4: 1 Group A + 3 Group B, static HTML, no Mermaid)") and passed
     else:
@@ -245,6 +251,68 @@ def main():
         passed = fail(f"unfilled client-name placeholder(s)/stale text still in the file: {found_placeholders} — check the hero, <title>, AND the buildNav() sidebar brand line") and passed
     else:
         ok("no unfilled <CLIENT NAME> placeholder or stale 'Odoo 19' sidebar text found")
+
+    print(f"\n=== 12. Structural HTML validity (BeautifulSoup4 + html5lib parser) ===")
+    # Checks 1-11 above are regex-based — fast, but can miss real structural bugs that
+    # only a real HTML parser catches (a regex has no idea what's "inside" a tag).
+    # html5lib parses exactly like a real browser would (same forgiving recovery
+    # rules as the HTML5 spec), so if IT reports something is wrong, a browser
+    # would genuinely render it wrong too — not a style nitpick.
+    if not HAS_BS4:
+        print("  SKIP  beautifulsoup4 not installed (pip install beautifulsoup4 html5lib) — "
+              "this check is skipped, not failed, so it doesn't block delivery on a missing "
+              "local dependency; install it and re-run for the real check.")
+    else:
+        try:
+            import html5lib  # noqa: F401
+            soup = BeautifulSoup(html, "html5lib")
+        except ImportError:
+            soup = BeautifulSoup(html, "html.parser")
+            print("  SKIP  html5lib not installed (pip install html5lib) — falling back to "
+                  "Python's built-in parser, which is more lenient and may miss real errors.")
+            soup = None
+        if soup is not None:
+            # Duplicate ids are a real bug: breaks #anchor links, getElementById(),
+            # and buildNav()'s section lookup — a regex pass can't reliably catch
+            # this (would need to track every id= across the whole file itself).
+            all_ids = [tag.get("id") for tag in soup.find_all(id=True)]
+            seen, dupes = set(), set()
+            for i in all_ids:
+                (dupes.add(i) if i in seen else seen.add(i))
+            if dupes:
+                passed = fail(f"{len(dupes)} duplicate id(s) found — breaks internal navigation and JS lookups: {sorted(dupes)}") and passed
+            else:
+                ok(f"no duplicate ids across {len(all_ids)} ided elements")
+
+            # A canvas with no closing awareness, or a section tag that swallowed
+            # the rest of the document because an earlier tag never closed, shows
+            # up here as a section with a wildly wrong number of children — cheap
+            # sanity check html5lib's real tree gives us for free.
+            sections = soup.find_all("section", id=True)
+            empty_sections = [s.get("id") for s in sections if len(s.get_text(strip=True)) < 5]
+            if empty_sections:
+                passed = fail(f"{len(empty_sections)} section(s) parse as essentially empty (<5 chars of text) — likely a tag-closing bug swallowed their content: {empty_sections}") and passed
+            else:
+                ok(f"all {len(sections)} sections have real parsed content")
+
+    print(f"\n=== 13. No external CDN dependency (script/link must be inline, not fetched) ===")
+    # SKILL.md promises "all CSS/JS/charts inline, no CDN — opens correctly via
+    # file:// with no network." A <script src="https://...">/<link ... href="https://...">
+    # pointing at an external host breaks that promise silently: the page still opens,
+    # but every chart goes blank the moment the machine is offline or a CDN is blocked
+    # (this happened for real — a delivered file still had the old
+    # cdn.jsdelivr.net/npm/chart.js reference after the template was fixed to embed it).
+    external_scripts = re.findall(r'<script[^>]+src="(https?://[^"]+)"', html)
+    external_stylesheets = re.findall(
+        r'<link[^>]+rel="stylesheet"[^>]+href="(https?://[^"]+)"', html)
+    # manifest.webmanifest / PWA icons are same-origin relative paths by design, not CDN —
+    # only flag scheme-qualified (http/https) external hosts.
+    external_assets = external_scripts + external_stylesheets
+    if external_assets:
+        passed = fail(f"{len(external_assets)} external CDN reference(s) found — page "
+                       f"is not self-contained/offline-safe: {external_assets}") and passed
+    else:
+        ok("no external <script src=\"http...\"> or stylesheet <link> found — fully inline")
 
     print()
     if passed:

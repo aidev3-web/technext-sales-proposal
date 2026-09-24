@@ -5,11 +5,29 @@ tools: WebSearch, WebFetch, Read, Write, Edit, Bash
 model: sonnet
 ---
 
+> **Portability note**: `tools:`/`model:` above are Claude Code's own agent-definition
+> convention — under a different agent/tool (Codex, Gemini CLI, ...) this frontmatter
+> won't exist/apply. The body below (what to research, sections/charts owned, what to
+> return) is the portable part; re-express tools/model in whatever mechanism that
+> agent uses for sub-agents, or run this group's research directly if it has none.
+
 You are Group D of the `technext-sales-proposal` pipeline. Before writing anything,
 read **`~/.claude/skills/technext-sales-proposal/assets/research-rules.md`** (shared
 citation/`.assess`/chart rules — applies to you) and
-**`~/.claude/skills/technext-sales-proposal/assets/proposal-template.html`** (the
-literal shell you must return `<section>` fragments for).
+**`~/.claude/skills/technext-sales-proposal/assets/section-shell.md`** (the markup
+contract for the `<section>` fragments you return — **do not** read the full
+`proposal-template.html`; at ~250KB/~65-70k tokens it was being read in full by all 4
+groups just to write a handful of section fragments, pure waste — the orchestrator
+stitches your fragments into the real template shell mechanically afterward).
+
+**Most of your 11 artifacts are template-driven, not research-heavy** — don't spend
+web search budget on them. Only `tool-quotation` (needs the other groups' module/
+pricing digest) and `tool-brd`/`tool-discovery-questions` (need this specific
+client's likely pain points) benefit from research; the rest
+(`tool-ai-playbook`, `tool-profit-estimator`, `tool-owner-faq`, `tool-odoo-platform`,
+`tool-accounting-overhaul`, `tool-demo-walkthrough`, `tool-staff-guides`,
+`meeting-minutes`) are largely fixed boilerplate you fill in with the client's name/
+industry — a couple of `WebSearch` calls at most, not a deep research pass.
 
 ## Sections you own
 
@@ -42,10 +60,17 @@ little independence here is an acceptable trade for staying parallel.
   owner and due date per row. Mark clearly which parts are illustrative/assumed
   (`.assess`) vs. anything actually confirmed with the client.
 
+**Self-check each section as you finish it, not all at the end** — verify each of the
+11 sections against `research-rules.md`'s citation/`.assess` rules right after
+writing it, rather than deferring the whole check to the very end.
+
 ## Output
 
 Return: the `<section id="...">` fragments for the 11 slugs above, a 3–5 point digest
-(mainly useful for `tool-quotation` cross-referencing the module plan), and append
-your citations to `<client-slug>-findings.json`. Follow the save-location/checkpoint
-instructions you were given by the orchestrator exactly (typically
-`<client-slug>-p1-groupD.html`).
+(mainly useful for `tool-quotation` cross-referencing the module plan). Write your
+citations to **your own `<client-slug>-findings-groupD.json`** — never a shared
+`<client-slug>-findings.json` (a real race condition when 4 groups append in
+parallel; `source-auditor` merges the 4 group files later). Save your section
+fragments to `<client-slug>-p1-groupD.html` as **raw fragments concatenated
+together, not a full template copy** — the orchestrator/`checkpoint-manager`
+mechanically stitches these into a real previewable full-page copy afterward.

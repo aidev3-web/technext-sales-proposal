@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Sales Proposal Pipeline — Upgrade Plan — TechNext</title>
+    <title>Sales Proposal Pipeline — Current Mechanics — TechNext</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -1253,6 +1253,34 @@
                 print-color-adjust: exact
             }
         }
+        /* ---- merged from tool-decision-report.html ---- */
+        #tdr-section{--tdr-panel:#fffaf3;--tdr-panel2:#f2e9dd;--tdr-line:#e3ceb8;--tdr-ink:#3a3a3a;--tdr-ink2:#5c5147;--tdr-muted:#8a7f74;--tdr-accent:#e8734a;--tdr-red:#c85c4a;--tdr-green:#5a8f6b;
+          max-width:820px;margin:24px 0 0}
+        #tdr-section h2{font-family:inherit;font-size:1.2rem;font-weight:800;margin:36px 0 4px;color:var(--tdr-ink)}
+        #tdr-section p.sub{color:var(--tdr-ink2);margin:0 0 24px;max-width:66ch}
+        #tdr-section p.group-sub{color:var(--tdr-ink2);margin:0 0 14px;max-width:66ch;font-size:.92rem}
+        #tdr-section code{background:var(--tdr-panel2);padding:1px 6px;border-radius:5px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em}
+        #tdr-section .tool-card{background:var(--tdr-panel);border:1px solid var(--tdr-line);border-left:3px solid var(--tdr-accent);border-radius:0 12px 12px 0;padding:16px 20px;margin-bottom:14px}
+        #tdr-section .tool-card.no{border-left-color:var(--tdr-red)}
+        #tdr-section .tool-card.maybe{border-left-color:#c8853c}
+        #tdr-section .tool-card .head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+        #tdr-section .tool-card h3{margin:0;font-size:1.05rem}
+        #tdr-section .verdict{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;font-weight:800;padding:3px 10px;border-radius:999px;white-space:nowrap}
+        #tdr-section .verdict.yes{background:rgba(90,143,107,.14);color:var(--tdr-green)}
+        #tdr-section .verdict.no{background:rgba(200,92,74,.14);color:var(--tdr-red)}
+        #tdr-section .verdict.maybe{background:rgba(200,133,60,.14);color:#c8853c}
+        #tdr-section .tool-card p{margin:0 0 8px;color:var(--tdr-ink2);font-size:.9rem}
+        #tdr-section .why{font-size:.85rem;color:var(--tdr-ink2);background:var(--tdr-panel2);border-radius:8px;padding:8px 12px;margin:8px 0}
+        #tdr-section .why b{color:var(--tdr-ink)}
+        #tdr-section .action{font-size:.85rem;color:var(--tdr-ink2);background:rgba(90,143,107,.08);border:1px dashed var(--tdr-green);border-radius:8px;padding:8px 12px;margin:8px 0}
+        #tdr-section .action b{color:var(--tdr-green)}
+        #tdr-section .summary-box{border:1px solid var(--tdr-line);border-left:4px solid var(--tdr-accent);background:var(--tdr-panel2);padding:16px 20px;border-radius:8px;margin:30px 0}
+        #tdr-section .summary-box h3{margin:0 0 8px;font-size:1rem}
+        #tdr-section .summary-box ol{margin:0;padding-left:20px;color:var(--tdr-ink2);font-size:.9rem}
+        #tdr-section .summary-box li{margin-bottom:6px}
+        #tdr-section .stale-note{border:1.5px dashed var(--tdr-red);background:rgba(200,92,74,.08);border-radius:8px;padding:10px 14px;margin:0 0 20px;font-size:.85rem;color:var(--tdr-ink2)}
+        #tdr-section .stale-note b{color:var(--tdr-red)}
+        #tdr-section .foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--tdr-line);color:var(--tdr-muted);font-size:.78rem}
     </style>
 </head>
 
@@ -1268,8 +1296,8 @@
        ============================================================ -->
         <section class="section" id="overview">
             <span class="kicker"><span class="t-vi">TechNext · Quy trình Đề xuất Bán hàng</span><span class="t-en">TechNext · Sales Proposal Pipeline</span></span>
-            <h1><span class="t-vi">Quy trình Đề xuất Bán hàng</span><span class="t-en">Sales Proposal Pipeline</span> <span class="thin"><span class="t-vi">— kế hoạch chia nhỏ</span><span class="t-en">— decomposition plan</span></span></h1>
-            <p class="lede"><span class="t-vi"><b>Đây là kế hoạch nâng cấp, chưa phải hiện trạng.</b> Hôm nay <code>technext-sales-proposal</code> là một skill duy nhất chạy toàn bộ theo các phase nội bộ (một "dòng chảy"). Sơ đồ này vẽ ra cách chia nó thành: một orchestrator, bốn subagent Claude Sonnet chạy song song, và năm skill tái sử dụng được — để mỗi phần có thể build/test riêng lẻ, giống cấu trúc của quy trình QA/QC tham chiếu.</span><span class="t-en"><b>This is an upgrade plan, not what exists today.</b> Right now <code>technext-sales-proposal</code> is one monolithic skill running everything through internal phases (one "flow"). This diagram maps out splitting it into: one orchestrator, four parallel Claude Sonnet subagents, and five reusable skills — so each piece can be built and tested on its own, matching the shape of the QA/QC reference pipeline.</span></p>
+            <h1><span class="t-vi">Quy trình Đề xuất Bán hàng</span><span class="t-en">Sales Proposal Pipeline</span> <span class="thin"><span class="t-vi">— cơ chế hiện tại</span><span class="t-en">— current mechanics</span></span></h1>
+            <p class="lede"><span class="t-vi"><b>Đây là cơ chế hiện tại của pipeline — không còn là kế hoạch.</b> <code>technext-sales-proposal</code> nay là một orchestrator + <b>10 sub-skill</b> trong <code>skills/</code> + <b>5 loại agent</b> trong <code>agents/</code>, cộng <b>4 script tất định</b> (<code>bind_check.py</code>, <code>stitch_group.py</code>, <code>validate-proposal.py</code>, <code>ccusage_to_csv.py</code>) — phần đếm/so khớp không giao cho LLM. Sơ đồ dưới vẽ đúng luồng chạy thật: pre-fetch một lần, gate dữ kiện <i>trước khi</i> viết, rồi hai cổng chặn cứng.</span><span class="t-en"><b>These are the pipeline's current mechanics — no longer a plan.</b> <code>technext-sales-proposal</code> is now one orchestrator + <b>10 sub-skills</b> under <code>skills/</code> + <b>5 agent definitions</b> under <code>agents/</code>, plus <b>4 deterministic scripts</b> (<code>bind_check.py</code>, <code>stitch_group.py</code>, <code>validate-proposal.py</code>, <code>ccusage_to_csv.py</code>) — the counting/matching work is never handed to an LLM. The diagram below draws the real flow: pre-fetch once, gate the facts <i>before</i> writing, then two hard gates.</span></p>
 
             <div class="overview">
 
@@ -1332,7 +1360,7 @@
                 <div class="panel blackbox">
                     <div class="panel-title"><span class="dot"></span><span class="t-vi">Hộp đen · quy trình</span><span class="t-en">Black-box · workflow</span></div>
                     <h2><span class="t-vi">Bên trong chạy gì</span><span class="t-en">What runs inside</span></h2>
-                    <p class="sub"><span class="t-vi">Một orchestrator điều phối bốn subagent song song. Các con số dưới đây là kế hoạch chia nhỏ, chưa phải hiện trạng.</span><span class="t-en">One orchestrator dispatches four parallel subagents. Numbers below are the proposed split, not today's state.</span></p>
+                    <p class="sub"><span class="t-vi">Một orchestrator điều phối bốn subagent nghiên cứu song song, cộng một worker cho mỗi đối thủ. Mọi con số dưới đây là hiện trạng đã chạy được.</span><span class="t-en">One orchestrator dispatches four parallel research subagents, plus one worker per competitor. Every number below is the current, working state.</span></p>
                     <div class="counters">
                         <div class="counter">
                             <div class="num" data-count="1">0</div>
@@ -1342,21 +1370,21 @@
                         <div class="counter">
                             <div class="num" data-count="4">0</div>
                             <div class="lbl"><span class="t-vi">Subagent song song</span><span class="t-en">Parallel subagents</span></div>
-                            <div class="hint"><span class="t-vi">Tất cả đều dùng Claude Sonnet</span><span class="t-en">All pinned to Claude Sonnet</span></div>
+                            <div class="hint"><span class="t-vi">4 nhóm (Sonnet) + 1 worker/đối thủ (Haiku)</span><span class="t-en">4 groups (Sonnet) + 1 worker per competitor (Haiku)</span></div>
                         </div>
                         <div class="counter">
                             <div class="num" data-count="7">0</div>
                             <div class="lbl"><span class="t-vi">Tool bên ngoài</span><span class="t-en">External tools</span></div>
-                            <div class="hint">GLEIF · Firecrawl · Apollo · Webcite · ccusage · +2</div>
+                            <div class="hint">GLEIF · Wikidata · Jina Reader · registries (Companies House / OpenCorporates / SEC EDGAR) · WebSearch · validate-proposal.py · ccusage</div>
                         </div>
                         <div class="counter">
-                            <div class="num" data-count="8">0</div>
+                            <div class="num" data-count="10">0</div>
                             <div class="lbl"><span class="t-vi">Skill</span><span class="t-en">Skills</span></div>
-                            <div class="hint"><span class="t-vi">company-verifier · source-auditor · chart-data-analyst · +5</span><span class="t-en">company-verifier · source-auditor · chart-data-analyst · +5</span></div>
+                            <div class="hint"><span class="t-vi">company-verifier · officers-lookup · web-osint-scanner · source-auditor · chart-data-analyst · checkpoint-manager · front-matter-writer · assembler · mechanical-validator · judgment-reviewer</span><span class="t-en">company-verifier · officers-lookup · web-osint-scanner · source-auditor · chart-data-analyst · checkpoint-manager · front-matter-writer · assembler · mechanical-validator · judgment-reviewer</span></div>
                         </div>
                     </div>
                     <div class="box-sum">
-                        <span class="t-vi"><strong>sales-proposal-run</strong> (Claude Opus) xác định danh tính khách hàng qua <strong>company-verifier</strong> (GLEIF, miễn phí) + <strong>web-osint-scanner</strong> (Firecrawl, free tier), rồi dispatch bốn subagent Claude Sonnet chạy song song (một trong số đó dùng thêm Apollo MCP). Kết quả đi qua <strong>source-auditor</strong> (Webcite) kiểm tra nguồn và <strong>chart-data-analyst</strong> quyết định số liệu, trước khi front-matter-writer + html-renderer ráp thành 1 file, và mechanical-validator + judgment-reviewer duyệt lần cuối. <strong>ccusage</strong> (miễn phí) đo chi phí thật của mỗi lần chạy.</span><span class="t-en"><strong>sales-proposal-run</strong> (Claude Opus) resolves client identity via <strong>company-verifier</strong> (GLEIF, free) + <strong>web-osint-scanner</strong> (Firecrawl, free tier), then dispatches four Claude Sonnet subagents in parallel (one also using Apollo MCP). Output passes through <strong>source-auditor</strong> (Webcite) for source-checking and <strong>chart-data-analyst</strong> for chart numbers, before front-matter-writer + html-renderer assemble one file, and mechanical-validator + judgment-reviewer sign off. <strong>ccusage</strong> (free) measures the real cost of each run.</span>
+                        <span class="t-vi"><strong>sales-proposal-run</strong> (Claude Opus) xác thực danh tính qua <strong>company-verifier</strong> (GLEIF + Wikidata, miễn phí) + <strong>officers-lookup</strong> (Companies House / OpenCorporates / SEC EDGAR, miễn phí), rồi <strong>web-osint-scanner</strong> ghi <code>web-scan.json</code>, <b>nhận diện 2–4 đối thủ</b> và <b>pre-fetch song song</b> mọi URL vào <code>captures/*.md</code> (~39 trang ≈ 1–2 phút, thay cho ~29 phút fetch live). Mỗi đối thủ có một <strong>competitor-research-worker</strong> (Haiku, ≤8 fetch / ≤8 phút) trả JSON dữ kiện, và <code>bind_check.py --facts</code> của <strong>source-auditor</strong> là cổng chặn <b>trước khi</b> Phase 1 chạy. Bốn nhóm A–D đọc <code>section-shell.md</code> (~5 KB, không đọc template 250 KB) + <code>captures/</code>, trả fragment thô; <strong>stitch_group.py</strong> ghép thành trang xem được. <strong>source-auditor</strong> merge 4 file findings, gộp nguồn trùng gốc, re-grade, bind-check lại <b>từ cache</b> và sinh <code>sources-citation</code> bằng máy. <strong>front-matter-writer</strong> viết 6 section đầu, <strong>assembler</strong> ráp thành 1 file, <strong>mechanical-validator</strong> (13 check cứng: no-CDN, HTML hợp lệ qua html5lib, đủ 18 chart + 4 sơ đồ…) và <strong>judgment-reviewer</strong> duyệt lần cuối. <strong>ccusage</strong> (miễn phí) xuất CSV chi phí thật theo từng task.</span><span class="t-en"><strong>sales-proposal-run</strong> (Claude Opus) verifies identity via <strong>company-verifier</strong> (GLEIF + Wikidata, free) + <strong>officers-lookup</strong> (Companies House / OpenCorporates / SEC EDGAR, free), then <strong>web-osint-scanner</strong> writes <code>web-scan.json</code>, <b>identifies 2–4 competitors</b> and <b>pre-fetches every URL in parallel</b> into <code>captures/*.md</code> (~39 pages ≈ 1–2 min, replacing ~29 min of live fetching). One <strong>competitor-research-worker</strong> per competitor (Haiku, ≤8 fetches / ≤8 min) returns facts-only JSON, and <strong>source-auditor</strong>'s <code>bind_check.py --facts</code> is a hard gate <b>before</b> Phase 1 runs. Groups A–D read <code>section-shell.md</code> (~5 KB, never the 250 KB template) + <code>captures/</code> and return raw fragments; <strong>stitch_group.py</strong> stitches them into a previewable page. <strong>source-auditor</strong> merges the 4 findings files, collapses duplicate-origin sources, re-grades, re-runs bind-check <b>from cache</b> and generates <code>sources-citation</code> mechanically. <strong>front-matter-writer</strong> writes the 6 opening sections, <strong>assembler</strong> assembles one file, <strong>mechanical-validator</strong> (13 hard checks: no-CDN, html5lib HTML validity, all 18 charts + 4 diagrams…) and <strong>judgment-reviewer</strong> sign off. <strong>ccusage</strong> (free) exports a real per-task cost CSV.</span>
                     </div>
                     <div class="agent-strip">
                         <span class="lab"><span class="t-vi">Agent</span><span class="t-en">Agents</span></span>
@@ -1403,7 +1431,7 @@
                             <div class="rail"></div>
                             <div class="body">
                                 <h3><span class="tag">HTML</span><span class="t-vi">Đề xuất bán hàng song ngữ</span><span class="t-en">Bilingual sales proposal</span> <span class="ext">.html</span></h3>
-                                <p><span class="t-vi">Trang HTML tự chứa ~40 section, 18 biểu đồ + 4 sơ đồ tĩnh, trích dẫn dạng hover-card đã qua Webcite audit.</span><span class="t-en">Self-contained ~40-section page, 18 charts + 4 static diagrams, Webcite-audited hover-card citations.</span></p>
+                                <p><span class="t-vi">Trang HTML tự chứa ~40 section, 18 biểu đồ + 4 sơ đồ tĩnh, trích dẫn dạng hover-card đã bind-check với nguồn thật.</span><span class="t-en">Self-contained ~40-section page, 18 charts + 4 static diagrams, bind-checked hover-card citations.</span></p>
                             </div>
                         </div>
                         <div class="out-card">
@@ -1434,7 +1462,7 @@
         <section class="section" id="detail">
             <span class="kicker"><span class="t-vi">Section 2 · Sơ đồ node</span><span class="t-en">Section 2 · Node graph</span></span>
             <h1><span class="t-vi">Bên trong quy trình</span><span class="t-en">Inside the workflow</span> <span class="thin"><span class="t-vi">— từng giai đoạn</span><span class="t-en">— stage by stage</span></span></h1>
-            <p class="lede"><span class="t-vi">Sáu giai đoạn, trái sang phải. Mỗi node thể hiện loại, tên, và việc nó làm. Node Agent mang logo Claude và chip model. Rê chuột vào một Agent (trên màn hình) hoặc đọc callout (bản in) để xem thẻ chi tiết đầy đủ.</span><span class="t-en">Six phases, left to right. Each node shows its kind, name, and what happens in it. Agent nodes carry the Claude brand mark and the model chip. Hover an Agent (screen) or read the callout (print) for its full detail card.</span></p>
+            <p class="lede"><span class="t-vi">Sáu giai đoạn, trái sang phải — cộng hai cổng chặn cứng: gate <code>--facts</code> (trước khi viết) và <code>source-auditor</code> (Phase 2.5). Mỗi node thể hiện loại, tên, và việc nó làm. Node Agent mang logo Claude và chip model. Rê chuột vào một Agent (trên màn hình) hoặc đọc callout (bản in) để xem thẻ chi tiết đầy đủ.</span><span class="t-en">Six phases, left to right — plus two hard gates: the <code>--facts</code> gate (before any writing) and <code>source-auditor</code> (Phase 2.5). Each node shows its kind, name, and what happens in it. Agent nodes carry the Claude brand mark and the model chip. Hover an Agent (screen) or read the callout (print) for its full detail card.</span></p>
 
             <div class="graph-wrap">
                 <div class="graph" id="graph"></div>
@@ -1473,8 +1501,201 @@
                         </span>Deliverable</div>
                 </div>
             </div>
+        <!-- ============================================================
+       SECTION 3 · KNOWN GAPS
+       ============================================================ -->
+        <section class="section" id="gaps">
+            <span class="kicker"><span class="t-vi">Section 3 · Điểm chưa khớp</span><span class="t-en">Section 3 · Known gaps</span></span>
+            <h1><span class="t-vi">Năm chỗ dây nối chưa khớp</span><span class="t-en">Five places the wiring does not connect yet</span></h1>
+            <p class="lede"><span class="t-vi">Sơ đồ trên vẽ đúng luồng đang chạy. Phần dưới là những chỗ <b>tài liệu và code chưa khớp nhau</b> — đã kiểm chứng bằng cách chạy thật, không phải suy đoán. Sửa xong thì xoá mục tương ứng khỏi đây.</span><span class="t-en">The graph above draws the flow that actually runs. Below are the places where <b>docs and code disagree</b> — each verified by running it, not guessed. Delete an item here once it is fixed.</span></p>
+            <div class="overview">
+                <div class="panel blackbox">
+                    <div class="panel-title"><span class="dot"></span><span class="t-vi">Hộp đen · chưa khớp</span><span class="t-en">Black-box · not yet wired</span></div>
+                    <h2><span class="t-vi">Cần sửa để sơ đồ đúng 100%</span><span class="t-en">What still needs fixing for the diagram to be 100% true</span></h2>
+                    <p class="sub"><span class="t-vi">Xếp theo mức ảnh hưởng: #1 làm mất lợi ích cache, #2–#4 làm gate yếu hơn tưởng, #5 chỉ là nhãn.</span><span class="t-en">Ordered by impact: #1 nullifies the cache gain, #2–#4 weaken a gate more than the docs imply, #5 is cosmetic.</span></p>
+                    <ul class="input-list">
+                        <li>
+                            <span class="glyph" aria-hidden="true">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linejoin="round">
+                                    <path d="M12 3l9 16H3z" />
+                                    <path d="M12 9v5M12 17h.01" />
+                                </svg>
+                            </span>
+                            <div>
+                                <div class="lbl"><span class="t-vi">`captures/manifest.json` — quy ước đường dẫn lệch nhau</span><span class="t-en">`captures/manifest.json` — path convention mismatch</span></div>
+                                <div class="desc"><span class="t-vi">Code resolve trường <code>file</code> theo <b>thư mục chứa manifest</b>, còn ví dụ trong <code>web-osint-scanner/SKILL.md</code> lại ghi <code>"file": "captures/xxx.md"</code> → ghép thành <code>captures/captures/xxx.md</code> → <code>OSError</code> → rơi xuống fetch live, đúng cái ~17,5 phút vừa cắt. Đã kiểm chứng: <code>"abc123.md"</code> → <code>cached, 0 fetched live</code>; <code>"captures/abc123.md"</code> → <code>1 fetched live</code>. Sửa: đổi ví dụ cho khớp, hoặc cho code thử lần lượt <code>base_dir</code> rồi <code>base_dir/..</code>.</span><span class="t-en">The code resolves the <code>file</code> field against <b>the manifest's own directory</b>, but the example in <code>web-osint-scanner/SKILL.md</code> writes <code>"file": "captures/xxx.md"</code> → resolves to <code>captures/captures/xxx.md</code> → <code>OSError</code> → falls back to a live fetch — exactly the ~17.5 min the change was meant to remove. Verified: <code>"abc123.md"</code> → <code>cached, 0 fetched live</code>; <code>"captures/abc123.md"</code> → <code>1 fetched live</code>. Fix: align the example, or have the code try <code>base_dir</code> then <code>base_dir/..</code>.</span></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="glyph" aria-hidden="true">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linejoin="round">
+                                    <path d="M12 3l9 16H3z" />
+                                    <path d="M12 9v5M12 17h.01" />
+                                </svg>
+                            </span>
+                            <div>
+                                <div class="lbl"><span class="t-vi">Chart có hai chủ</span><span class="t-en">Charts have two owners</span></div>
+                                <div class="desc"><span class="t-vi">Nhóm A vẫn được lệnh <b>"build all of these yourself, in this same call"</b> (12 chart) và <code>front-matter-writer</code> dựng 5 chart inline — trong khi <code>chart-data-analyst</code> lại tuyên bố là nơi duy nhất quyết định số liệu cho cả 18 chart. Chạy thật thì chart inline thắng, <code>chart-manifest.json</code> thành file chết.</span><span class="t-en">Group A is still instructed to <b>"build all of these yourself, in this same call"</b> (12 charts) and <code>front-matter-writer</code> builds 5 inline — while <code>chart-data-analyst</code> claims to be the single place deciding numbers for all 18. In a real run the inline charts win and <code>chart-manifest.json</code> becomes a dead file.</span></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="glyph" aria-hidden="true">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linejoin="round">
+                                    <path d="M12 3l9 16H3z" />
+                                    <path d="M12 9v5M12 17h.01" />
+                                </svg>
+                            </span>
+                            <div>
+                                <div class="lbl"><span class="t-vi">`html-renderer` — tên không tồn tại trên đĩa</span><span class="t-en">`html-renderer` — a name that is not on disk</span></div>
+                                <div class="desc"><span class="t-vi">Thư mục thật là <code>skills/assembler/</code>, nhưng 4 file skill vẫn gọi nó là <code>html-renderer</code>. Trang này đã sửa về <code>assembler</code>; còn phải sửa trong <code>source-auditor</code> (×2), <code>mechanical-validator</code> (×2), <code>chart-data-analyst</code> — hoặc đổi tên thư mục.</span><span class="t-en">The real folder is <code>skills/assembler/</code>, yet 4 skill files still call it <code>html-renderer</code>. This page is corrected to <code>assembler</code>; the same fix is still needed in <code>source-auditor</code> (×2), <code>mechanical-validator</code> (×2) and <code>chart-data-analyst</code> — or rename the folder instead.</span></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="glyph" aria-hidden="true">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linejoin="round">
+                                    <path d="M12 3l9 16H3z" />
+                                    <path d="M12 9v5M12 17h.01" />
+                                </svg>
+                            </span>
+                            <div>
+                                <div class="lbl"><span class="t-vi">`--facts` chỉ bắt được một nửa số claim</span><span class="t-en">`--facts` only catches half the claims</span></div>
+                                <div class="desc"><span class="t-vi">Hàm quét JSON chỉ nhận dict có <b>đủ cả</b> <code>source_url</code> và <code>excerpt</code>. Schema của <code>competitor-research-worker</code> để <code>positioning</code> và <code>pricing_tier</code> là <b>chuỗi trần</b>, và <code>messaging_themes</code> có <code>source_url</code> nhưng thiếu <code>excerpt</code> → 3 nhóm claim này lọt gate, chỉ <code>strengths</code>/<code>weaknesses</code> được kiểm.</span><span class="t-en">The JSON walker only collects dicts holding <b>both</b> <code>source_url</code> and <code>excerpt</code>. <code>competitor-research-worker</code>'s schema keeps <code>positioning</code> and <code>pricing_tier</code> as <b>bare strings</b>, and <code>messaging_themes</code> has <code>source_url</code> but no <code>excerpt</code> → those 3 claim groups slip past the gate; only <code>strengths</code>/<code>weaknesses</code> get checked.</span></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="glyph" aria-hidden="true">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linejoin="round">
+                                    <path d="M12 3l9 16H3z" />
+                                    <path d="M12 9v5M12 17h.01" />
+                                </svg>
+                            </span>
+                            <div>
+                                <div class="lbl"><span class="t-vi">Check #6 — nhãn cũ, logic đúng</span><span class="t-en">Check #6 — stale label, correct logic</span></div>
+                                <div class="desc"><span class="t-vi"><code>validate-proposal.py</code> in ra <i>".assess label on Roadmap/Change Management/Hypercare"</i> nhưng <code>REQUIRED_ASSESS_SECTIONS</code> chỉ còn <code>["recommendations"]</code> — 5 section cũ đã bị bỏ nên kết quả đúng, chỉ nhãn còn cũ. Không ảnh hưởng PASS/FAIL.</span><span class="t-en"><code>validate-proposal.py</code> prints <i>".assess label on Roadmap/Change Management/Hypercare"</i> while <code>REQUIRED_ASSESS_SECTIONS</code> now holds only <code>["recommendations"]</code> — those 5 sections were removed, so the result is right and only the label is stale. No effect on PASS/FAIL.</span></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
+        </section>
+
+
+        <section class="section" id="tool-decisions">
+            <span class="kicker"><span class="t-vi">Section 4 · Quyết định tool</span><span class="t-en">Section 4 · Tool decisions</span></span>
+            <h1><span class="t-vi">Vì sao chọn tool này, bỏ tool kia</span><span class="t-en">Why this tool, not that one</span> <span class="thin"><span class="t-vi">— 4 nhóm quyết định</span><span class="t-en">— 4 decision groups</span></span></h1>
+            <p class="lede"><span class="t-vi">4 nhóm tool được cân nhắc — mỗi cái đánh giá theo đúng 1 câu hỏi: có áp dụng được vào pipeline <code>technext-sales-proposal</code> hiện tại không, và tại sao.</span><span class="t-en">4 tool groups considered — each judged on exactly one question: does it actually fit the current <code>technext-sales-proposal</code> pipeline, and why.</span></p>
+
+  <div id="tdr-section">
+
+  <div class="stale-note"><b><span class="t-vi">Cập nhật sau báo cáo này:</span><span class="t-en">Updated after this report:</span></b> <span class="t-vi">quyết định Crawl4AI dưới đây đã đổi — khi cài thử thật, Crawl4AI bị chính Application Control policy của máy chặn (native DLL <code>_xxhash</code>), không phải do chọn sai tool. Pipeline hiện tại dùng <b>chỉ Jina Reader</b>, không dùng Crawl4AI. Xem <code>web-osint-scanner/SKILL.md</code> để biết quyết định thật hiện hành.</span><span class="t-en">the Crawl4AI decision below has since changed — a real install attempt got blocked by this machine's own Application Control policy (a native <code>_xxhash</code> DLL), not a wrong tool choice. The pipeline now uses <b>Jina Reader only</b>, not Crawl4AI. See <code>web-osint-scanner/SKILL.md</code> for the current real decision.</span></div>
+<h2><span class="t-vi">1. Đo chi phí</span><span class="t-en">1. Cost tracking</span></h2>
+  <p class="group-sub"><span class="t-vi">ccusage, Langfuse, Helicone</span><span class="t-en">ccusage, Langfuse, Helicone</span></p>
+
+  <div class="tool-card">
+    <div class="head"><h3>ccusage</h3><span class="verdict yes"><span class="t-vi">Áp dụng được</span><span class="t-en">Applies</span></span></div>
+    <p><span class="t-vi">Đọc trực tiếp log local của Claude Code, miễn phí hoàn toàn, không cần key.</span><span class="t-en">Reads Claude Code's local logs directly, fully free, no key needed.</span></p>
+    <div class="why"><b><span class="t-vi">Vì sao:</span><span class="t-en">Why:</span></b> <span class="t-vi">đúng đối tượng cần đo — phiên làm việc Claude Code CLI, không phải app tự viết gọi API.</span><span class="t-en">matches exactly what needs measuring — Claude Code CLI sessions, not a hand-built app calling an LLM API.</span></div>
+    <div class="action"><b><span class="t-vi">Đã làm:</span><span class="t-en">Done:</span></b> <span class="t-vi">tích hợp vào <code>judgment-reviewer</code>, xuất CSV có task label + duration.</span><span class="t-en">integrated into <code>judgment-reviewer</code>, exports a CSV with task label + duration.</span></div>
+  </div>
+
+  <div class="tool-card no">
+    <div class="head"><h3>Langfuse</h3><span class="verdict no"><span class="t-vi">Không áp dụng</span><span class="t-en">Doesn't apply</span></span></div>
+    <p><span class="t-vi">Nền tảng LLM observability — theo dõi app tự viết gọi API LLM, cần nhúng SDK vào code.</span><span class="t-en">An LLM observability platform — tracks a hand-built app calling an LLM API, requires embedding an SDK in the code.</span></p>
+    <div class="why"><b><span class="t-vi">Vì sao không:</span><span class="t-en">Why not:</span></b> <span class="t-vi">pipeline này chạy qua Claude Code CLI (skill/subagent), không phải 1 ứng dụng tự viết gọi thẳng API Anthropic — không có chỗ nào để nhúng Langfuse SDK vào.</span><span class="t-en">this pipeline runs through the Claude Code CLI (skills/subagents), not a hand-written app calling the Anthropic API directly — there's nowhere to embed the Langfuse SDK.</span></div>
+  </div>
+
+  <div class="tool-card no">
+    <div class="head"><h3>Helicone</h3><span class="verdict no"><span class="t-vi">Không áp dụng</span><span class="t-en">Doesn't apply</span></span></div>
+    <p><span class="t-vi">Hoạt động như 1 proxy đứng giữa app và LLM — đổi 1 URL trong code gọi API là xong.</span><span class="t-en">Works as a proxy between your app and the LLM — swap one URL in your API-calling code.</span></p>
+    <div class="why"><b><span class="t-vi">Vì sao không:</span><span class="t-en">Why not:</span></b> <span class="t-vi">cùng lý do với Langfuse — không có URL/code gọi API nào để đổi trong Claude Code CLI. Thêm nữa, Helicone vừa bị Mintlify mua lại (3/2026), tương lai dài hạn chưa rõ.</span><span class="t-en">same reason as Langfuse — no API-calling URL/code to swap inside the Claude Code CLI. Also, Helicone was just acquired by Mintlify (March 2026), long-term roadmap unclear.</span></div>
+  </div>
+
+  <h2><span class="t-vi">2. Đọc/quét web</span><span class="t-en">2. Read/crawl web</span></h2>
+  <p class="group-sub"><span class="t-vi">Firecrawl, Jina Reader, Crawl4AI</span><span class="t-en">Firecrawl, Jina Reader, Crawl4AI</span></p>
+
+  <div class="tool-card maybe">
+    <div class="head"><h3>Firecrawl</h3><span class="verdict maybe"><span class="t-vi">Được nhưng không tối ưu</span><span class="t-en">Works but not optimal</span></span></div>
+    <p><span class="t-vi">API biến website thành dữ liệu sạch, có MCP integration sẵn.</span><span class="t-en">API that turns websites into clean data, has a ready MCP integration.</span></p>
+    <div class="why"><b><span class="t-vi">Vì sao chưa tối ưu:</span><span class="t-en">Why not optimal:</span></b> <span class="t-vi">free tier có giới hạn (1.000 credit/tháng) và cần đăng ký tài khoản — trong khi Jina Reader làm được việc tương tự mà không cần đăng ký gì.</span><span class="t-en">free tier is limited (1,000 credits/month) and needs a signup — while Jina Reader does the same job with no signup at all.</span></div>
+  </div>
+
+  <div class="tool-card">
+    <div class="head"><h3>Jina Reader (r.jina.ai)</h3><span class="verdict yes"><span class="t-vi">Áp dụng được — nên dùng thay Firecrawl</span><span class="t-en">Applies — recommended over Firecrawl</span></span></div>
+    <p><span class="t-vi">Chỉ cần thêm <code>r.jina.ai/</code> trước 1 URL bất kỳ là ra ngay nội dung sạch dạng markdown — không cần key cho request cơ bản.</span><span class="t-en">Just prepend <code>r.jina.ai/</code> to any URL to get clean markdown back — no key needed for basic requests.</span></p>
+    <div class="why"><b><span class="t-vi">Vì sao:</span><span class="t-en">Why:</span></b> <span class="t-vi">zero setup — không đăng ký, không cài đặt, không API key cho việc đọc 1 trang. Đúng nhu cầu <code>web-osint-scanner</code> khi chỉ cần đọc trang chủ/trang About của khách hàng.</span><span class="t-en">zero setup — no signup, no install, no API key for reading one page. Fits exactly what <code>web-osint-scanner</code> needs when it's just reading a client's homepage/About page.</span></div>
+    <div class="action"><b><span class="t-vi">Đề xuất:</span><span class="t-en">Recommendation:</span></b> <span class="t-vi">đổi <code>web-osint-scanner</code> dùng Jina Reader cho việc đọc từng trang đơn lẻ.</span><span class="t-en">switch <code>web-osint-scanner</code> to Jina Reader for single-page reads.</span></div>
+  </div>
+
+  <div class="tool-card">
+    <div class="head"><h3>Crawl4AI</h3><span class="verdict yes"><span class="t-vi">Áp dụng được — giữ cho việc quét nhiều trang</span><span class="t-en">Applies — kept for multi-page crawling</span></span></div>
+    <p><span class="t-vi">Mã nguồn mở, tự cài, hoàn toàn miễn phí, không giới hạn.</span><span class="t-en">Open source, self-hosted, fully free, unlimited.</span></p>
+    <div class="why"><b><span class="t-vi">Vì sao:</span><span class="t-en">Why:</span></b> <span class="t-vi">Jina Reader mạnh cho 1 trang, nhưng khi cần quét cả site (nhiều trang liên kết, site JS nặng), Crawl4AI mạnh hơn hẳn — vẫn giữ vai trò riêng, không thay thế Jina Reader mà bổ sung.</span><span class="t-en">Jina Reader is strong for one page, but crawling a whole site (many linked pages, heavy JS) is where Crawl4AI is clearly stronger — keeps its own role, complements rather than replaces Jina Reader.</span></div>
+  </div>
+
+  <h2><span class="t-vi">3. Xác minh pháp nhân</span><span class="t-en">3. Legal entity verification</span></h2>
+  <p class="group-sub"><span class="t-vi">GLEIF, Wikidata, SEC EDGAR Full-Text</span><span class="t-en">GLEIF, Wikidata, SEC EDGAR Full-Text</span></p>
+
+  <div class="tool-card">
+    <div class="head"><h3>GLEIF</h3><span class="verdict yes"><span class="t-vi">Áp dụng được — đã tích hợp làm chính</span><span class="t-en">Applies — already integrated as primary</span></span></div>
+    <p><span class="t-vi">API miễn phí, không key, chuyên biệt cho mã định danh pháp nhân (LEI) toàn cầu.</span><span class="t-en">Free API, no key, purpose-built for global Legal Entity Identifiers (LEI).</span></p>
+    <div class="why"><b><span class="t-vi">Vì sao:</span><span class="t-en">Why:</span></b> <span class="t-vi">đúng nhu cầu cốt lõi của <code>company-verifier</code> — xác thực tên pháp lý/quốc gia/tình trạng hoạt động.</span><span class="t-en">matches <code>company-verifier</code>'s core need exactly — verifying legal name/country/active status.</span></div>
+  </div>
+
+  <div class="tool-card maybe">
+    <div class="head"><h3>Wikidata (SPARQL)</h3><span class="verdict maybe"><span class="t-vi">Dùng bổ sung, không thay thế</span><span class="t-en">Supplement only, not a replacement</span></span></div>
+    <p><span class="t-vi">Free hoàn toàn, không key — nhưng là knowledge graph chung (100 triệu+ thực thể), không chuyên biệt cho pháp nhân/LEI.</span><span class="t-en">Fully free, no key — but a general knowledge graph (100M+ entities), not specialized for legal entities/LEI.</span></p>
+    <div class="why"><b><span class="t-vi">Vì sao chỉ bổ sung:</span><span class="t-en">Why supplement only:</span></b> <span class="t-vi">SPARQL cần biết gần đúng tên để tra, không mạnh cho việc "xác thực đúng công ty" như GLEIF — nhưng có nhiều dữ liệu khác hữu ích (năm thành lập, người sáng lập) cho phần <code>company-profile</code>.</span><span class="t-en">SPARQL needs a roughly-known name to query, not strong for "confirm this is the right company" like GLEIF — but has other useful data (founding year, founders) for <code>company-profile</code>.</span></div>
+  </div>
+
+  <div class="tool-card no">
+    <div class="head"><h3>SEC EDGAR Full-Text Search</h3><span class="verdict no"><span class="t-vi">Không áp dụng</span><span class="t-en">Doesn't apply</span></span></div>
+    <p><span class="t-vi">Miễn phí hoàn toàn, tìm được toàn văn hồ sơ nộp lên SEC từ 2001 tới nay.</span><span class="t-en">Fully free, full-text search across SEC filings since 2001.</span></p>
+    <div class="why"><b><span class="t-vi">Vì sao không:</span><span class="t-en">Why not:</span></b> <span class="t-vi">chỉ có công ty đại chúng Mỹ (public company niêm yết, phải nộp báo cáo SEC) — khách hàng SME của TechNext hầu như không thuộc nhóm này.</span><span class="t-en">only covers US publicly-traded companies (required to file with the SEC) — TechNext's SME clients almost never fall into this group.</span></div>
+  </div>
+
+  <h2><span class="t-vi">4. Kiểm tra/validate HTML</span><span class="t-en">4. HTML validation</span></h2>
+  <p class="group-sub"><span class="t-vi">BeautifulSoup4, lxml, html5validator</span><span class="t-en">BeautifulSoup4, lxml, html5validator</span></p>
+
+  <div class="tool-card">
+    <div class="head"><h3>BeautifulSoup4</h3><span class="verdict yes"><span class="t-vi">Áp dụng được — nên đổi sang dùng</span><span class="t-en">Applies — recommended switch</span></span></div>
+    <p><span class="t-vi"><code>validate-proposal.py</code> hiện tại dùng regex (<code>re.findall</code>) để soát HTML — khá thô, dễ báo sai khi format thay đổi nhẹ.</span><span class="t-en">The current <code>validate-proposal.py</code> uses regex (<code>re.findall</code>) to check HTML — fairly crude, prone to false results on minor format changes.</span></p>
+    <div class="why"><b><span class="t-vi">Vì sao:</span><span class="t-en">Why:</span></b> <span class="t-vi">đọc đúng cấu trúc DOM thay vì đoán qua chuỗi ký tự — parser khoan dung với HTML thật ("real-world" tolerant), đúng tinh thần validator hiện tại đang cần.</span><span class="t-en">reads the real DOM structure instead of guessing from raw text — a parser tolerant of real-world HTML, matching what this validator already needs.</span></div>
+    <div class="action"><b><span class="t-vi">Đề xuất:</span><span class="t-en">Recommendation:</span></b> <span class="t-vi">đổi các check trong <code>validate-proposal.py</code> từ regex sang BeautifulSoup4 để giảm lỗi false positive/negative.</span><span class="t-en">switch <code>validate-proposal.py</code>'s checks from regex to BeautifulSoup4 to reduce false positive/negative results.</span></div>
+  </div>
+
+  <div class="tool-card no">
+    <div class="head"><h3>lxml</h3><span class="verdict no"><span class="t-vi">Không cần thiết</span><span class="t-en">Not necessary</span></span></div>
+    <p><span class="t-vi">Nhanh hơn, hỗ trợ XPath — mạnh cho xử lý file lớn/XML.</span><span class="t-en">Faster, supports XPath — strong for large-file/XML processing.</span></p>
+    <div class="why"><b><span class="t-vi">Vì sao không cần:</span><span class="t-en">Why not needed:</span></b> <span class="t-vi">1 file proposal chỉ vài trăm KB — tốc độ không phải vấn đề ở quy mô này, thêm lxml chỉ thêm phụ thuộc không cần thiết.</span><span class="t-en">one proposal file is only a few hundred KB — speed isn't a problem at this scale, adding lxml is an unneeded extra dependency.</span></div>
+  </div>
+
+  <div class="tool-card">
+    <div class="head"><h3>html5lib / html5validator</h3><span class="verdict yes"><span class="t-vi">Áp dụng được — nên thêm</span><span class="t-en">Applies — recommended addition</span></span></div>
+    <p><span class="t-vi">Tuân thủ đúng spec HTML5 — dùng khi cần kiểm tra chuẩn (validator, công cụ sanitize).</span><span class="t-en">Strict HTML5 spec compliance — used when spec-correctness is non-negotiable (validators, sanitizers).</span></p>
+    <div class="why"><b><span class="t-vi">Vì sao:</span><span class="t-en">Why:</span></b> <span class="t-vi">regex/BeautifulSoup kiểm tra được "đúng nội dung" nhưng không kiểm tra được "đúng chuẩn HTML5 thật" (thẻ đóng đúng, thuộc tính hợp lệ...) — đây là lỗ hổng hiện tại của validator.</span><span class="t-en">regex/BeautifulSoup check "right content" but not "actually valid HTML5" (tags closed correctly, valid attributes...) — this is a real gap in the current validator.</span></div>
+    <div class="action"><b><span class="t-vi">Đề xuất:</span><span class="t-en">Recommendation:</span></b> <span class="t-vi">thêm 1 check mới trong <code>mechanical-validator</code> dùng html5lib để xác nhận file xuất ra là HTML5 hợp lệ thật sự.</span><span class="t-en">add a new check in <code>mechanical-validator</code> using html5lib to confirm the output file is genuinely valid HTML5.</span></div>
+  </div>
+
+  <div class="summary-box">
+    <h3><span class="t-vi">Tóm tắt hành động</span><span class="t-en">Action summary</span></h3>
+    <ol>
+      <li><span class="t-vi"><b>Đổi:</b> <code>web-osint-scanner</code> dùng Jina Reader thay Firecrawl cho việc đọc 1 trang</span><span class="t-en"><b>Switch:</b> <code>web-osint-scanner</code> to Jina Reader instead of Firecrawl for single-page reads</span></li>
+      <li><span class="t-vi"><b>Giữ:</b> ccusage, GLEIF, Crawl4AI — đã đúng việc, không đổi</span><span class="t-en"><b>Keep:</b> ccusage, GLEIF, Crawl4AI — already the right fit, no change</span></li>
+      <li><span class="t-vi"><b>Thêm nhẹ:</b> Wikidata bổ sung cho <code>company-profile</code>, không thay GLEIF</span><span class="t-en"><b>Light addition:</b> Wikidata to supplement <code>company-profile</code>, not replacing GLEIF</span></li>
+      <li><span class="t-vi"><b>Nâng cấp:</b> <code>validate-proposal.py</code> đổi regex → BeautifulSoup4, thêm check html5lib</span><span class="t-en"><b>Upgrade:</b> <code>validate-proposal.py</code> switch regex → BeautifulSoup4, add an html5lib check</span></li>
+      <li><span class="t-vi"><b>Bỏ hẳn:</b> Langfuse, Helicone, SEC EDGAR, lxml — không phù hợp quy mô/mục đích pipeline này</span><span class="t-en"><b>Drop entirely:</b> Langfuse, Helicone, SEC EDGAR, lxml — don't fit this pipeline's scale/purpose</span></li>
+    </ol>
+  </div>
+
+  </div>
+        </section>
     </main>
 
     <script>
@@ -1591,55 +1812,61 @@
             var t = function (vi, en) { return '<span class="t-vi">' + vi + '</span><span class="t-en">' + en + '</span>'; };
 
             var PHASES = [
-                { id: 0, title: t('Khởi động & Xác thực', 'Trigger & Verification'), caption: t('<b>Ra:</b> danh tính khách hàng đã xác thực qua GLEIF + đọc hiểu nội dung site &amp; trích xuất hết link liên quan (mạng xã hội, review) qua Firecrawl.', '<b>Out:</b> client identity verified via GLEIF + site content understood &amp; every related link (social, reviews) extracted via Firecrawl.') },
-                { id: 1, title: t('Subagent nghiên cứu song song', 'Parallel Research Subagents'), caption: t('<b>Ra:</b> 4 bản digest — mỗi agent theo đúng kịch bản nghiên cứu có sẵn (vào từng link mạng xã hội/review đã trích xuất, đọc và ghi nhận cụ thể), kèm 18 biểu đồ + 4 sơ đồ tĩnh đã phân công.', '<b>Out:</b> 4 digests — each agent follows a fixed research playbook (visits each extracted social/review link, reads and records specifics), with all 18 charts + 4 static diagrams assigned per subagent.') },
-                { id: 2, title: t('Kiểm tra nguồn & Số liệu chart', 'Source Audit & Chart Data'), caption: t('<b>Ra:</b> findings.json đã kiểm tra chéo qua Webcite + chart-manifest.json với số liệu quyết định sẵn.', '<b>Out:</b> Webcite-audited findings.json + chart-manifest.json with decided numbers.') },
+                { id: 0, title: t('Khởi động & Xác thực', 'Trigger & Verification'), caption: t('<b>Ra:</b> danh tính xác thực (GLEIF + officers.json + web-scan.json), <b>2–4 đối thủ đã nhận diện</b>, mọi URL đã <b>pre-fetch song song</b> vào captures/, và JSON đối thủ đã qua gate --facts <b>trước khi</b> viết.', '<b>Out:</b> identity verified (GLEIF + officers.json + web-scan.json), 2–4 competitors identified, every URL pre-fetched in parallel into captures/, and competitor JSON already through the --facts gate <b>before</b> any writing.') },
+                { id: 1, title: t('Subagent nghiên cứu song song', 'Parallel Research Subagents'), caption: t('<b>Ra:</b> mỗi nhóm chỉ đọc section-shell.md + captures/ (không đọc template 250 KB, không fetch lại) — trả fragment thô + digest + findings-groupX.json; stitch_group.py ghép thành trang xem được. Nhóm C không còn tự research đối thủ.', '<b>Out:</b> each group reads only section-shell.md + captures/ (no 250 KB template, no re-fetching) — returns raw fragments + a digest + findings-groupX.json; stitch_group.py stitches them into a previewable page. Group C no longer researches competitors itself.') },
+                { id: 2, title: t('Kiểm tra nguồn & Số liệu chart', 'Source Audit & Chart Data'), caption: t('<b>Ra:</b> findings-group* đã merge + re-grade, bind-check chạy từ captures/ (không fetch lại — ~17,5 phút xuống vài giây) + chart-manifest.json. <b>Cổng chặn:</b> còn blocking_issues thì không cho assemble.', '<b>Out:</b> merged + re-graded findings-group*, bind-check run from captures/ (no re-fetch — ~17.5 min down to seconds) + chart-manifest.json. <b>Hard gate:</b> any remaining blocking_issues stops assembly.') },
                 { id: 3, title: t('Front-matter & Dựng HTML', 'Front-matter & Rendering'), caption: t('<b>Ra:</b> một file HTML nháp đã lắp ráp đầy đủ theo sidebar cố định — chưa qua kiểm tra.', '<b>Out:</b> one fully-assembled draft HTML in fixed sidebar order — not yet validated.') },
-                { id: 4, title: t('Kiểm tra máy & Review', 'Validation & Review'), caption: t('<b>Ra:</b> bản nháp đã qua cả 11 check cứng lẫn review chuyên môn — sẵn sàng bàn giao.', '<b>Out:</b> a draft that passed both the 11 hard checks and judgment review — ready to deliver.') },
+                { id: 4, title: t('Kiểm tra máy & Review', 'Validation & Review'), caption: t('<b>Ra:</b> bản nháp đã qua cả 13 check cứng lẫn review chuyên môn — sẵn sàng bàn giao.', '<b>Out:</b> a draft that passed all 13 hard checks plus judgment review — ready to deliver.') },
                 { id: 5, title: t('Sản phẩm bàn giao', 'Deliverables'), caption: t('<b>Ra:</b> 3 file cho khách hàng + báo cáo chi phí chạy pipeline qua ccusage.', '<b>Out:</b> 3 client files + a ccusage cost report for the run.') }
             ];
 
             var NODES = [
                 { id: 'user', phase: 0, row: 0, kind: 'trigger', title: t('Người dùng', 'User'), kindTag: t('Trigger', 'Trigger'), desc: t('Đưa tên/website khách hàng (+ bản ghi cuộc gọi tùy chọn), nói "làm sales proposal cho X".', 'Gives a client name/website (+ optional transcript), says "make a sales proposal for X".'), icon: 'user' },
                 { id: 'orchestrator', phase: 0, row: 1, kind: 'skill', title: 'sales-proposal-run', kindTag: t('Orchestrator', 'Orchestrator'), desc: t('Xác định danh tính khách hàng, quyết định build toàn bộ hay resume một phần.', 'Resolves client identity, decides full build vs. single-piece resume.'), icon: 'orchestrator', model: 'claude-opus', detail: { purpose: t('Khởi động pipeline: làm rõ khách hàng nếu tên bị trùng/mơ hồ, đọc checkpoint, quyết định phần nào thật sự cần chạy.', 'Bootstraps the pipeline: disambiguates the client if the name is ambiguous, reads the checkpoint, decides which pieces actually need to run.'), tools: 'Read, Write, Agent, Bash', upstream: t('tên/website khách hàng + checkpoint JSON đã có (nếu có)', 'client name/website + existing checkpoint JSON (if any)'), downstream: t('lệnh dispatch tới company-verifier, hoặc resume 1 phase/nhóm/section', 'dispatch instructions to company-verifier, or a 1-phase/group/section resume'), failure: t('Nếu tên khách hàng mơ hồ, dừng lại và hỏi người dùng — không tự đoán.', 'On an ambiguous client name, stops and asks — never guesses.') } },
-                { id: 'checkpoint', phase: 0, row: 2, kind: 'skill', title: 'checkpoint-manager', kindTag: t('Skill', 'Skill'), desc: t('Đọc/ghi &lt;client-slug&gt;-checkpoint.json, theo dõi trạng thái từng phase/nhóm.', 'Reads/writes &lt;client-slug&gt;-checkpoint.json, tracks phase/group status.'), icon: 'clipboard' },
+                { id: 'checkpoint', phase: 0, row: 2, kind: 'skill', title: 'checkpoint-manager', kindTag: t('Skill', 'Skill'), desc: t('Đọc/ghi &lt;client-slug&gt;-checkpoint.json + ghi timeline (giờ bắt đầu/kết thúc) mỗi task để báo chi phí ngay khi task đó xong.', 'Reads/writes &lt;client-slug&gt;-checkpoint.json + logs a timeline (start/end times) per task so cost can be reported the moment each task finishes.'), icon: 'clipboard' },
                 { id: 'company-verifier', phase: 0, row: 3, kind: 'skill', title: 'company-verifier', kindTag: t('Skill · mới', 'Skill · new'), desc: t('Xác thực đúng công ty trước khi tốn công nghiên cứu — tên pháp lý, domain, ngành, quốc gia.', 'Confirms the right company before research spends effort — legal name, domain, industry, country.'), icon: 'shield' },
                 { id: 'gleif', phase: 0, row: 4, kind: 'tool', title: 'GLEIF LEI Lookup', kindTag: t('Tool · free, không giới hạn', 'Tool · free, unlimited'), desc: t('API gốc GLEIF: domain → pháp nhân thật, không khớp thì trả null.', 'GLEIF\'s own API: domain → real legal entity, returns null on no match.'), icon: 'shield' },
-                { id: 'web-osint-scanner', phase: 0, row: 5, kind: 'skill', title: 'web-osint-scanner', kindTag: t('Skill · mới', 'Skill · new'), desc: t('Đọc hiểu nội dung site (không chỉ quét kỹ thuật) + trích xuất hết link liên quan: mạng xã hội, trang review, báo chí — để 4 agent dùng thẳng, khỏi tự đoán lại.', 'Reads &amp; understands the site\'s content (not just a tech scan) + extracts every related link: social media, review sites, press — so the 4 agents use it directly instead of re-guessing.'), icon: 'browser' },
-                { id: 'firecrawl', phase: 0, row: 6, kind: 'tool', title: 'Firecrawl', kindTag: t('Tool · free 1.000 credit/tháng', 'Tool · free 1,000 credits/mo'), desc: t('Biến website thành dữ liệu sạch cho AI đọc, có MCP integration sẵn.', 'Turns websites into clean, LLM-ready data, has a ready MCP integration.'), icon: 'browser' },
-                { id: 'agent-dd', phase: 1, row: 0, kind: 'agent', title: 'research-due-diligence-agent', kindTag: t('Agent · Nhóm A · 11 mục', 'Agent · Group A · 11 items'), desc: t('Hồ sơ công ty, founder, nhân sự, hiện diện số, đối thủ, chân dung khách hàng — theo đúng từng link mạng xã hội/review đã trích xuất.', 'Company profile, founders, staff, digital presence, competitors, customer personas — following each extracted social/review link directly.'), icon: 'claude', model: 'claude-sonnet', detail: { purpose: t('Nghiên cứu web sâu cho nhóm Due Diligence (11 mục) theo kịch bản có sẵn: vào từng link mạng xã hội/review từ web-osint-scanner, đọc bài đăng + review cụ thể — sở hữu 12/18 biểu đồ + 1 sơ đồ tổ chức.', 'Deep web research for the Due Diligence group (11 items) following a fixed playbook: visit each social/review link from web-osint-scanner, read specific posts + reviews — owns 12 of 18 charts + 1 org-chart diagram.'), tools: 'WebSearch, WebFetch, Firecrawl MCP, Read, Write', upstream: t('danh tính đã xác thực + web-scan.json (tóm tắt + link mạng xã hội/review)', 'verified identity + web-scan.json (summary + social/review links)'), downstream: t('bản digest Nhóm A + file preview toàn trang', 'Group A digest + a full-page preview file'), failure: t('Không tìm thấy thông tin công khai → gắn thẻ đánh giá rõ ràng, không bịa.', 'No public info found → tags an explicit assessment, never fabricates.') } },
+                { id: 'wikidata', phase: 0, row: 5, kind: 'tool', title: 'Wikidata (SPARQL)', kindTag: t('Tool · free, bổ sung', 'Tool · free, supplement'), desc: t('Bổ sung năm thành lập/founder mà GLEIF không có — không thay thế GLEIF cho xác thực danh tính.', 'Supplements founding year/founders that GLEIF doesn\'t carry — never replaces GLEIF for identity confirmation.'), icon: 'shield' },
+                { id: 'web-osint-scanner', phase: 0, row: 6, kind: 'skill', title: 'web-osint-scanner', kindTag: t('Skill · mới', 'Skill · new'), desc: t('Đọc hiểu nội dung site (không chỉ quét kỹ thuật) + trích xuất hết link liên quan: mạng xã hội, trang review, báo chí — để 4 agent dùng thẳng, khỏi tự đoán lại.', 'Reads &amp; understands the site\'s content (not just a tech scan) + extracts every related link: social media, review sites, press — so the 4 agents use it directly instead of re-guessing.'), icon: 'browser' },
+                { id: 'jina-reader', phase: 0, row: 7, kind: 'tool', title: 'Jina Reader', kindTag: t('Tool · free, không cần đăng ký', 'Tool · free, no signup'), desc: t('Thêm "r.jina.ai/" trước 1 URL là ra ngay nội dung sạch — không cần key. Thay Firecrawl (cần đăng ký) và Crawl4AI (bị chính sách bảo mật máy chặn cài).', 'Prepend "r.jina.ai/" to any URL for clean content — no key needed. Replaced Firecrawl (needed signup) and Crawl4AI (blocked by this machine\'s security policy).'), icon: 'browser' },
+                { id: 'officers-lookup', phase: 0, row: 8, kind: 'skill', title: 'officers-lookup', kindTag: t('Skill · mới', 'Skill · new'), desc: t('Tên người lấy từ nguồn kiểm chứng được, chọn theo quốc gia: Companies House (UK) / OpenCorporates / SEC EDGAR (US) + Wikidata + trang team của khách. Ghi officers.json — không dùng sổ liên hệ thương mại.', 'Named people from verifiable sources, country-routed: Companies House (UK) / OpenCorporates / SEC EDGAR (US) + Wikidata + the client own team page. Writes officers.json — never a contact-enrichment database.'), icon: 'shield' },
+                { id: 'captures', phase: 0, row: 9, kind: 'tool', title: 'captures/ · Phase 0.8', kindTag: t('Bước · pre-fetch', 'Step · pre-fetch'), desc: t('Fetch SONG SONG mọi URL đã phát hiện qua Jina Reader → captures/&lt;sha1&gt;.md + manifest.json. Cả pipeline đọc lại từ đây thay vì đánh mạng lại.', 'Fetches every discovered URL IN PARALLEL via Jina Reader → captures/&lt;sha1&gt;.md + manifest.json. The whole pipeline reads from here instead of re-fetching.'), icon: 'terminal', detail: { purpose: t('Bỏ cảnh 4 nhóm + worker cùng fetch lại một trang: đo được ~29 phút fetch live ở lần chạy thật, còn ~1–2 phút cho ~39 trang khi làm song song.', 'Removes the case where 4 groups + workers each re-fetch the same page: measured ~29 min of live fetching in a real run, versus ~1–2 min for ~39 pages in parallel.'), tools: 'Jina Reader', upstream: t('web-scan.json (link khách hàng + competitors[])', 'web-scan.json (client links + competitors[])'), downstream: t('captures/*.md cho 4 nhóm, competitor-research-worker, và bind_check.py --from-cache', 'captures/*.md for the 4 groups, competitor-research-worker, and bind_check.py --from-cache'), failure: t('URL không fetch được → ghi vào manifest là thiếu, claim hạ xuống .assess chứ không bịa quote.', 'A URL that fails to fetch → recorded as missing in the manifest; the claim drops to .assess instead of an invented quote.') } },
+                { id: 'competitor-worker', phase: 0, row: 10, kind: 'agent', title: 'competitor-research-worker', kindTag: t('Agent · 1 per đối thủ', 'Agent · 1 per competitor'), desc: t('Nghiên cứu đúng MỘT đối thủ, budget cứng (≤8 fetch, ≤8 phút), trả JSON dữ kiện (claim + source_url + excerpt) — không viết prose.', 'Researches exactly ONE competitor on a hard budget (≤8 fetches, ≤8 min), returns facts-only JSON (claim + source_url + excerpt) — never prose.'), icon: 'claude', model: 'claude-haiku', detail: { purpose: t('Một nguồn duy nhất cho cả nhóm A (competitor-deep-dive) và nhóm C (top3-competitor-deep-dive) — trước đây hai nhóm tự research trùng nhau, vừa tốn vừa có thể mâu thuẫn số liệu.', 'One shared source for both Group A (competitor-deep-dive) and Group C (top3-competitor-deep-dive) — previously both researched the same competitors: wasteful and able to contradict each other.'), tools: 'WebSearch, WebFetch, Read, Write', upstream: t('competitors[] trong web-scan.json + captures/', 'competitors[] in web-scan.json + captures/'), downstream: t('competitor-research/&lt;slug&gt;.json → gate --facts', 'competitor-research/&lt;slug&gt;.json → the --facts gate'), failure: t('Hết budget → trả phần đã có với confidence thấp, không tự bịa thêm cho đủ.', 'Budget exhausted → returns what it has with low confidence, never invents more to fill the gap.') } },
+                { id: 'facts-gate', phase: 0, row: 11, kind: 'skill', title: 'source-auditor · --facts', kindTag: t('CỔNG CHẶN · trước khi viết', 'HARD GATE · before writing'), desc: t('bind_check.py --facts kiểm từng cặp (source_url, excerpt) trong JSON đối thủ TRƯỚC khi Phase 1 chạy — một excerpt sai sẽ chảy vào 2 section cùng lúc. Exit 1 nếu unbound hoặc unreachable.', 'bind_check.py --facts verifies every (source_url, excerpt) pair in the competitor JSON BEFORE Phase 1 runs — one bad excerpt would land in two sections at once. Exit 1 on unbound or unreachable.'), icon: 'shield', detail: { purpose: t('Chuyển việc xác minh từ sau-khi-viết sang trước-khi-viết, cho phần input dùng chung rủi ro cao nhất.', 'Moves verification from after-writing to before-writing, for the highest-risk shared input.'), tools: 'Bash, bind_check.py --facts', upstream: t('competitor-research/*.json', 'competitor-research/*.json'), downstream: t('cho phép (hoặc chặn) dispatch Phase 1', 'allows (or blocks) the Phase 1 dispatch'), failure: t('Có unbound → trả về worker để sửa quote, hoặc hạ claim xuống .assess.', 'Any unbound → routes back to the worker to fix the quote, or demotes the claim to .assess.') } },
+                { id: 'agent-dd', phase: 1, row: 0, kind: 'agent', title: 'research-due-diligence-agent', kindTag: t('Agent · Nhóm A · 11 mục', 'Agent · Group A · 11 items'), desc: t('Hồ sơ công ty, founder, nhân sự, hiện diện số, đối thủ, chân dung khách hàng — theo đúng từng link mạng xã hội/review đã trích xuất.', 'Company profile, founders, staff, digital presence, competitors, customer personas — following each extracted social/review link directly.'), icon: 'claude', model: 'claude-sonnet', detail: { purpose: t('Nghiên cứu web sâu cho nhóm Due Diligence (11 mục) theo kịch bản có sẵn: vào từng link mạng xã hội/review từ web-osint-scanner, đọc bài đăng + review cụ thể — sở hữu 12/18 biểu đồ + 1 sơ đồ tổ chức.', 'Deep web research for the Due Diligence group (11 items) following a fixed playbook: visit each social/review link from web-osint-scanner, read specific posts + reviews — owns 12 of 18 charts + 1 org-chart diagram.'), tools: 'WebSearch, WebFetch, Read, Write', upstream: t('danh tính đã xác thực + web-scan.json (tóm tắt + link mạng xã hội/review) + officers.json (tên người từ sổ đăng ký chính thức)', 'verified identity + web-scan.json (summary + social/review links) + officers.json (named people from official registries)'), downstream: t('bản digest Nhóm A + file preview toàn trang', 'Group A digest + a full-page preview file'), failure: t('Không tìm thấy thông tin công khai → gắn thẻ đánh giá rõ ràng, không bịa.', 'No public info found → tags an explicit assessment, never fabricates.') } },
                 { id: 'agent-ops', phase: 1, row: 1, kind: 'agent', title: 'research-ops-tech-agent', kindTag: t('Agent · Nhóm B · 5 mục', 'Agent · Group B · 5 items'), desc: t('Vận hành hiện tại, công cụ đang dùng, quy trình phòng ban, ma trận vấn đề→giải pháp, BPMN·Blueprint·UML — gồm cả suy luận Odoo/AI/social gấp vào các section còn lại.', 'Current operations, current tools, department workflows, pain→solution matrix, BPMN·Blueprint·UML — folds in Odoo/AI/social reasoning too.'), icon: 'claude', model: 'claude-sonnet', detail: { purpose: t('Nghiên cứu + thiết kế cho nhóm Operations (5 mục, đã nhận thêm Current Operations/Current Tools từ Nhóm A để cân bằng khối lượng) — sở hữu 3 sơ đồ tĩnh (không Mermaid).', 'Research + design for the Operations group (5 items, absorbed Current Operations/Current Tools from Group A to balance workload) — owns 3 static (non-Mermaid) diagrams.'), tools: 'WebSearch, WebFetch, Read, Write', upstream: t('danh tính đã xác thực + digest Nhóm A (nếu cần tham chiếu chéo)', 'verified identity + Group A digest (for cross-reference)'), downstream: t('bản digest Nhóm B + file preview toàn trang', 'Group B digest + a full-page preview file'), failure: t('Thiếu dữ liệu vận hành thật → gắn thẻ đánh giá, không bịa quy trình.', 'Missing real ops data → tags an assessment, never invents a process.') } },
                 { id: 'agent-delivery', phase: 1, row: 2, kind: 'agent', title: 'research-delivery-growth-agent', kindTag: t('Agent · Nhóm C', 'Agent · Group C'), desc: t('Tình báo cạnh tranh, top-3 đối thủ, giá, mở rộng vùng, advisory, nguồn & trích dẫn.', 'Competitive intel, top-3 competitor deep-dive, pricing, regional expansion, advisory, sources & citation.'), icon: 'claude', model: 'claude-sonnet', detail: { purpose: t('Chiến lược Delivery & Growth — sở hữu 1 biểu đồ (cOwner), kèm toàn bộ nguồn trích dẫn của proposal.', 'Delivery & Growth strategy — owns 1 chart (cOwner), plus the proposal\'s whole source/citation list.'), tools: 'WebSearch, WebFetch, Read, Write', upstream: t('danh tính đã xác thực + digest Nhóm A/B', 'verified identity + Group A/B digests'), downstream: t('bản digest Nhóm C + file preview toàn trang', 'Group C digest + a full-page preview file'), failure: t('Không đủ nguồn cho một luận điểm → gắn thẻ đánh giá thay vì trích dẫn giả.', 'Not enough sources for a claim → tags an assessment instead of a fake citation.') } },
                 { id: 'agent-tools', phase: 1, row: 3, kind: 'agent', title: 'tools-documents-agent', kindTag: t('Agent · Nhóm D', 'Agent · Group D'), desc: t('AI Build Playbook, ước tính lợi nhuận, FAQ chủ doanh nghiệp, BRD, báo giá, câu hỏi khám phá, biên bản họp.', 'AI Build Playbook, profit estimator, owner FAQ, BRD, quotation, discovery questions, meeting minutes.'), icon: 'claude', model: 'claude-sonnet', detail: { purpose: t('Soạn toàn bộ nhóm Tools & Documents — phần ít cần nghiên cứu web, nhiều tổng hợp từ 3 nhóm kia.', 'Writes the whole Tools & Documents group — less web research, more synthesis of the other 3 groups.'), tools: 'Read, Write', upstream: t('digest của cả 3 subagent nghiên cứu còn lại', 'digests from all 3 other research subagents'), downstream: t('bản digest Nhóm D + file preview toàn trang', 'Group D digest + a full-page preview file'), failure: t('Thiếu input từ nhóm khác → để trống có ghi chú, không tự tổng hợp bịa.', 'Missing input from another group → leaves a noted gap, never fabricates a synthesis.') } },
-                { id: 'apollo', phase: 1, row: 4, kind: 'tool', title: 'Apollo MCP', kindTag: t('Tool · free 900 credit/năm', 'Tool · free 900 credits/yr'), desc: t('MCP server gắn thẳng vào Claude — tìm người/công ty, enrich liên hệ đã xác minh.', 'MCP server wired directly into Claude — search people/companies, enrich verified contacts.'), icon: 'clipboard' },
-                { id: 'source-auditor', phase: 2, row: 0, kind: 'skill', title: 'source-auditor', kindTag: t('Skill · mới · CỔNG CHẶN', 'Skill · new · HARD GATE'), desc: t('Kiểm tra lại findings.json của cả 4 agent — gộp nguồn trùng gốc, chấm lại confidence. Data lỗi/thiếu nguồn → CHẶN LẠI, gửi về đúng agent sửa, không cho viết báo cáo tiếp.', 'Re-checks all 4 agents\' findings.json — collapses duplicate sources, re-grades confidence. Faulty/unsourced data → BLOCKS here, routes back to the owning agent for a fix, never lets writing proceed on bad data.'), icon: 'shield' },
-                { id: 'webcite', phase: 2, row: 1, kind: 'tool', title: 'Webcite', kindTag: t('Tool · free, giới hạn credit/tháng', 'Tool · free, limited credits/mo'), desc: t('1 API kiểm tra claim so với nguồn thật — tìm nguồn, chấm stance, chấm uy tín, kết luận.', 'One API checking claims against real sources — citation retrieval, stance, credibility, verdict.'), icon: 'shield' },
-                { id: 'chart-data-analyst', phase: 2, row: 2, kind: 'skill', title: 'chart-data-analyst', kindTag: t('Skill · mới', 'Skill · new'), desc: t('Quyết định số liệu thật cho 18 chart + 4 sơ đồ — chỉ chạy SAU khi source-auditor thông qua, không dùng data chưa kiểm tra.', 'Decides real numbers for 18 charts + 4 diagrams — only runs AFTER source-auditor passes, never on unaudited data.'), icon: 'doc_sparkle' },
+                { id: 'stitch', phase: 1, row: 4, kind: 'tool', title: 'stitch_group.py', kindTag: t('Bước · tất định', 'Step · deterministic'), desc: t('Ghép fragment thô của từng nhóm vào template thật → &lt;slug&gt;-p1-groupX.html mở được bằng browser. Đây là chỗ luật “mọi file trung gian phải xem được” được giữ, nhưng bằng script chứ không phải LLM đọc 250 KB.', 'Stitches each group\'s raw fragments into the real template → an openable &lt;slug&gt;-p1-groupX.html. This is where the “every intermediate must be previewable” rule is honoured — by a script, not by an LLM reading 250 KB.'), icon: 'terminal', detail: { purpose: t('Thay hẳn việc mỗi agent phải giữ template 250 KB trong context (~65–70k token × 4 nhóm ≈ 260k token trước khi làm gì).', 'Replaces every agent having to hold the 250 KB template in its own context (~65–70k tokens × 4 groups ≈ 260k tokens before any real work).'), tools: 'Bash, stitch_group.py', upstream: t('proposal-template.html + fragment thô của nhóm', 'proposal-template.html + the group\'s raw fragments'), downstream: t('p1-groupX.html xem được → source-auditor', 'a previewable p1-groupX.html → source-auditor'), failure: t('Section id không có trong template → exit 1, coi là bug thật (id sai, hoặc nhóm không sở hữu section đó).', 'A section id missing from the template → exit 1, treated as a real bug (typo, or a section that group does not own).') } },
+                { id: 'source-auditor', phase: 2, row: 0, kind: 'skill', title: 'source-auditor', kindTag: t('Skill · mới · CỔNG CHẶN', 'Skill · new · HARD GATE'), desc: t('Merge 4 file findings-group&lt;A..D&gt;.json, gộp nguồn trùng gốc, chấm lại grade. Chạy bind_check.py --from-cache (đọc captures/, KHÔNG fetch lại) và sinh sources-citation bằng máy. Data lỗi/thiếu nguồn → CHẶN LẠI, gửi về đúng agent sửa.', 'Merges the 4 findings-group&lt;A..D&gt;.json files, collapses duplicate-origin sources, re-grades. Runs bind_check.py --from-cache (reads captures/, never re-fetches) and generates sources-citation mechanically. Faulty/unsourced data → BLOCKS, routes back to the owning agent.'), icon: 'shield' },
+                { id: 'chart-data-analyst', phase: 2, row: 2, kind: 'skill', title: 'chart-data-analyst', kindTag: t('Skill · mới', 'Skill · new'), desc: t('Xuất chart-manifest.json cho 18 chart + 4 sơ đồ từ audited-findings, chỉ chạy SAU khi source-auditor thông qua. ⚠ Dây nối chưa khớp: nhóm A và front-matter-writer vẫn tự dựng chart inline, và assembler chưa đọc file này — xem Section 3.', 'Emits chart-manifest.json for 18 charts + 4 diagrams from audited findings, only after source-auditor passes. ⚠ Wiring not connected: Group A and front-matter-writer still build their charts inline, and assembler does not read this file — see Section 3.'), icon: 'doc_sparkle' },
                 { id: 'front-matter', phase: 3, row: 0, kind: 'skill', title: 'front-matter-writer', kindTag: t('Skill', 'Skill'), desc: t('Viết Overview/Tóm tắt điều hành/Khuyến nghị/3 Giải pháp đề xuất thẳng từ 4 bản digest — không gọi thêm agent.', 'Writes Overview/Executive Summary/Recommendations/3 Proposed Solutions directly from the 4 digests — no extra agent call.'), icon: 'doc_sparkle' },
-                { id: 'html-renderer', phase: 3, row: 1, kind: 'skill', title: 'html-renderer', kindTag: t('Skill · đổi tên từ assembler', 'Skill · renamed from assembler'), desc: t('Trích section + chart-manifest.json, ghép vào template theo đúng thứ tự sidebar, sinh code regChart(...).', 'Extracts sections + chart-manifest.json, drops into the template in fixed sidebar order, generates regChart(...) calls.'), icon: 'clipboard' },
+                { id: 'assembler', phase: 3, row: 1, kind: 'skill', title: 'assembler', kindTag: t('Skill · tên thật trong repo', 'Skill · the folder\'s real name'), desc: t('Trích &lt;section&gt; từ 4 file group preview + front-matter, ghép vào template byte-for-byte theo thứ tự sidebar, điền tên khách ở CẢ 3 chỗ: &lt;title&gt;, hero chip, và buildNav() trong JS. Hiện KHÔNG đọc chart-manifest.json.', 'Extracts the &lt;section&gt; blocks from the 4 group previews + front-matter, drops them into the template byte-for-byte in fixed sidebar order, fills the client name in ALL 3 spots: &lt;title&gt;, hero chip, and buildNav() in JS. Does NOT read chart-manifest.json today.'), icon: 'clipboard' },
                 { id: 'draft', phase: 3, row: 2, kind: 'deliverable', title: t('bản nháp đã lắp ráp', 'assembled draft'), kindTag: t('Đang xử lý', 'Working'), desc: t('Một file HTML hoàn chỉnh, chưa qua kiểm tra máy.', 'One complete HTML file, not yet mechanically checked.'), icon: 'md' },
-                { id: 'validator', phase: 4, row: 0, kind: 'skill', title: 'mechanical-validator', kindTag: t('Skill', 'Skill'), desc: t('Chạy validate-proposal.py — 11 check cứng (manifest biểu đồ/sơ đồ, markup trích dẫn hover, không còn placeholder...).', 'Runs validate-proposal.py — 11 hard checks (chart/diagram manifest, hover-citation markup, no leftover placeholder...).'), icon: 'shield' },
+                { id: 'validator', phase: 4, row: 0, kind: 'skill', title: 'mechanical-validator', kindTag: t('Skill', 'Skill'), desc: t('Chạy validate-proposal.py — 13 check cứng, gồm #12 HTML hợp lệ qua BeautifulSoup4 + html5lib (bắt id trùng/section rỗng mà regex không thấy) và #13 không phụ thuộc CDN ngoài.', 'Runs validate-proposal.py — 13 hard checks, including #12 HTML validity via BeautifulSoup4 + html5lib (catches duplicate ids/empty sections regex can\'t see) and #13 no external CDN dependency.'), icon: 'shield' },
                 { id: 'validate-tool', phase: 4, row: 1, kind: 'tool', title: 'validate-proposal.py', kindTag: t('Tool', 'Tool'), desc: t('Chạy qua Bash — kiểm tra tự động, tất định, không cần đọc lại toàn bộ file bằng mắt.', 'Run via Bash — deterministic automated checks, no need to eyeball the whole file.'), icon: 'terminal' },
                 { id: 'validation-out', phase: 4, row: 2, kind: 'deliverable', title: t('báo cáo PASS/FAIL', 'PASS/FAIL report'), kindTag: t('Kết quả cổng chờ', 'Gate result'), desc: t('FAIL → gửi lại đúng subagent sở hữu phần lỗi, không sửa tay.', 'FAIL → routes back to the owning subagent, not a manual patch.'), icon: 'check_x' },
                 { id: 'reviewer', phase: 4, row: 3, kind: 'skill', title: 'judgment-reviewer', kindTag: t('Skill', 'Skill'), desc: t('Soát nội dung trích dẫn + đóng vai phản biện cho kiến trúc, lộ trình, khuyến nghị.', 'Citation-content spot-check + devil\'s-advocate review of the architecture, roadmap, recommendations.'), icon: 'cursor' },
                 { id: 'approved', phase: 4, row: 4, kind: 'deliverable', title: t('bản nháp đã duyệt', 'approved draft'), kindTag: t('Sản phẩm bàn giao', 'Deliverable'), desc: t('Đã qua cả kiểm tra máy lẫn review chuyên môn — sẵn sàng xuất bản.', 'Passed both mechanical checks and judgment review — ready to ship.'), icon: 'check_x' },
                 { id: 'out-html', phase: 5, row: 0, kind: 'deliverable', title: t('&lt;client-slug&gt;-proposal.html', '&lt;client-slug&gt;-proposal.html'), kindTag: t('Sản phẩm bàn giao', 'Deliverable'), desc: t('~40 section song ngữ, 18 biểu đồ + 4 sơ đồ tĩnh, trích dẫn hover-card.', '~40 bilingual sections, 18 charts + 4 static diagrams, hover-card citations.'), icon: 'md' },
-                { id: 'out-json', phase: 5, row: 1, kind: 'deliverable', title: t('&lt;client-slug&gt;-findings.json', '&lt;client-slug&gt;-findings.json'), kindTag: t('Sản phẩm bàn giao', 'Deliverable'), desc: t('Cơ sở dữ liệu đọc máy: claim/section/nguồn/hạng A-D, đã qua Webcite audit — cho bước MCP nối Odoo CRM sau này.', 'Machine-readable fact base: claim/section/source/grade A-D, Webcite-audited — for a later MCP step into Odoo CRM.'), icon: 'json' },
+                { id: 'out-json', phase: 5, row: 1, kind: 'deliverable', title: t('&lt;client-slug&gt;-findings.json', '&lt;client-slug&gt;-findings.json'), kindTag: t('Sản phẩm bàn giao', 'Deliverable'), desc: t('Cơ sở dữ liệu đọc máy: claim/section/nguồn/hạng A-D, đã bind-check với nguồn thật — cho bước MCP nối Odoo CRM sau này.', 'Machine-readable fact base: claim/section/source/grade A-D, bind-checked — for a later MCP step into Odoo CRM.'), icon: 'json' },
                 { id: 'out-pwa', phase: 5, row: 2, kind: 'deliverable', title: t('gói PWA đi kèm', 'PWA companion bundle'), kindTag: t('Sản phẩm bàn giao', 'Deliverable'), desc: t('Manifest + service worker + 2 icon — proposal đã giao có thể cài đặt được.', 'Manifest + service worker + 2 icons — delivered proposal is installable.'), icon: 'media' },
-                { id: 'ccusage', phase: 5, row: 3, kind: 'tool', title: 'ccusage', kindTag: t('Tool · free, mã nguồn mở', 'Tool · free, open source'), desc: t('1 lệnh npx ra ngay báo cáo chi phí daily/theo phiên, tách theo model — đọc log local.', 'One npx command gives an instant daily/per-session cost report, split by model — reads local logs.'), icon: 'terminal' }
+                { id: 'ccusage', phase: 5, row: 3, kind: 'tool', title: 'ccusage', kindTag: t('Tool · free, mã nguồn mở', 'Tool · free, open source'), desc: t('Xuất file CSV thật (session_id, task_label, task_duration, model, cost) — đọc log local, tự cảnh báo nếu phát hiện bug trộn provider.', 'Exports a real CSV (session_id, task_label, task_duration, model, cost) — reads local logs, auto-warns if it detects the provider-mixing bug.'), icon: 'terminal' }
             ];
 
             var EDGES = [
                 ['user', 'orchestrator'], ['orchestrator', 'checkpoint'],
-                ['checkpoint', 'company-verifier'], ['company-verifier', 'gleif'],
-                ['company-verifier', 'web-osint-scanner'], ['web-osint-scanner', 'firecrawl'],
-                ['web-osint-scanner', 'agent-dd'], ['web-osint-scanner', 'agent-ops'], ['web-osint-scanner', 'agent-delivery'], ['web-osint-scanner', 'agent-tools'],
-                ['agent-dd', 'apollo'],
-                ['agent-dd', 'source-auditor'], ['agent-ops', 'source-auditor'], ['agent-delivery', 'source-auditor'], ['agent-tools', 'source-auditor'],
-                ['source-auditor', 'webcite'], ['source-auditor', 'chart-data-analyst'],
+                ['checkpoint', 'company-verifier'], ['company-verifier', 'gleif'], ['gleif', 'wikidata'],
+                ['company-verifier', 'web-osint-scanner'], ['web-osint-scanner', 'jina-reader'], ['jina-reader', 'captures'],
+                ['web-osint-scanner', 'competitor-worker'], ['captures', 'competitor-worker'], ['competitor-worker', 'facts-gate'],
+                ['captures', 'agent-dd'], ['captures', 'agent-ops'], ['captures', 'agent-tools'], ['facts-gate', 'agent-delivery'],
+                ['company-verifier', 'officers-lookup'], ['web-osint-scanner', 'officers-lookup'], ['officers-lookup', 'agent-dd'],
+                ['agent-dd', 'stitch'], ['agent-ops', 'stitch'], ['agent-delivery', 'stitch'], ['agent-tools', 'stitch'],
+                ['stitch', 'source-auditor'],
+                ['source-auditor', 'chart-data-analyst'],
                 ['source-auditor', 'front-matter'],
-                ['front-matter', 'html-renderer'], ['chart-data-analyst', 'html-renderer'],
-                ['html-renderer', 'draft'],
+                ['front-matter', 'assembler'], ['chart-data-analyst', 'assembler'],
+                ['assembler', 'draft'],
                 ['draft', 'validator'], ['validator', 'validate-tool'], ['validate-tool', 'validation-out'],
                 ['validation-out', 'reviewer'], ['reviewer', 'approved'],
                 ['approved', 'out-html'], ['approved', 'out-json'], ['approved', 'out-pwa'], ['approved', 'ccusage']

@@ -1,0 +1,4 @@
+skills/**/assets/__pycache__/
+__pycache__/
+*.pyc
+_runs/

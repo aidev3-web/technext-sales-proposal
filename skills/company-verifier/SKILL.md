@@ -1,6 +1,6 @@
 ---
 name: company-verifier
-description: Confirms the exact legal identity of a prospective client before any research spends effort — legal name, official domain, country, active status — using GLEIF's free public LEI API. Called by the technext-sales-proposal orchestrator skill's Phase 0, right after the client name/website is collected and before any of the 4 research subagents are dispatched.
+description: Confirms the exact legal identity of a prospective client before any research spends effort — legal name, official domain, country, active status — using GLEIF's free public LEI API, supplemented by Wikidata for general facts (founding year, founders) GLEIF doesn't carry. Called by the technext-sales-proposal orchestrator skill's Phase 0, right after the client name/website is collected and before any of the 4 research subagents are dispatched.
 ---
 
 # Company verifier — confirm the right company via GLEIF, free, no signup
@@ -67,9 +67,42 @@ Given the client name (and website, if the user already provided one):
    domain found via ordinary web search, same as before this skill existed. Say so
    plainly to the user rather than silently treating a web-search guess as GLEIF-grade.
 
+## Step 6 (optional, supplement only) — Wikidata for general facts GLEIF doesn't carry
+
+GLEIF only knows legal name/country/status/LEI — it has no founding year, no founder
+names, no industry description. **Wikidata is free, no key, and often has these**,
+but it is a general knowledge graph, not a legal-entity registry — never use it in
+place of GLEIF/web-search for the identity confirmation itself, only to enrich
+`company-profile` once identity is already settled.
+
+1. Search for the entity (only for companies with any real public profile —
+   most local SMEs won't have a Wikidata page, and that's a normal, expected outcome,
+   not an error):
+   ```
+   curl -sG "https://www.wikidata.org/w/api.php" \
+     --data-urlencode "action=wbsearchentities" \
+     --data-urlencode "search=<COMPANY NAME>" \
+     --data-urlencode "language=en" --data-urlencode "format=json" \
+     --data-urlencode "type=item"
+   ```
+2. If a confident match comes back (check the `description` field actually matches
+   this company's industry/location, not a same-named unrelated entity), take its
+   `id` (e.g. `Q20873932`) and query SPARQL for the specific facts needed —
+   founding date (`wdt:P571`), founder (`wdt:P112`), headquarters (`wdt:P159`):
+   ```
+   curl -sG "https://query.wikidata.org/sparql" \
+     --data-urlencode "query=SELECT ?founderLabel ?inception WHERE { wd:<ID> wdt:P571 ?inception . OPTIONAL { wd:<ID> wdt:P112 ?founder . } SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\". } }" \
+     -H "Accept: application/sparql-results+json"
+   ```
+3. Add whatever real facts come back into `company-identity.json` under a
+   `"wikidata"` key (e.g. `{ "founded": "2012", "founders": [...] }`) — omit fields
+   with no data rather than guessing. These facts are `.cite`-grade (Wikidata is a
+   real, checkable source), not `Confirmed` like GLEIF's own fields.
+
 ## Output
 
-One file, `company-identity.json`, in either of the two shapes above. This is what
-Phase 1's disambiguation gate now reads first (instead of redoing this reasoning from
-scratch) — if two candidates are still plausible after this, still ask the user rather
-than silently picking one.
+One file, `company-identity.json` — the GLEIF-sourced identity fields (always), plus
+an optional `"wikidata"` key when Step 6 found something. This is what Phase 1's
+disambiguation gate now reads first (instead of redoing this reasoning from scratch)
+— if two candidates are still plausible after this, still ask the user rather than
+silently picking one.

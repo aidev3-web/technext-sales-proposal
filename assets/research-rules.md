@@ -110,11 +110,14 @@ don't disguise it as an `.assess` estimate.
 
 ## Structured findings file
 
-In addition to your HTML section(s), append to the shared
-`<client-slug>-findings.json`: an array of
-`{ "claim": "...", "section": "<sidebar slug>", "source_url": "...", "grade": "Confirmed|A|B|C|D" }`
+In addition to your HTML section(s), write **your own**
+`<client-slug>-findings-group<X>.json` (`X` = A/B/C/D — never a shared
+`<client-slug>-findings.json`, which is a real race condition when 4 groups append in
+parallel; `source-auditor` merges the 4 group files afterward): an array of
+`{ "claim": "...", "section": "<sidebar slug>", "source_url": "...", "grade": "Confirmed|A|B|C|D", "excerpt": "..." }`
 objects, one per citation you actually used (`source_url` omitted/null for
-`Confirmed` entries — cite the meeting instead).
+`Confirmed` entries — cite the meeting instead). See `assets/section-shell.md` for the
+full markup contract this pairs with.
 
 ## Charts & diagrams — build them yourself, in the same call
 

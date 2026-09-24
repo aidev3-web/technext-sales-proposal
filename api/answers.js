@@ -1,7 +1,7 @@
 // Vercel serverless function: GET reads blocker/answers.json from the repo,
 // POST { id, answer } merges one answer in and commits it back via the
 // GitHub Contents API. Requires a GITHUB_TOKEN env var (repo scope) set in
-// the Vercel project — see report/full-docs.html or ask Trung for setup steps.
+// the Vercel project — ask Trung for setup steps (no written doc for this exists yet).
 
 const OWNER = 'aidev3-web';
 const REPO = 'technext-sales-proposal';
