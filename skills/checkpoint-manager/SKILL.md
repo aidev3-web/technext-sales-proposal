@@ -33,12 +33,21 @@ This pipeline may run under Claude Code, or under a different coding agent entir
 (Codex, Gemini CLI, ...) — this skill's own instructions don't change based on that,
 but the cost-reporting mechanism only works if one rule is followed:
 
-**Every dispatched task (a Phase 1 group, a section-level touch-up, any phase run as
-its own `Agent` call or its own separate agent invocation) must run in its own
-isolated session/process — never share one session across two tasks.** This is what
-lets `ccusage` (which already reads 18+ agents' local logs, tagging each session with
-which agent produced it) report a task's cost with zero guessing: one task = one
-session = one row, no timestamp inference needed regardless of which agent ran it.
+1. **A dispatched task — a Phase 1 group, a section-level touch-up, anything run as
+   its own `Agent` call or its own separate agent invocation — must run in its own
+   isolated session/process.** Then "this task's cost" is exactly "this session's
+   cost": one task = one session = one row, no guessing.
+2. **A task that genuinely runs inline in the orchestrator's own session (no separate
+   `Agent` call) must still record a `session_id` — the orchestrator's own — and set
+   `"shared_session": true`.** Do not write `null` there. Several inline tasks may
+   carry the same id; the cost script then reports that session **once**, labelled
+   `shared-session: <task> + <task>`, so the run's total stays correct. Writing `null`
+   instead leaves those phases with no cost row at all and the run's total silently
+   under-reports.
+
+Both cases work because `ccusage` already reads 18+ agents' local logs, tagging each
+session with which agent produced it, so no timestamp inference is ever needed
+regardless of which agent ran the task.
 
 Record a `timeline` array in `<client-slug>-checkpoint.json` alongside the phase
 statuses:
@@ -46,7 +55,8 @@ statuses:
 ```json
 "timeline": [
   { "task": "phase0_verification", "started": "2026-09-24T02:40:00Z", "ended": "2026-09-24T02:48:00Z", "session_id": "11111111-2222-4333-8444-555555555555", "agent": "claude" },
-  { "task": "phase1_groupA", "started": "2026-09-24T02:49:00Z", "ended": "2026-09-24T03:15:00Z", "session_id": "a5249cf5-b07d-8064-5xxx", "agent": "claude" }
+  { "task": "phase1_groupA", "started": "2026-09-24T02:49:00Z", "ended": "2026-09-24T03:15:00Z", "session_id": "a5249cf5-b07d-8064-5xxx", "agent": "claude" },
+  { "task": "phase2_5_source_audit", "started": "2026-09-24T03:16:00Z", "ended": "2026-09-24T03:30:00Z", "session_id": "11111111-2222-4333-8444-555555555555", "agent": "claude", "shared_session": true, "note": "ran inline in the orchestrator session — same session_id as phase0_verification above, so the cost script reports that session once for both" }
 ]
 ```
 
@@ -56,8 +66,10 @@ id the Task tool's own run is recorded under; ask the dispatching mechanism for 
 own session id rather than guessing it from a file path). **`agent`** names which
 coding agent ran it (`"claude"`, `"codex"`, etc.) — optional but recommended, since it
 disambiguates in the rare case two different agents ever produced the same-looking id.
-A task with no `session_id` recorded cannot be cost-reported at all — the script says
-so explicitly rather than guessing, so don't skip this field to save a step.
+**`session_id` is mandatory for every entry, including inline ones** — an inline task
+records the *orchestrator's* id (see rule 2 above), never `null`. A task with no
+`session_id` recorded cannot be cost-reported at all: the script says so explicitly
+rather than guessing, so don't skip this field to save a step.
 
 ## Report that task's cost immediately, not just at the end
 

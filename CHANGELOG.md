@@ -3,6 +3,24 @@
 All notable changes to this skill are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-09-25
+
+### Added
+- **Cost reporting now covers phases that run inline in the orchestrator's own
+  session.** `checkpoint-manager` records that session's id with
+  `"shared_session": true`, and `ccusage_to_csv.py` reports the session **once**,
+  labelled `shared-session: <task> + <task>`. Previously those phases carried
+  `session_id: null`, got no cost row at all, and the run total silently
+  under-reported (a real run hid $0.4817 of $1.1150 that way).
+- `SKILL.md` now states that every run writes its artefacts into `_runs/<client-slug>/`.
+
+### Fixed
+- `cost-dashboard.html` no longer reports tasks as having a missing cost row when they
+  are covered by a `shared-session:` row.
+- Brand spelling in deliverables: `Technext` -> `TechNext` in the proposal template,
+  the PWA manifest and the `<title>` convention. The template footer also credited the
+  old skill name `sales-proposal-skill`; it now says `technext-sales-proposal`.
+
 ## [1.0.1] - 2026-09-25
 
 ### Added

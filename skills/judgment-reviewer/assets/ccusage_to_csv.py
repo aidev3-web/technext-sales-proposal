@@ -15,11 +15,16 @@ agent produced it (`"agent": "claude"` / `"codex"` / ...). So instead of parsing
 anything ourselves, this script calls `ccusage session --json` and matches rows back
 to tasks by session id.
 
-The one thing `ccusage` can't do is split ONE session into several tasks — so this
-whole mechanism only works under one rule, enforced by `checkpoint-manager`:
-**every dispatched task runs in its own isolated agent session/process.** When that
-holds, "this task's cost" is exactly "this session's cost" — no timestamp guessing,
-no double-counting, no per-agent file format to understand.
+The one thing `ccusage` can't do is split ONE session into several tasks. So the rule,
+enforced by `checkpoint-manager`, is:
+
+  * a dispatched task (a Phase 1 group, a subagent call) runs in its own isolated
+    agent session/process — then "this task's cost" is exactly "this session's cost";
+  * a task that genuinely runs inline in the orchestrator's own session still records
+    that session's id, and the session is reported ONCE for all the tasks it hosted -
+    never once per task, which would multiply the same cost by the number of tasks.
+
+Either way there is no timestamp guessing and no per-agent file format to understand.
 
 Usage:
     python ccusage_to_csv.py <out.csv> <checkpoint.json> [--since YYYYMMDD]
@@ -32,6 +37,9 @@ stale second copy of the same numbers behind.
 
 checkpoint.json's timeline entries must include, for every task:
     {"task": "...", "started": "...", "ended": "...", "session_id": "...", "agent": "claude"}
+Several timeline entries may carry the SAME session_id when those tasks really did run
+in one shared session (the orchestrator's own). That is fine and expected: those rows
+are written once for the shared session, labelled `shared-session: <task> + <task>`.
 `session_id` is whatever id that task's own agent session reports for itself (for
 Claude Code: the session's transcript file id, visible for the current session from
 its own project directory name; ask the dispatching tool for its own session id
@@ -47,6 +55,9 @@ import sys
 import csv
 import subprocess
 from datetime import datetime, timedelta
+
+
+SHARED_LABEL_PREFIX = "shared-session: "
 
 
 def parse_iso(s):
@@ -196,6 +207,14 @@ def report_task_mode(task_name, checkpoint_path, since):
         if not r["model_name"].startswith("claude-") and r["agent"] == "claude":
             non_claude.append(r["model_name"])
     print(f"  TỔNG: ${total_cost:.4f}")
+    shared_with = [e["task"] for e in timeline
+                   if e.get("session_id") and e["session_id"] == entry.get("session_id")
+                   and e["task"] != task_name]
+    if shared_with:
+        print(f"  ℹ Task này chạy chung session với {len(shared_with)} task khác "
+              f"({', '.join(shared_with)}) — số trên là chi phí của CẢ session đó, không "
+              f"riêng task này. Trong file CSV đầy đủ, session này chỉ được tính MỘT lần.",
+              file=sys.stderr)
     if non_claude:
         print(f"  ⚠ CẢNH BÁO: agent 'claude' nhưng model không phải Claude "
               f"({', '.join(non_claude)}) xuất hiện trong session này — dấu hiệu 1 tool "
@@ -205,14 +224,46 @@ def report_task_mode(task_name, checkpoint_path, since):
 
 def build_rows(timeline, since):
     if not timeline:
-        return []
+        return [], []
     all_sessions = fetch_all_sessions(since or min(e["started"] for e in timeline).strftime("%Y%m%d"))
     rows = []
     problems = []
+
+    # Group by session first. Tasks that ran in one shared session (typically the
+    # orchestrator's own session, which hosts several phases inline) must produce ONE
+    # set of rows for that session, never one set per task - otherwise the same
+    # session's cost is added to the run total once per task it hosted, which is
+    # exactly the silent multiplication this script exists to prevent.
+    groups = {}
+    order = []
     for entry in timeline:
-        task_rows, status, _ = rows_for_task(entry, all_sessions)
+        key = (entry.get("session_id"), entry.get("agent"))
+        if key not in groups:
+            groups[key] = []
+            order.append(key)
+        groups[key].append(entry)
+
+    for key in order:
+        entries = groups[key]
+        if not key[0]:
+            for entry in entries:
+                problems.append((entry["task"], "no-session_id-recorded"))
+            continue
+        if len(entries) == 1:
+            subject = entries[0]
+        else:
+            subject = {
+                "task": SHARED_LABEL_PREFIX + " + ".join(e["task"] for e in entries),
+                "started": min(e["started"] for e in entries),
+                "ended": max(e["ended"] for e in entries),
+                "session_id": entries[0]["session_id"],
+                "agent": entries[0].get("agent"),
+            }
+        task_rows, status, _ = rows_for_task(subject, all_sessions)
         if not task_rows:
-            problems.append((entry["task"], status))
+            for entry in entries:
+                problems.append((entry["task"], status))
+            continue
         rows.extend(task_rows)
     return rows, problems
 
@@ -258,6 +309,12 @@ def main():
     rows, problems = build_rows(timeline, since)
     write_csv(rows, out_path)
     print(f"Wrote {len(rows)} rows to {out_path}")
+    shared = sorted({r["task_label"] for r in rows if r["task_label"].startswith(SHARED_LABEL_PREFIX)})
+    if shared:
+        print(f"ℹ {len(shared)} session(s) hosted several tasks each — reported as ONE "
+              f"row-set per session, not one per task (which would multiply the cost):")
+        for label in shared:
+            print(f"    - {label}")
     if problems:
         print(f"⚠ {len(problems)} task(s) have NO row in this CSV — state this gap "
               f"explicitly when reporting totals, don't imply full coverage:", file=sys.stderr)

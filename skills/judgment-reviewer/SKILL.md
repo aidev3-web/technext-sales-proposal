@@ -87,15 +87,21 @@ session's total — it has no idea which task inside that session cost what. Spl
 that by matching timestamps is a guess, and that guess breaks the moment two tasks
 share a session, or an unrelated concurrent session overlaps in time (both happened
 once in this project). The fix isn't a smarter guess — it's removing the need to
-guess: `checkpoint-manager`'s rule that **every dispatched task runs in its own
-isolated session** means "this task's cost" is always exactly "this session's cost,"
-found by exact `session_id` match, for whichever agent ran it.
+guess: `checkpoint-manager`'s rule that a dispatched task runs in **its own isolated
+session** means "this task's cost" is always exactly "this session's cost," found by
+exact `session_id` match, for whichever agent ran it. For the handful of phases that
+really do run inline in the orchestrator's own session, `checkpoint-manager` records
+that session's id with `"shared_session": true` — and this script then writes that
+session **once**, labelled `shared-session: <task> + <task>`. It never writes one row
+per task for a shared session: that would add the same session's cost to the run total
+once for every task it hosted, which is precisely the multiplication this design
+removes. A steady `TỔNG` therefore stays the real cost of the run.
 
 Output columns:
 
 | Column | What it is |
 |---|---|
-| `task_label` | the checkpoint timeline's task name |
+| `task_label` | the checkpoint timeline's task name; `shared-session: a + b` when one session hosted several inline tasks (that session appears once, not once per task) |
 | `task_duration` | that task's own started→ended span |
 | `agent` | which coding agent ran it (`claude`, `codex`, ...) — from `ccusage`'s own tag |
 | `session_id` | the exact session id matched — traceable back to `ccusage`'s own log |
@@ -103,8 +109,9 @@ Output columns:
 | `input_tokens` / `output_tokens` / `cache_creation_tokens` / `cache_read_tokens` | real token counts, as `ccusage` computed them |
 | `cost_usd` | `ccusage`'s own computed cost for that model/session — not re-derived here |
 
-**If a task's timeline entry has no `session_id`**, or `ccusage` can't find a session
-matching it, that task gets **no row** in the CSV — the script lists exactly which
+**If a task's timeline entry has no `session_id`** (an inline task recorded as `null`
+instead of the orchestrator's id — see `checkpoint-manager` rule 2), or `ccusage`
+can't find a session matching it, that task gets **no row** in the CSV — the script lists exactly which
 tasks are missing and why (`no-session_id-recorded` / `session-not-found-in-ccusage` /
 `ambiguous-multiple-sessions-matched`) rather than silently reporting $0 or folding it
 into another task's total. Always state that gap explicitly when reporting totals to

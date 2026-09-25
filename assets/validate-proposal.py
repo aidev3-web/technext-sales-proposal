@@ -239,7 +239,7 @@ def main():
     # The hero title, <title>, and the sidebar brand line in buildNav() ('× <CLIENT
     # NAME>') are all supposed to be replaced with the real client name during Phase 3
     # assembly. A real run once shipped with the hero still literally reading
-    # "<CLIENT NAME>" and the sidebar still reading "Technext × Odoo 19" — both easy to
+    # "<CLIENT NAME>" and the sidebar still reading "TechNext × Odoo 19" — both easy to
     # miss by eye since one is inside a JS string, not visible in a quick HTML skim.
     CLIENT_PLACEHOLDER_PATTERNS = [
         r'<CLIENT NAME>', r'&lt;CLIENT NAME&gt;',

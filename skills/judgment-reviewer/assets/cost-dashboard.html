@@ -207,8 +207,18 @@ function buildRuns(files){
     b.tasks = new Set(b.rows.map(function(r){ return r.task; })).size;
     if (b.cp && b.cp.timeline){
       var have = new Set(b.rows.map(function(r){ return r.task; }));
+      // A session that hosted several inline tasks is written as ONE row-set labelled
+      // "shared-session: a + b". Those tasks ARE covered - unwrap the label so they
+      // are not falsely reported as missing cost rows.
+      var haveShared = new Set();
+      b.rows.forEach(function(r){
+        var P = 'shared-session:';
+        if (r.task.indexOf(P) === 0){
+          r.task.slice(P.length).split('+').forEach(function(s){ haveShared.add(s.trim()); });
+        }
+      });
       b.expected = b.cp.timeline.map(function(e){ return e.task; });
-      b.missing = b.expected.filter(function(x){ return !have.has(x); });
+      b.missing = b.expected.filter(function(x){ return !have.has(x) && !haveShared.has(x); });
     }
   });
 

@@ -1,6 +1,6 @@
 ---
 name: technext-sales-proposal
-version: 1.0.1
+version: 1.1.0
 license: Proprietary - see LICENSE. Not for redistribution.
 description: Turn a prospective TechNext client (a company name, website, or short brief) into one comprehensive, bilingual (VI/EN toggle) HTML sales proposal website (all CSS/JS/charts inline, no CDN — opens correctly via file:// with no network) covering all three TechNext service lines — Odoo ERP implementation, AI Solutions, and Social Media Marketing — deep web/social research, a fixed sidebar covering Due Diligence, Strategic Analysis (competitors/market), Operations, a Recommendations section, and a Tools & Documents section (AI Build Playbook, Profit Estimator, Quotation, Meeting Minutes, Discovery Questions, etc). Use when asked to research a client and build a sales proposal / due-diligence site, "làm sales proposal", "nghiên cứu khách hàng làm đề xuất", or when the request matches the client-research-to-proposal workflow (spin up agents, research a company, produce a growth plan with a big sidebar).
 ---
@@ -90,7 +90,7 @@ Nếu có, dán vào đây."* — treat this as `Confirmed`-grade, higher trust 
 web-researched). If all you have is a bare name, do one round of web search to find
 their site/socials yourself rather than stopping to ask — only ask the user directly
 if the name is too ambiguous to search confidently. Confirm the client name you'll use
-in the page `<title>`: `"<Client> · Strategic Due Diligence & Growth Blueprint (Odoo ERP · AI · Social Media) · Technext"`.
+in the page `<title>`: `"<Client> · Strategic Due Diligence & Growth Blueprint (Odoo ERP · AI · Social Media) · TechNext"`.
 
 Then run the `company-verifier` skill (GLEIF check), then the `checkpoint-manager`
 skill (decide what actually needs to run this invocation — full pipeline, or resume
@@ -108,7 +108,16 @@ and say why.
 
 ## Delivery
 
-Save as `<client-slug>-proposal.html` plus its companion `<client-slug>-findings.json`
+**Every run writes its files into one folder: `_runs/<client-slug>/`** (create it if
+missing; `_runs/` is already gitignored at the repo root). Run the whole pipeline
+from wherever you like, but put every artefact it produces - the proposal, the
+findings, the checkpoint, the cost CSV, the PWA copies, `web-scan.json`,
+`officers.json`, `competitor-research/`, the bind-check reports - inside that one
+folder, so two clients' runs can never mix and one client's cost dashboard folder
+pick brings in everything for that run.
+
+Save as `_runs/<client-slug>/<client-slug>-proposal.html` plus its companion
+`_runs/<client-slug>/<client-slug>-findings.json`
 and hand both to the user directly, along with the 4 PWA companion files
 (`manifest.webmanifest`, `sw.js`, `icon-192.png`, `icon-512.png`) copied unchanged from
 `assets/` — mention that the Install button only works if all four are deployed
