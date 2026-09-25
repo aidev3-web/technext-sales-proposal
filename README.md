@@ -50,7 +50,9 @@ The installer links the orchestrator skill **and** its 10 sub-skills into the ag
 skills directory you choose, because the pipeline dispatches the sub-skills by name.
 Use `--copy` (`-Copy` on Windows) if your filesystem does not support symlinks.
 
-See [`QUICKSTART.md`](QUICKSTART.md) for the 5-step version.
+See [`QUICKSTART.md`](QUICKSTART.md) for the 5-step version, or hand
+[`BOOTSTRAP-PROMPT.md`](BOOTSTRAP-PROMPT.md) to a new machine - the agent there
+installs the skill into itself and reports back.
 
 ## Usage
 

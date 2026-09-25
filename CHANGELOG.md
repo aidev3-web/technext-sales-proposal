@@ -3,6 +3,12 @@
 All notable changes to this skill are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-09-25
+
+### Added
+- `BOOTSTRAP-PROMPT.md` - a copy-paste prompt that lets a fresh agent on a new machine
+  install this skill into its own skills directory and verify the result itself.
+
 ## [1.0.0] - 2026-09-25
 
 First packaged release.
