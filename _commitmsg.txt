@@ -1,5 +1,0 @@
-docs: add BOOTSTRAP-PROMPT.md so a new machine can install the skill itself
-
-Give the block in BOOTSTRAP-PROMPT.md to a fresh agent session and it detects its own
-skills directory, clones this private repo, runs the installer, verifies the 10
-sub-skills and reports back - no manual setup steps for the recipient.
