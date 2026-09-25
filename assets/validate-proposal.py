@@ -314,6 +314,60 @@ def main():
     else:
         ok("no external <script src=\"http...\"> or stylesheet <link> found — fully inline")
 
+    print(f"\n=== 14. Charts are actually wired up (registration order, ids, option syntax) ===")
+    # A chart only paints if mkChart() runs at render time, which only happens for the
+    # definitions regChart() pushed. Two ways a WHOLE page's charts silently go blank,
+    # both seen for real in this project:
+    #   1. a section emits <script>regChart(...)</script> BEFORE the script that defines
+    #      regChart. Every call throws "ReferenceError: regChart is not defined" and the
+    #      page renders ZERO charts even though all 18 canvases are present in the DOM.
+    #   2. the options object is built with `+` instead of `,` -
+    #      baseOpts({ scales:{...} + plugins:{...} }) - which is a JS *syntax* error, so
+    #      that entire <script> block never executes.
+    # The template now keeps the chart framework in <head> so (1) cannot happen; this
+    # check exists because a delivered file once had all 18 charts blank from it.
+    scan = re.sub(r"/\*.*?\*/", "", re.sub(r"<!--.*?-->", "", html, flags=re.S), flags=re.S)
+
+    canvas_ids = re.findall(r'<canvas[^>]*\bid="([^"]+)"', html)
+    reg_ids = re.findall(r"mkChart\(\s*['\"]([^'\"]+)['\"]", scan)
+
+    defn = re.search(r"function\s+regChart\s*\(", scan)
+    calls = [m.start() for m in re.finditer(r"(?<![\w.])regChart\s*\(", scan)]
+    if canvas_ids and not defn:
+        passed = fail("no `function regChart(` found - the chart framework is missing "
+                      "(was the template shell rebuilt by hand?)") and passed
+    elif defn:
+        late = [c for c in calls if c < defn.start()]
+        if late:
+            passed = fail(f"{len(late)} regChart(...) call(s) appear BEFORE `function "
+                          f"regChart` - those throw ReferenceError and leave their canvas "
+                          f"blank. Keep the chart framework above every section that "
+                          f"registers a chart (the template puts it in <head> for this "
+                          f"reason).") and passed
+        else:
+            ok(f"regChart is defined before all {len(calls)} registration call(s)")
+
+    unregistered = [c for c in canvas_ids if c not in reg_ids]
+    if unregistered:
+        passed = fail(f"{len(unregistered)} <canvas> element(s) have no mkChart() "
+                      f"registration - they render blank: {unregistered}") and passed
+    elif canvas_ids:
+        ok(f"every one of the {len(canvas_ids)} canvas(es) has a mkChart() registration")
+    orphan_regs = [r for r in reg_ids if r not in canvas_ids]
+    if orphan_regs:
+        passed = fail(f"{len(orphan_regs)} mkChart() registration(s) target an id with no "
+                      f"<canvas>: {orphan_regs}") and passed
+
+    bad_merge = re.findall(r"\}\s*\+\s*(?:plugins|scales|legend|tooltip|options|data|"
+                           r"elements|layout)\s*:", scan)
+    if bad_merge:
+        passed = fail(f"{len(bad_merge)} chart option(s) merge objects with `+` "
+                      f"(e.g. '{{...}} + plugins:') - that is a JS syntax error, so the "
+                      f"whole <script> never runs. Use one object literal with a comma: "
+                      f"baseOpts({{ scales: {{...}}, plugins: {{...}} }}).") and passed
+    else:
+        ok("chart options are valid object literals (no object-merge with '+')")
+
     print()
     if passed:
         print("ALL MECHANICAL CHECKS PASSED. Still do the judgment-based Phase 4 checks by hand:")

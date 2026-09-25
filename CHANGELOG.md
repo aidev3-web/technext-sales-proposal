@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.1.1] - 2026-09-25
+
+### Fixed
+- **Charts could all render blank in a delivered proposal.** `section-shell.md` tells
+  each sub-agent to emit `<script>regChart(() => mkChart(...))</script>` inside its own
+  section, but `assets/proposal-template.html` defined `regChart`/`mkChart` in a script
+  placed *after* all sections. Every registration therefore threw
+  `ReferenceError: regChart is not defined` and **0 of 18 charts painted**, even though
+  all 18 `<canvas>` elements were present ? this is what blanked the charts in a real
+  delivered run. The chart framework (`chartDefs`, `regChart`, `inkColors`, `baseOpts`,
+  `gridScale`, `mkChart`, `renderCharts`, `reRenderCharts`) now lives in its own
+  `<script>` in `<head>`, above every section that registers a chart.
+- A second, independent blank-chart cause: `cRevStream` built its options with
+  `baseOpts({ scales:{...} + plugins:{...} })` ? `+` instead of `,` between object
+  properties, a JS **syntax** error that stopped that whole `<script>` from running.
+  Now a single valid object literal.
+- The Vietnamese template footer still credited the old skill name
+  `sales-proposal-skill`; it now says `technext-sales-proposal`.
+
+### Added
+- `assets/validate-proposal.py` check **14 ? "Charts are actually wired up"**: strips
+  comments, collects `<canvas id>` and `mkChart('id')` pairs, requires `function
+  regChart` to be defined *before* every `regChart(...)` call, and fails on canvases
+  with no registration, registrations with no canvas, and option objects merged with
+  `+`. The previous checks counted canvases/registrations but never noticed none of
+  them rendered.
+
 All notable changes to this skill are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
