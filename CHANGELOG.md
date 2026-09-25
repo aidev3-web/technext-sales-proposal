@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.2] - 2026-09-25
+
+### Fixed
+- `SKILL.md` still described `validate-proposal.py` as having 13 hard checks after
+  v1.1.1 added check 14 (chart-render wiring). Now says 14.
+
 ## [1.1.1] - 2026-09-25
 
 ### Fixed

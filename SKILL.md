@@ -1,6 +1,6 @@
 ---
 name: technext-sales-proposal
-version: 1.1.1
+version: 1.1.2
 license: Proprietary - see LICENSE. Not for redistribution.
 description: Turn a prospective TechNext client (a company name, website, or short brief) into one comprehensive, bilingual (VI/EN toggle) HTML sales proposal website (all CSS/JS/charts inline, no CDN — opens correctly via file:// with no network) covering all three TechNext service lines — Odoo ERP implementation, AI Solutions, and Social Media Marketing — deep web/social research, a fixed sidebar covering Due Diligence, Strategic Analysis (competitors/market), Operations, a Recommendations section, and a Tools & Documents section (AI Build Playbook, Profit Estimator, Quotation, Meeting Minutes, Discovery Questions, etc). Use when asked to research a client and build a sales proposal / due-diligence site, "làm sales proposal", "nghiên cứu khách hàng làm đề xuất", or when the request matches the client-research-to-proposal workflow (spin up agents, research a company, produce a growth plan with a big sidebar).
 ---
@@ -57,7 +57,7 @@ citation. Full rules: `<skill-root>/assets/research-rules.md`.
 | 2.5 — Source audit (hard gate) | Confirm every citation's excerpt is really on its source page (`bind_check.py`) before assembly proceeds — a blocking gate, not an FYI | Skill: `source-auditor` |
 | 2.6 — Chart data | Build the final `chart-manifest.json` from audited findings — only runs after `source-auditor` passes with an empty `blocking_issues` array | Skill: `chart-data-analyst` |
 | 3 — Assembly | Extract sections from Phase 1 previews, drop into the template in fixed order | Skill: `assembler` |
-| 4a — Mechanical validation | Run `validate-proposal.py`'s 13 hard checks (incl. no-CDN gate) | Skill: `mechanical-validator` |
+| 4a — Mechanical validation | Run `validate-proposal.py`'s 14 hard checks (incl. no-CDN gate and chart-render wiring) | Skill: `mechanical-validator` |
 | 4b — Judgment review | Content/citation spot-check, devil's-advocate pass, then a per-task `ccusage` cost report | Skill: `judgment-reviewer` |
 
 **Note on Phase 1's input cost.** Group agents no longer read the full
