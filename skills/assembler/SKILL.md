@@ -18,10 +18,10 @@ Read all 4 `<client-slug>-p1-group*.html` files + `<client-slug>-p2-frontmatter.
 the next `<section id="` or `</main>`), don't paste the whole files in.
 
 Take a fresh copy of
-`~/.claude/skills/technext-sales-proposal/assets/proposal-template.html` — **the
+`<skill-root>/assets/proposal-template.html` — **the
 actual file, byte for byte, as your starting point** — and replace every placeholder
 section body with the corresponding subagent's output, in the fixed order from
-`~/.claude/skills/technext-sales-proposal/assets/menu-structure.md`, fill in the
+`<skill-root>/assets/menu-structure.md`, fill in the
 client name/title.
 
 **There are three spots for the client name, not one:**

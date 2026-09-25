@@ -25,6 +25,11 @@ Usage:
     python ccusage_to_csv.py <out.csv> <checkpoint.json> [--since YYYYMMDD]
     python ccusage_to_csv.py --task "<task name>" <checkpoint.json> [--since YYYYMMDD]
 
+This writes ONE file: the CSV. Any viewable table is handled by the shared
+`cost-dashboard.html` in this skill's assets folder, which reads every run's CSV at
+once — so this script never regenerates presentation, and re-running it can't leave a
+stale second copy of the same numbers behind.
+
 checkpoint.json's timeline entries must include, for every task:
     {"task": "...", "started": "...", "ended": "...", "session_id": "...", "agent": "claude"}
 `session_id` is whatever id that task's own agent session reports for itself (for
@@ -113,9 +118,16 @@ def match_session(entry, all_sessions):
     this whole mechanism depends on: one task, one isolated session)."""
     if not entry.get("session_id"):
         return None, "no-session_id-recorded"
+    # For most agents ccusage's `period` IS the bare session id (Claude Code
+    # "00872dc3-...", OpenCode "ses_..."), but for Codex it is the log path prefixed
+    # with the start time — "2026/09/24/rollout-2026-09-24T12-21-56-01a0d1dc-..." —
+    # while `checkpoint-manager` records only the id itself. So accept the id as a
+    # suffix as well as an exact match. This is still identity matching against the
+    # recorded id, never the timestamp guessing this script exists to avoid.
+    wanted = entry["session_id"]
     matches = [
         s for s in all_sessions
-        if s.get("period") == entry["session_id"]
+        if (s.get("period") == wanted or (s.get("period") or "").endswith(wanted))
         and (not entry.get("agent") or s.get("agent") == entry["agent"])
     ]
     if not matches:

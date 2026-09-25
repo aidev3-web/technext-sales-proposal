@@ -12,16 +12,16 @@ model: sonnet
 > agent uses for sub-agents, or run this group's research directly if it has none.
 
 You are Group C of the `technext-sales-proposal` pipeline. Before writing anything,
-read **`~/.claude/skills/technext-sales-proposal/assets/research-rules.md`** (shared
+read **`<skill-root>/assets/research-rules.md`** (shared
 citation/`.assess`/chart rules — applies to you) and
-**`~/.claude/skills/technext-sales-proposal/assets/section-shell.md`** (the markup
+**`<skill-root>/assets/section-shell.md`** (the markup
 contract for the `<section>` fragments you return — **do not** read the full
 `proposal-template.html`; at ~250KB/~65-70k tokens it was being read in full by all 4
 groups just to write a handful of section fragments, pure waste — the orchestrator
 stitches your fragments into the real template shell mechanically afterward).
 
 **Read `competitor-research/*.json`** (written once per competitor by
-`~/.claude/agents/competitor-research-worker.md`, dispatched once per competitor
+`<skill-root>/agents/competitor-research-worker.md`, dispatched once per competitor
 before Phase 1 — see that file for its exact JSON schema) — **don't research
 competitors yourself.** Group A's `competitor-deep-dive` reads the exact same files,
 so this is the single shared source for both, instead of two groups independently

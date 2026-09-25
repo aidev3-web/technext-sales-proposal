@@ -19,7 +19,8 @@ Given `company-identity.json` (from `company-verifier`) — its confirmed domain
 
 1. **Read the site's actual content**, not just its tech signature — using
    **Jina Reader**: prepend `r.jina.ai/` to the page URL (e.g.
-   `https://r.jina.ai/https://clientdomain.com/about`) via `WebFetch`/`Bash curl`.
+   `https://r.jina.ai/https://clientdomain.com/about`) via any HTTP fetch tool
+   (`WebFetch` on Claude Code; `curl` or `Invoke-WebRequest` in a shell).
    No API key needed for normal use, returns clean markdown, handles JS-rendered
    pages. Read the homepage plus any "About"/"Contact"/"Team" pages linked from it —
    one Jina Reader call per page, no crawling infrastructure needed.

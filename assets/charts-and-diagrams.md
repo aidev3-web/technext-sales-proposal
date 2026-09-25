@@ -3,7 +3,7 @@
 Read this before Phase 1 (research subagents) or Phase 2 (front-matter) build any
 chart/diagram.
 
-Trung's original reference build (`full1`, Casa Escondida Anilao) is not just tables and
+Trung's original reference build (`full1`, Client Nova) is not just tables and
 prose — it has **21 Chart.js canvas charts** and **9 process/flow diagrams** (rebuilt as
 static HTML, not Mermaid — see below), styled
 consistently (theme-aware grid/legend colors, a shared color palette, re-rendered on

@@ -571,16 +571,16 @@
 
           <div class="convo" id="case-1">
             <h4><span class="num">1</span><span data-vi>Chạy toàn bộ pipeline cho khách mới</span><span data-en>Run the full pipeline for a new client</span></h4>
-            <div class="turn you"><span class="role" data-vi>Bạn gõ</span><span class="role" data-en>You type</span><span data-vi>"Làm sales proposal cho JR-Tech Solution Sdn Bhd, website jrtech.com.my"</span><span data-en>"Build a sales proposal for JR-Tech Solution Sdn Bhd, website jrtech.com.my"</span></div>
+            <div class="turn you"><span class="role" data-vi>Bạn gõ</span><span class="role" data-en>You type</span><span data-vi>"Làm sales proposal cho Client Delta Sdn Bhd, website client-delta.example"</span><span data-en>"Build a sales proposal for Client Delta Sdn Bhd, website client-delta.example"</span></div>
             <div class="turn agent"><span class="role" data-vi>Agent tự làm</span><span class="role" data-en>Agent does</span><span data-vi>Hỏi có ghi chú họp không → <code>company-verifier</code> → toàn bộ 15 bước tự chạy, báo lại sau mỗi phase</span><span data-en>Asks for meeting notes → <code>company-verifier</code> → all 15 steps run themselves, reporting back after each phase</span></div>
-            <div class="turn result"><span class="role" data-vi>Kết quả</span><span class="role" data-en>Result</span>jrtech-proposal.html
-jrtech-findings.json
-jrtech-cost-report.csv</div>
+            <div class="turn result"><span class="role" data-vi>Kết quả</span><span class="role" data-en>Result</span>client-delta-proposal.html
+client-delta-findings.json
+client-delta-cost-report.csv</div>
           </div>
 
           <div class="convo" id="case-2">
             <h4><span class="num">2</span><span data-vi>Chỉ muốn chạy lại 1 phần</span><span data-en>Only re-run one part</span></h4>
-            <div class="turn you"><span class="role" data-vi>Bạn gõ</span><span class="role" data-en>You type</span><span data-vi>"Chỉ chạy lại nhóm B (vận hành) cho JR-Tech thôi, phần khác giữ nguyên"</span><span data-en>"Just re-run Group B (operations) for JR-Tech, keep everything else as-is"</span></div>
+            <div class="turn you"><span class="role" data-vi>Bạn gõ</span><span class="role" data-en>You type</span><span data-vi>"Chỉ chạy lại nhóm B (vận hành) cho Client Delta thôi, phần khác giữ nguyên"</span><span data-en>"Just re-run Group B (operations) for Client Delta, keep everything else as-is"</span></div>
             <div class="turn agent"><span class="role" data-vi>Agent tự làm</span><span class="role" data-en>Agent does</span><span data-vi><code>checkpoint-manager</code> đọc <code>checkpoint.json</code>, thấy A/C/D đã <code>done</code> → chỉ dispatch lại nhóm B</span><span data-en><code>checkpoint-manager</code> reads <code>checkpoint.json</code>, sees A/C/D already <code>done</code> → only re-dispatches Group B</span></div>
             <div class="turn result"><span class="role" data-vi>Kết quả</span><span class="role" data-en>Result</span>phase1_groupB: done (re-run)
 phase1_groupA/C/D: unchanged</div>
@@ -598,7 +598,7 @@ phase1_groupA/C/D: unchanged</div>
             <div class="turn you"><span class="role" data-vi>Bạn gõ</span><span class="role" data-en>You type</span><span data-vi>"Chạy xong Phase 1 Group A tốn bao nhiêu?"</span><span data-en>"How much did Phase 1 Group A cost?"</span></div>
             <div class="turn agent"><span class="role" data-vi>Agent tự làm</span><span class="role" data-en>Agent does</span><span data-vi>Chạy <code>ccusage_to_csv.py --task "phase1_groupA"</code> — khớp đúng <code>session_id</code> đã ghi, không đoán theo giờ</span><span data-en>Runs <code>ccusage_to_csv.py --task "phase1_groupA"</code> — matches the exact recorded <code>session_id</code>, no timestamp guessing</span></div>
             <div class="turn result"><span class="role" data-vi>Kết quả</span><span class="role" data-en>Result</span>=== phase1_groupA (25m00s) ===
-claude-haiku-4-5: $0.44
+<model-name>: $0.44
 TỔNG: $0.44</div>
           </div>
 
@@ -614,6 +614,7 @@ TỔNG: $0.44</div>
             <tr><td><code>&lt;slug&gt;-proposal.html</code></td><td><span data-vi>Bản đề xuất hoàn chỉnh — gửi trực tiếp cho khách.</span><span data-en>The finished proposal — send straight to the client.</span></td></tr>
             <tr><td><code>&lt;slug&gt;-findings.json</code></td><td><span data-vi>Mọi nguồn trích dẫn — dùng khi cần trả lời "số này lấy từ đâu?"</span><span data-en>Every citation's source — for "where did this come from?"</span></td></tr>
             <tr><td><code>&lt;slug&gt;-cost-report.csv</code></td><td><span data-vi>Chi phí thật, tách theo từng task.</span><span data-en>Real cost, broken down per task.</span></td></tr>
+            <tr><td><code>cost-dashboard.html</code></td><td><span data-vi>Mở một lần, nạp CSV của mọi lần chạy vào để xem gộp — không sinh lại mỗi lần chạy.</span><span data-en>Opened once; load every run's CSVs into it for a merged view — never regenerated per run.</span></td></tr>
             <tr><td><code>&lt;slug&gt;-checkpoint.json</code></td><td><span data-vi>Lịch sử đã chạy tới đâu — resume được nếu bị ngắt.</span><span data-en>History of how far it got — resumable if interrupted.</span></td></tr>
           </tbody>
         </table>

@@ -45,7 +45,7 @@ statuses:
 
 ```json
 "timeline": [
-  { "task": "phase0_verification", "started": "2026-09-24T02:40:00Z", "ended": "2026-09-24T02:48:00Z", "session_id": "5d1ccf19-67d1-4181-a3ee-eea2d287a7cf", "agent": "claude" },
+  { "task": "phase0_verification", "started": "2026-09-24T02:40:00Z", "ended": "2026-09-24T02:48:00Z", "session_id": "11111111-2222-4333-8444-555555555555", "agent": "claude" },
   { "task": "phase1_groupA", "started": "2026-09-24T02:49:00Z", "ended": "2026-09-24T03:15:00Z", "session_id": "a5249cf5-b07d-8064-5xxx", "agent": "claude" }
 ]
 ```
@@ -66,11 +66,11 @@ Right after writing a timeline entry's `ended`/`session_id`, run:
 python <path-to-judgment-reviewer-skill>/assets/ccusage_to_csv.py --task "<task-name>" <client-slug>-checkpoint.json
 ```
 `<path-to-judgment-reviewer-skill>` is wherever the `judgment-reviewer` skill is
-actually installed on this machine/agent (e.g. `~/.claude/skills/judgment-reviewer`
-for Claude Code, but skill install locations differ by agent/tool — resolve it from
-however this run located `judgment-reviewer` in the first place, don't hardcode a
-Claude-specific path). Show the user the result along with your normal "Đã chạy xong Phase X" message — e.g.
-*"Đã chạy xong Phase 1 Group A. Chi phí: $0.44 (Haiku), chạy mất 25m."* This is the
+actually installed on this machine/agent (when the skills ship together this is
+`<skill-root>/skills/judgment-reviewer`, but skill install locations differ by
+agent/tool — resolve it from however this run located `judgment-reviewer` in the
+first place, don't hardcode a Claude-specific path). Show the user the result along with your normal "Đã chạy xong Phase X" message — e.g.
+*"Đã chạy xong Phase 1 Group A. Chi phí: $0.44 (model nhỏ), chạy mất 25m."* This is the
 whole point of logging the timeline: knowing exactly what each stage cost **as it
 finishes**, not only from one lump report at the very end of the pipeline. If the
 command prints a "⚠ CẢNH BÁO" line about a non-Claude model showing up inside a
@@ -103,7 +103,7 @@ something to silently skip.
   bare `<section>` fragment saved on its own.** A fragment can't be previewed in a
   browser, which is exactly when you most want to look at it. So
   `<client-slug>-p1-groupA.html` (and B/C/D) must be a **full copy of
-  `~/.claude/skills/technext-sales-proposal/assets/proposal-template.html`** (see
+  `<skill-root>/assets/proposal-template.html`** (see
   "Stitch Phase 1 fragments" above for how — this is `checkpoint-manager`'s own step,
   not the group agent's) with that group's real sections filled in and every other
   section left as its original `placeholder-note` — openable and previewable on its
@@ -125,7 +125,7 @@ something to silently skip.
 
 Once `judgment-reviewer` reports the proposal passed and is ready to hand over, delete
 the intermediate files Phase 3/4 already fully consumed — don't leave them to pile up
-across runs. See `~/.claude/skills/technext-sales-proposal/SKILL.md`'s "Clean up after
+across runs. See `<skill-root>/SKILL.md`'s "Clean up after
 yourself" section for the exact keep/delete list. In short: delete
 `<client-slug>-p1-group{A,B,C,D}.html`, `<client-slug>-findings-group{A,B,C,D}.json`,
 `<client-slug>-p1-digests.json`, `<client-slug>-p2-frontmatter.html`,
@@ -151,8 +151,8 @@ wants one specific section redone (e.g. "chỉ nghiên cứu lại phần Digita
 Presence thôi" — that's one section inside Group A, not all of Group A), don't
 re-run the whole group:
 1. Identify which subagent owns that section (match the section name against
-   `~/.claude/skills/technext-sales-proposal/assets/menu-structure.md`, or check
-   which of the 4 `.claude/agents/*.md` subagent definitions lists it).
+   `<skill-root>/assets/menu-structure.md`, or check
+   which of the 4 `<skill-root>/agents/*.md` subagent definitions lists it).
 2. Have the orchestrator spawn a single, narrowly-scoped `Agent` call for **just that
    one section** (still give it the real template contents + `research-rules.md` —
    a smaller scope doesn't mean a lower quality bar).

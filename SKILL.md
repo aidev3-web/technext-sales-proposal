@@ -1,5 +1,7 @@
 ---
 name: technext-sales-proposal
+version: 1.0.0
+license: Proprietary - see LICENSE. Not for redistribution.
 description: Turn a prospective TechNext client (a company name, website, or short brief) into one comprehensive, bilingual (VI/EN toggle) HTML sales proposal website (all CSS/JS/charts inline, no CDN — opens correctly via file:// with no network) covering all three TechNext service lines — Odoo ERP implementation, AI Solutions, and Social Media Marketing — deep web/social research, a fixed sidebar covering Due Diligence, Strategic Analysis (competitors/market), Operations, a Recommendations section, and a Tools & Documents section (AI Build Playbook, Profit Estimator, Quotation, Meeting Minutes, Discovery Questions, etc). Use when asked to research a client and build a sales proposal / due-diligence site, "làm sales proposal", "nghiên cứu khách hàng làm đề xuất", or when the request matches the client-research-to-proposal workflow (spin up agents, research a company, produce a growth plan with a big sidebar).
 ---
 
@@ -36,7 +38,7 @@ single `.html` file if those 4 aren't deployed alongside it (see `assets/referen
 **Every factual claim must be verifiable, not just plausible-sounding.** Any claim
 from a real source gets a hover-card citation; any TechNext inference/estimate gets an
 `.assess` tag. Never invent a number, quote, or named person with a fake-looking
-citation. Full rules: `~/.claude/skills/technext-sales-proposal/assets/research-rules.md`.
+citation. Full rules: `<skill-root>/assets/research-rules.md`.
 
 ## Reference map — read the linked file before doing that phase's work
 
@@ -48,7 +50,7 @@ citation. Full rules: `~/.claude/skills/technext-sales-proposal/assets/research-
 | 0.7 — Web/OSINT scan | Scan the client's own site + socials, categorize links (social/reviews/press), light tech scan — writes `web-scan.json`, the starting point every Phase 1 subagent reads first | Skill: `web-osint-scanner` |
 | Checkpointing | Decide which phase/group/section actually needs to run; resume logic; timeline/session_id bookkeeping for cost reporting; post-Phase-4 cleanup | Skill: `checkpoint-manager` |
 | 0.9 — Competitor research | 1 worker per identified competitor (hard-budgeted: ≤8 fetches, ≤8 min each), dispatched in parallel — the single shared source both Group A's `competitor-deep-dive` and Group C's `top3-competitor-deep-dive` read from. Immediately followed by `source-auditor`'s `bind_check.py --facts` gate on the resulting JSON, **before** Phase 1 is dispatched — a bad excerpt here would otherwise land in two sections at once | Agent named `competitor-research-worker`, dispatched once per competitor in `web-scan.json`'s new `competitors` array (written by `web-osint-scanner`'s own competitor-identification step) |
-| 1 — Research fan-out | 4 parallel subagents, each researches + writes its own section group + charts, reading `captures/*.md`/`officers.json`/`competitor-research/*.json` first (not live web fetches for anything already captured) | Agents named `research-due-diligence-agent`, `research-ops-tech-agent`, `research-delivery-growth-agent`, `tools-documents-agent` — find each one wherever this agent/tool keeps its own agent definitions (Claude Code: `~/.claude/agents/<name>.md`; a different tool may have no such file at all — see note below) — shared markup contract in `assets/section-shell.md` (not the full template — see note below), citation rules in `assets/research-rules.md` |
+| 1 — Research fan-out | 4 parallel subagents, each researches + writes its own section group + charts, reading `captures/*.md`/`officers.json`/`competitor-research/*.json` first (not live web fetches for anything already captured) | Agents named `research-due-diligence-agent`, `research-ops-tech-agent`, `research-delivery-growth-agent`, `tools-documents-agent` — find each one wherever this agent/tool keeps its own agent definitions (the portable definition files ship in `<skill-root>/agents/`; each tool also has its own convention — Claude Code reads `~/.claude/agents/`, another tool may have no such mechanism at all — see note below) — shared markup contract in `assets/section-shell.md` (not the full template — see note below), citation rules in `assets/research-rules.md` |
 | Charts & diagrams manifest | Exact canvas ids/diagram slots, ownership | `assets/charts-and-diagrams.md` |
 | Template/validator reference | The shell you must build from, the per-client palette rule, what `validate-proposal.py` checks | `assets/reference-files.md` |
 | 2 — Front matter | Overview/Executive Summary/Recommendations/3 Proposed Solutions, written directly (no agent) | Skill: `front-matter-writer` |
@@ -129,7 +131,9 @@ explicitly said they want to keep them for a future incremental re-run.
 - `<client-slug>-findings.json` (citation source list — needed to answer "where did
   this claim come from" later)
 - `<client-slug>-checkpoint.json` (resume + audit history)
-- `<client-slug>-cost-report.csv`
+- `<client-slug>-cost-report.csv` (raw cost data; view any number of them at once in
+  `skills/judgment-reviewer/assets/cost-dashboard.html`, which is built once and not
+  regenerated per run)
 - `web-scan.json`, `officers.json`, `competitor-research/*.json` (the raw research
   inputs everything else cites back to — cheap to keep, expensive to re-derive)
 - `bind-check-report.json`, `competitor-facts-bind-check.json` (the citation

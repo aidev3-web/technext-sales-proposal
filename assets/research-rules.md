@@ -56,11 +56,11 @@ link-out affordance in a footer row at the bottom:
 
 ```html
 <span class="cite-wrap" tabindex="0">
-  <a class="cite" href="https://jrtech.com.my/" target="_blank" rel="noopener">[2]</a>
+  <a class="cite" href="https://client-delta.example/" target="_blank" rel="noopener">[2]</a>
   <span class="cite-tip">
     <span class="cite-tip-excerpt">"24/7/365 service availability with 100% spare parts stock, 18 in-house technicians committed to a 24-hour response time."</span>
     <span class="cite-tip-foot">
-      <a class="cite-tip-domain" href="https://jrtech.com.my/" target="_blank" rel="noopener">jrtech.com.my</a>
+      <a class="cite-tip-domain" href="https://client-delta.example/" target="_blank" rel="noopener">client-delta.example</a>
       <span class="cite-tip-icon">↗</span>
     </span>
   </span>

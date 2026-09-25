@@ -66,8 +66,8 @@ WORD_RE = re.compile(r"[a-z0-9]+")
 def normalize_url(url):
     """Canonical form for matching a citation's URL against a manifest key —
     strips scheme, a leading www., and one trailing slash, lowercases the host.
-    Without this, https://www.jrtech.com.my/about/ silently misses a manifest key
-    of https://jrtech.com.my/about (a real case: 60 of 112 citations pointed at the
+    Without this, https://www.client-delta.example/about/ silently misses a manifest key
+    of https://client-delta.example/about (a real case: 60 of 112 citations pointed at the
     same domain, differing only in www./trailing slash — that's most of the cache's
     value lost to a one-character mismatch, with no warning)."""
     parsed = urllib.parse.urlsplit(url.strip())

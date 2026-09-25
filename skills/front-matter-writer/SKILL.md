@@ -14,7 +14,7 @@ no real benefit.
 
 *Checkpoint resume: save output to `<client-slug>-p2-frontmatter.html` as a full
 template copy of
-`~/.claude/skills/technext-sales-proposal/assets/proposal-template.html` (like Phase
+`<skill-root>/assets/proposal-template.html` (like Phase
 1's group files — openable/previewable, everything but the front matter left as
 `placeholder-note`) and report `phase2: "done"` back to `checkpoint-manager`.*
 

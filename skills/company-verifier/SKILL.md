@@ -21,7 +21,8 @@ user, which this skill never comes close to (one lookup per client).
 
 Given the client name (and website, if the user already provided one):
 
-1. **Call the GLEIF API directly** via `WebFetch` or `Bash curl` — use the **fulltext**
+1. **Call the GLEIF API directly** via an HTTP fetch tool (`WebFetch` on Claude Code;
+   `curl` or `Invoke-WebRequest` in a shell) — use the **fulltext**
    filter, not `entity.legalName`:
    ```
    curl -s "https://api.gleif.org/api/v1/lei-records?filter[fulltext]=<COMPANY NAME>"
@@ -32,7 +33,7 @@ Given the client name (and website, if the user already provided one):
 
    **`filter[fulltext]` is still word-exact, not fuzzy** — tested directly against
    a real entity ("JRTech Solutions Inc.", Canada): a hyphen is treated as a space
-   (`JR-Tech` and `JR Tech` both return the same broad set), but singular/plural and
+   (`Client Delta` and `JR Tech` both return the same broad set), but singular/plural and
    compound-vs-split spelling are NOT auto-corrected — `JRTech` (compound) and
    `JRTech Solutions` (compound + correct plural) both find it, while
    `JR Tech Solution` (split + singular) returns zero. **Don't stop at zero results

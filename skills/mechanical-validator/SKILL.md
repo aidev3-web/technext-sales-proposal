@@ -15,7 +15,7 @@ this mechanical pass is the first half of it.
 ## Run it
 
 ```
-python ~/.claude/skills/technext-sales-proposal/assets/validate-proposal.py <client-slug>-proposal.html <client-slug>-findings.json
+python <skill-root>/assets/validate-proposal.py <client-slug>-proposal.html <client-slug>-findings.json
 ```
 
 This checks exactly the objectively-countable rules — no leftover `placeholder-note`,

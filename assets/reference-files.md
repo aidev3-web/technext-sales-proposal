@@ -34,7 +34,7 @@ still the "off-template" failure this rule exists to catch.
   existing group if research surfaces something that doesn't fit anywhere ("add more
   relevant categories" is allowed, removing/reordering fixed ones is not).
 - `assets/proposal-template.html` — the working shell, styled to match Trung's actual
-  reference build ("Casa Escondida Anilao · Strategic Due Diligence & Odoo 19 ERP
+  reference build ("Client Nova · Strategic Due Diligence & Odoo 19 ERP
   Blueprint · Technext.html", kept alongside `prompt.txt` in the original working
   folder): dark/light `--bg`/`--panel`/`--teal` CSS-variable theme, sticky `#sidenav`,
   scroll progress bar, mobile hamburger nav, hero cover section, and a component

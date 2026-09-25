@@ -53,12 +53,25 @@ draft as final.
 
 ## Cost report — run after the content review, every time
 
-Once the review above is done and the proposal is ready to hand over, export a real
-CSV report, don't just print a table to the terminal:
+Once the review above is done and the proposal is ready to hand over, export the real
+cost report, don't just print numbers to the terminal:
 
 ```
 python assets/ccusage_to_csv.py <client-slug>-cost-report.csv <client-slug>-checkpoint.json
 ```
+
+That command writes **only the CSV**. It deliberately does not generate any HTML —
+presentation is not this script's job, and a per-run HTML file meant one more artifact
+to regenerate, go stale, and reconcile against the CSV it was built from.
+
+To *view* cost, open **`assets/cost-dashboard.html`** — a single static page, built
+once, that takes any number of `*-cost-report.csv` files (pick the whole `_runs`
+folder) and renders them as one table with per-run subtotals, a grand total, and the
+missing-task warnings. It is inline-CSS/JS only, no CDN, no network — it opens
+straight from `file://`. If it also finds the matching `*-checkpoint.json` files, it
+cross-checks them against the CSVs, which is the only way a task with **no** cost row
+can be spotted at all (a CSV cannot record its own absences) — so when handing the
+dashboard to someone, tell them to load the checkpoints alongside the CSVs.
 
 **This works no matter which coding agent ran the pipeline** (Claude Code, Codex,
 Gemini CLI, ...) — a requirement for a skill the whole company uses, since not every
@@ -105,9 +118,9 @@ Never fold that model's cost into the reported total silently — flag it and tr
 total as possibly inflated until manually confirmed.
 
 Open the CSV with `Read` and summarize the total for the user (e.g. *"Chạy xong hết
-pipeline, chi phí thật của lần chạy này là $X — chủ yếu từ Y token Sonnet ở Phase 1
-Group A, xem chi tiết trong `<client-slug>-cost-report.csv`"*), and hand over the CSV
-file itself alongside the proposal — cost stays visible and re-checkable per task, not
-just a number quoted once in chat. If `ccusage`/Node isn't available on the machine,
-say so plainly and skip — don't block delivery on it, it's a reporting step, not a
-gate.
+pipeline, chi phí thật của lần chạy này là $X — chủ yếu từ Y token ở Phase 1
+Group A, xem chi tiết trong `<client-slug>-cost-report.csv`"*), and hand over **both**
+files alongside the proposal — the CSV and the HTML table, since a recipient may open
+one and not the other — so cost stays visible and re-checkable per task, not just a
+number quoted once in chat. If `ccusage`/Node isn't available on the machine, say so
+plainly and skip — don't block delivery on it, it's a reporting step, not a gate.
