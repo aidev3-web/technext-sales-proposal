@@ -94,6 +94,14 @@ Alongside the URL, each finding gets a rough confidence grade:
   the user pasted at Phase 0. Not "higher than A" — a **different kind of source**.
   Never render it as a `.cite` link — use a `.grade.confirmed` badge instead, with a
   short note of what it's from, e.g. "Confirmed — discovery call 18/06".
+- **Reported** — the TechNext user says the **client** raised it in a call/meeting, but
+  no notes/transcript were pasted (from `<client-slug>-intake.json`). Render as a
+  `.grade` badge "Reported — TechNext sales, <date>", never as a `.cite` link. Weaker
+  than Confirmed; stronger than a web source for the client's own pains.
+- **Assumed** — a pain TechNext expects but the client has not voiced (contact status
+  "not contacted yet", or the user said it was their own guess). Always an `.assess`
+  tag reading "Assumed — to verify in the meeting", and it must appear as a question in
+  `tool-discovery-questions` / `pm-unknowns`. Never promote it to Confirmed or Reported.
 - **A** — primary/official source (company site, filing, direct quote).
 - **B** — reputable independent secondary source (established press, industry report).
 - **C** — single unverified or user-generated source (one review, one social post).
@@ -114,7 +122,7 @@ In addition to your HTML section(s), write **your own**
 `<client-slug>-findings-group<X>.json` (`X` = A/B/C/D — never a shared
 `<client-slug>-findings.json`, which is a real race condition when 4 groups append in
 parallel; `source-auditor` merges the 4 group files afterward): an array of
-`{ "claim": "...", "section": "<sidebar slug>", "source_url": "...", "grade": "Confirmed|A|B|C|D", "excerpt": "..." }`
+`{ "claim": "...", "section": "<sidebar slug>", "source_url": "...", "grade": "Confirmed|Reported|Assumed|A|B|C|D", "excerpt": "..." }`
 objects, one per citation you actually used (`source_url` omitted/null for
 `Confirmed` entries — cite the meeting instead). See `assets/section-shell.md` for the
 full markup contract this pairs with.

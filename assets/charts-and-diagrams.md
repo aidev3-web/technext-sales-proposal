@@ -3,7 +3,7 @@
 Read this before Phase 1 (research subagents) or Phase 2 (front-matter) build any
 chart/diagram.
 
-Trung's original reference build (`full1`, Client Nova) is not just tables and
+The original hand-built reference proposal this skill is modeled on is not just tables and
 prose — it has **21 Chart.js canvas charts** and **9 process/flow diagrams** (rebuilt as
 static HTML, not Mermaid — see below), styled
 consistently (theme-aware grid/legend colors, a shared color palette, re-rendered on
@@ -13,7 +13,7 @@ real run of this skill shipped with none at all, and a later one shipped a handf
 didn't match the reference's look.
 
 **Use the real helper functions, don't hand-roll chart configs.**
-`assets/proposal-template.html` now ports these **verbatim from `full1`** — every chart
+`assets/proposal-template.html` now ports these **verbatim from that original reference build** — every chart
 must be built through them, never via a bare `new Chart(el, {...})` call, so it
 automatically gets the right colors and survives the light/dark theme toggle:
 ```js
@@ -41,13 +41,16 @@ regChart(() => mkChart('cSentiment', {
   use it for any chart with cartesian axes.
 - `inkColors()` returns the current theme's `{grid, tick, ink}` — needed directly for
   radar (`scales.r`) configs, which `gridScale()` doesn't cover.
-- **Chart labels/dataset labels are always plain strings, never HTML.** Chart.js
-  renders them as plain canvas text, not HTML — `'<span class="t-vi">Facebook</span>
-  <span class="t-en">Facebook</span>'` as a label literally prints the tag markup on
-  the chart, it doesn't toggle with VI/EN like the rest of the page (a real run once
-  did exactly this). Charts don't support the bilingual toggle — use a single combined
-  string instead, e.g. `'Trực tiếp/Direct'` or just the term if it's the same in both
-  languages (`'Facebook'`, `'Analytics'`).
+- **Chart labels/dataset labels are always plain strings, never HTML, written as
+  `"Tiếng Việt||English"`.** Chart.js draws labels as canvas text, so HTML spans would
+  print literally. The template's `trChartCfg()` splits every label, dataset label,
+  axis title and chart title on `||` and shows only the active language; toggling VI/EN
+  re-renders every chart. Examples: `'Trực tiếp||Direct'`, `'T1||Jan'`,
+  `'Hôm nay (ước tính)||Today (est.)'`. A term that is the same in both languages needs
+  no `||` (`'Facebook'`, `'KONE'`). Never use the old `'Việt/English'` form.
+- **Colours come from the active palette.** The first `PAL` colours (`PAL[0]`,
+  `PAL[1]`, `PAL[2]`, `PAL[8]`) follow the palette the viewer picks with the 🎨 button,
+  so reach for `PAL[...]` or `var(--teal)`-derived colours rather than hard-coding hex.
 - **Tooltips on any chart plotting percentages must say so.** Chart.js's default
   tooltip shows a bare number (`"25"`) with no unit — a real reader hovering has no
   idea if that's a percent, a count, or a score. Any chart whose `data` values are
@@ -58,8 +61,8 @@ regChart(() => mkChart('cSentiment', {
   ```
   merge this into the chart's `plugins` alongside `legend`, same pattern as `baseOpts`.
 
-**Full chart manifest — all 18, not a representative sample.** `full1` has 21 named
-charts; this skill drops the 2 tied to the removed PESTLE/Porter's Five Forces
+**Full chart manifest — all 18, not a representative sample.** The original reference
+build has 21 named charts; this skill drops the 2 tied to the removed PESTLE/Porter's Five Forces
 sections and 1 (`cAuto`) tied to the section removals below, leaving 18 required.
 Content adapted per client's
 actual industry, counts/labels never invented from nothing — an `.assess`-labeled
@@ -91,30 +94,13 @@ season, if the client isn't a dive resort):
 | `cRoi` | line | Phase 2 (`recommendations`) | Recommended cumulative cost vs. cumulative benefit, break-even visible |
 
 That's **12 charts for Group A, 1 for Group C (`cOwner`), 2 for Phase 2's `exec-summary`,
-3 for Phase 2's new `recommendations` section** = 18 total. `cAuto` and the old
-Group B/C ownership were retired along with the sections they belonged to — see
-"Removed sections" below. Group A owning most of them is expected — it's chart-config
-generation from research Group A already did, not new research, so it doesn't need
-extra research time.
+3 for Phase 2's `recommendations` section** = 18 total. Group A owning most of them is
+expected — it's chart-config generation from research Group A already did, not new
+research, so it doesn't need extra research time.
 
-**Removed sections — boss feedback 2026-09-23.** The boss explicitly asked to remove
-these 12 sections (see the removal list in `assets/menu-structure.md`): `operations`,
-`stakeholder-perspectives`, `ai-automation-catalog`, `ai-in-action`,
-`odoo-architecture`, `data-migration`, `social-media-architecture`,
-`implementation-roadmap`, `change-management`, `hypercare-support`,
-`risk-register-raci`, `kpis-benefits`. **Do not generate these sections or their
-`<section id="...">` blocks — they no longer exist in `assets/menu-structure.md` and
-must not be added back.** Their forward-looking numbers (risk, KPI targets, ROI) now
-live in the new `recommendations` section (Phase 2) instead of being spread
-across the deleted delivery-mechanics sections.
-
-**Full diagram manifest — 4, no Mermaid.** Boss feedback 2026-09-23: *"Do not use
-mermaid chart."* Every diagram slot below is built as **static HTML using the
-template's own component classes**, never `<div class="mermaid">`/Mermaid syntax —
-this also settles the BPMN·Blueprint·UML section's fate: it stays (it wasn't on the
-removal list), just rebuilt without Mermaid. 5 of the original 9 slots were owned by
-sections now removed (module-dependency, integration-map, migration cutover, roadmap
-timeline, hypercare triage) and are dropped, not reassigned.
+**Full diagram manifest — 4, no Mermaid.** Every diagram slot below is built as
+**static HTML using the template's own component classes**, never
+`<div class="mermaid">`/Mermaid syntax.
 
 | # | Static shape | Owner | Shows |
 |---|---|---|---|
@@ -129,6 +115,30 @@ Documents) don't own any required diagram in this manifest. Give each of these 4
 fine — `.tl`/`.tbl`/`.quad`/`.acc` — the wrapper is just what Phase 4's validator
 counts) so the mechanical check can confirm all 4 are present without depending on any
 one specific inner markup shape.
+
+### Drawing diagrams with the bundled `diagram-design` skill
+
+`diagram-design` ships with this skill (`skills/diagram-design/`, MIT) and is installed
+alongside it. Use it to draw each diagram-block instead of hand-built `.tl` markup
+whenever it produces a clearer, better-looking result — pick the type that fits the
+content, e.g. **org chart / tree** (#1), **funnel / pyramid** (#2), **swimlane** (#3),
+**sequence** (#4). Hand-built `.tl` remains a valid fallback.
+
+Rules when embedding its output:
+- Paste only the **inline `<svg>…</svg>`** inside the `<div class="diagram-block"
+  data-diagram="N">` wrapper — never its full example page, never a `<link>` to Google
+  Fonts or any CDN (validator check #13 fails the build on external assets).
+- Skin it with this client's palette (map diagram-design's `paper/ink/accent/muted`
+  roles to the proposal's CSS variables) so it matches the page in both themes.
+- Every visible label stays bilingual: wrap SVG text in `<tspan class="t-vi">` /
+  `<tspan class="t-en">`.
+- No Mermaid, ever — diagram-design draws static SVG, which is what's required.
+
+**Charts: model's choice, within the validator contract.** The 18 required canvases
+above stay Chart.js (the validator checks their ids + `regChart`). Beyond those, when a
+visual reads better as a diagram-design chart type (Sankey, waterfall, Gantt, quadrant,
+Wardley, radar…), add it as an extra `diagram-block` — choose whichever renders the
+data most clearly and fits the section.
 
 Each `<canvas id="...">` above must appear in the HTML with that exact id and exactly
 one matching `regChart(() => mkChart('...', {...}))` call in a `<script>` block placed

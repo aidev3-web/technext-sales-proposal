@@ -368,6 +368,26 @@ def main():
     else:
         ok("chart options are valid object literals (no object-merge with '+')")
 
+    print(f"\n=== 15. Colour themes, starred must-reads and bilingual chart labels ===")
+    swatches = len(re.findall(r'class="pal-sw"', html))
+    if 'id="palPop"' not in html or swatches < 8 or 'function setCustomColour' not in html:
+        passed = fail(f"palette picker missing or incomplete ({swatches} preset swatch(es); need 8 + custom colour)") and passed
+    else:
+        ok(f"palette picker present ({swatches} presets + custom colour)")
+    if not re.search(r'<html[^>]*data-palette-default="[a-z]+"', html):
+        passed = fail("<html> has no data-palette-default — set the colour the user chose at intake") and passed
+    else:
+        ok("default palette set on <html>")
+    stars = len(re.findall(r'<section id="[a-z0-9-]+" data-star="1"', html))
+    if stars < 5:
+        passed = fail(f"only {stars} section(s) tagged data-star=\"1\" — the must-read list needs the key sections starred") and passed
+    else:
+        ok(f"{stars} must-read sections starred")
+    if 'function trChartStr' not in html and 'CHART_I18N' not in html:
+        passed = fail("no bilingual chart-label handler (trChartStr) — chart text will not follow VI/EN") and passed
+    else:
+        ok("chart labels follow the VI/EN toggle")
+
     print()
     if passed:
         print("ALL MECHANICAL CHECKS PASSED. Still do the judgment-based Phase 4 checks by hand:")

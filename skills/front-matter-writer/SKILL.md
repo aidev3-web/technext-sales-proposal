@@ -5,7 +5,7 @@ description: Writes the front-matter sections of a TechNext sales proposal — O
 
 # Front-matter writer — synthesis of Phase 1's findings, not new research
 
-`overview`, `exec-summary`, `recommendations`, `solution-odoo-erp`, `solution-ai`, and
+`pre-meeting`, `overview`, `exec-summary`, `recommendations`, `solution-odoo-erp`, `solution-ai`, and
 `solution-social-media` are synthesis of what Phase 1's four subagents already found
 and returned (their short digests) — read `<client-slug>-p1-digests.json`, not the
 full Phase 1 group HTML files. This is fast enough to do directly, without spawning
@@ -68,3 +68,14 @@ e.g. "has a Facebook page, no Instagram or content cadence" → the Social Media
 whitespace; "spreadsheet-based inventory, no CRM" → the Odoo whitespace. Every one of
 the three gets real content every time — TechNext's decision to always pitch all
 three was made deliberately, don't second-guess it per client.
+
+
+## `pre-meeting` (Read before the meeting)
+
+Fill the 4 fixed parts, keeping their ids: `pm-company` (5–7 cited facts about the client),
+`pm-person` (the person being met: confirmed role with links, stated priorities, unverified
+career marked grade C, how to talk to them, meeting goal — public professional information
+only), `pm-issues` (a table Issue | AS-IS | Competitors | TO-BE, one row per confirmed pain),
+`pm-unknowns` (a table Unknown | Why AI couldn't get it | Question to ask). Leave `#mustRead`
+empty — the template builds it from every section tagged `data-star="1"`. Never state as fact
+something only inferred (e.g. a regulation "applies" to the client) — say "if…, to confirm".
