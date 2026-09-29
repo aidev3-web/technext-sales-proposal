@@ -102,6 +102,11 @@ Alongside the URL, each finding gets a rough confidence grade:
   "not contacted yet", or the user said it was their own guess). Always an `.assess`
   tag reading "Assumed — to verify in the meeting", and it must appear as a question in
   `tool-discovery-questions` / `pm-unknowns`. Never promote it to Confirmed or Reported.
+- **Browser-observed** (from `social-browser-scan`) — a post/review read in the user's
+  logged-in browser. Grade **B** when it is the company's own official account, **C** for a
+  single review/comment. Cite it like any source (`.cite` + hover excerpt), pointing at the
+  page URL, with the label "Quan sát trực tiếp qua trình duyệt, <ngày>"; the excerpt must be
+  verbatim in its `captures/social/*.md` snapshot. Never include reviewer/commenter names.
 - **A** — primary/official source (company site, filing, direct quote).
 - **B** — reputable independent secondary source (established press, industry report).
 - **C** — single unverified or user-generated source (one review, one social post).

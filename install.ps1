@@ -4,7 +4,7 @@
 
 .DESCRIPTION
     Links <Destination>/technext-sales-proposal to this repository, and links each of
-    the 11 sub-skills (incl. diagram-design) under skills/ into <Destination>/<name> - the pipeline dispatches
+    the 12 sub-skills (incl. diagram-design, social-browser-scan) under skills/ into <Destination>/<name> - the pipeline dispatches
     those sub-skills by name, so they must be discoverable on their own.
 
     An existing real folder is never overwritten; it is reported and skipped. Existing
@@ -19,7 +19,7 @@
     Copy the files instead of creating links.
 
 .PARAMETER SkipSubSkills
-    Install only the orchestrator skill, not the 11 sub-skills (incl. diagram-design).
+    Install only the orchestrator skill, not the 12 sub-skills (incl. diagram-design, social-browser-scan).
 
 .PARAMETER DryRun
     Show what would happen without touching anything.
