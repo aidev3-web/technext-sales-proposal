@@ -1,9 +1,6 @@
 ---
 name: diagram-design
 description: Create branded architecture, IT current-state, flowchart, sequence, state machine, ER/data model, timeline, swimlane, quadrant, radar/spider, polar chart (polar/radial lollipop), loop/flywheel, nested, tree, org chart, layer stack, Venn, pyramid/funnel, treemap, bar, waterfall, line, Gantt and scatter charts, high-level, process, medallion, data flow, DP integration, DP security matrix, Sankey, fishbone, Wardley map, kanban, user journey, deployment, dependency graph, UML class, story map, or database schema diagrams as standalone HTML/SVG/PNG. Redraw .drawio/.drawio.png/.drawio.svg, Mermaid .mmd, or Excalidraw .excalidraw sources at a chosen size/detail; onboard brand tokens from a website; add lifecycle phase maps, semantic patterns, callouts, accessible motion, or sketchy/hand-drawn styling.
-license: MIT
-metadata:
-  version: "2.6"
 ---
 
 # Diagram Design
@@ -576,3 +573,12 @@ Every diagram is an accessible figure by default:
 When the user asks to export, save, rasterize, or convert a generated diagram to `.png` or `.svg`, load [`references/export.md`](references/export.md) and follow the procedure there. Both formats deliver the diagram only (the `<svg>` node) — editorial wrappers like cards and headers are dropped by design. Export is **manual** — never produce export files unprompted.
 
 For an imported diagram, pixel dimensions come from the `viewBox` × scale factor, so its size decision belongs to §11, not to export. For any diagram that needs an exact frame (an OG card or a slide image), see [`export.md` § Sizing the export](references/export.md).
+
+---
+
+## License & source
+
+MIT License — Copyright (c) 2025 Cathryn Lavery. Full text in `LICENSE` next to this file.
+Upstream: https://github.com/cathrynlavery/diagram-design (skill version 2.6). Bundled unchanged except
+that `license`/`metadata` were moved out of the frontmatter into this section so the skill passes
+libraries that only allow `name` + `description` keys.
