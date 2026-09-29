@@ -37,7 +37,7 @@ the installer for your platform:
 ```powershell
 git clone https://github.com/aidev3-web/technext-sales-proposal.git
 cd technext-sales-proposal
-pwsh -File install.ps1                 # Windows
+powershell -ExecutionPolicy Bypass -File install.ps1                 # Windows
 ```
 
 ```bash
@@ -45,6 +45,10 @@ git clone https://github.com/aidev3-web/technext-sales-proposal.git
 cd technext-sales-proposal
 ./install.sh                           # macOS / Linux
 ```
+
+**Updating:** `git pull`, then run the installer again. On Windows the orchestrator's
+`SKILL.md` and the 5 agent files are copies, so they only change when the installer
+re-runs (agent files that you edited are kept; add `-Force` to overwrite them).
 
 The installer links the orchestrator skill **and** its 12 sub-skills (incl. `diagram-design`, `social-browser-scan`) into the agent
 skills directory you choose, because the pipeline dispatches the sub-skills by name.

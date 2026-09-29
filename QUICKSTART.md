@@ -13,7 +13,7 @@ Five steps from clone to first proposal.
    skills directory; use `--copy` / `-Copy` where symlinks are unavailable)
 
    ```powershell
-   pwsh -File install.ps1
+   powershell -ExecutionPolicy Bypass -File install.ps1
    ```
 
    ```bash
