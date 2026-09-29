@@ -143,4 +143,23 @@ if (-not $SkipSubSkills) {
     }
 }
 
-Write-Host "`nDone. Ask your agent for a sales proposal to test the install."
+# Claude Code discovers subagents in <host>/agents, next to <host>/skills - the pipeline
+# dispatches the 5 research agents by name, so they must be installed there too.
+$AgentSrc = Join-Path $RepoRoot 'agents'
+$HostDir  = Split-Path -Parent $Destination
+if ((Test-Path -LiteralPath $AgentSrc) -and ((Split-Path -Leaf $HostDir) -eq '.claude')) {
+    $AgentDest = Join-Path $HostDir 'agents'
+    Write-Host "`nSubagents -> $AgentDest"
+    if (-not (Test-Path -LiteralPath $AgentDest)) {
+        if ($DryRun) { Write-Host "  [dry-run] would create $AgentDest" -ForegroundColor DarkGray }
+        else { New-Item -ItemType Directory -Path $AgentDest -Force | Out-Null }
+    }
+    Get-ChildItem -LiteralPath $AgentSrc -Filter '*.md' | Sort-Object Name | ForEach-Object {
+        Install-Link -LinkPath (Join-Path $AgentDest $_.Name) -TargetPath $_.FullName
+    }
+}
+elseif (Test-Path -LiteralPath $AgentSrc) {
+    Write-Host "`nSubagents: not a Claude Code skills dir - install the 5 files in agents/ with your agent's own sub-agent mechanism (see README)." -ForegroundColor Yellow
+}
+
+Write-Host "`nDone. Restart your agent, then ask it for a sales proposal to test the install."

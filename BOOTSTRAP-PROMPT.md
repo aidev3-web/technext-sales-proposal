@@ -41,8 +41,13 @@ Do this in order. Stop and ask me if anything is ambiguous.
    show me the message and ask before doing anything else.
 
 4. Verify, and show me the raw output of each check:
-   - the orchestrator skill and all 10 sub-skills are present in the skills directory
+   - the orchestrator skill and all 12 sub-skills are present in the skills directory
      (the installer prints one line per item)
+   - Claude Code only: the 5 research agents are present in ~/.claude/agents/
+     (competitor-research-worker, research-delivery-growth-agent,
+     research-due-diligence-agent, research-ops-tech-agent, tools-documents-agent).
+     Other hosts: tell me the installer skipped them and how YOUR host defines
+     sub-agents, instead of guessing
    - <skills-dir>/technext-sales-proposal/SKILL.md is readable, and its frontmatter
      contains `name: technext-sales-proposal`
    - `python --version` - the pipeline needs Python 3.9 or newer
@@ -52,10 +57,12 @@ Do this in order. Stop and ask me if anything is ambiguous.
 5. Report back in exactly this shape:
    - skills directory used:
    - tag / commit installed:
-   - sub-skills linked (n of 10):
+   - sub-skills linked (n of 12):
+   - research agents installed (n of 5, or "not a Claude Code host"):
    - Python version:
    - cost report available (yes/no, and why):
    - anything the installer skipped, and why:
+   - that I must restart this agent before the new skills/agents are picked up
    - the exact thing I should type in this agent to invoke the skill:
 
 Do not modify the skill's contents. If you think something should change, tell me
