@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light" data-lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>technext-sales-proposal · Docs</title>
+<style>
+:root{
+  --bg:#fbf3ea; --panel:#fffaf3; --panel2:#f2e9dd; --line:#e3ceb8; --line2:#ecdcc9;
+  --ink:#3a3a3a; --ink2:#5c5147; --muted:#8a7f74;
+  --accent:#e8734a; --accent-soft:#fbe3d9; --accent-ink:#c2552f;
+  --amber:#c8853c; --amber-soft:#f7ecd9; --ok:#5a8f6b; --ok-soft:#e6f0e8;
+  --warn:#c8853c; --warn-soft:#f7ecd9; --bad:#c85c4a; --bad-soft:#fbe4de;
+  --blue:#3f6fa8; --blue-soft:#e5edf6;
+  --radius:14px; --r2:10px;
+  --serif:'Fraunces',Constantia,Cambria,'Times New Roman',Georgia,serif;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,'Cascadia Mono',Consolas,monospace;
+}
+:root[data-theme="dark"]{
+  --bg:#1c1712; --panel:#241d17; --panel2:#2e251d; --line:#4a3c30; --line2:#3b2f24;
+  --ink:#ece6dc; --ink2:#c2b9ac; --muted:#a89a89;
+  --accent:#f08a5f; --accent-soft:#3d2418; --accent-ink:#f6a880;
+  --amber:#e0ac6b; --amber-soft:#3a2c1c; --ok:#8fbf9c; --ok-soft:#24301f;
+  --warn:#e0ac6b; --warn-soft:#3a2c1c; --bad:#e08072; --bad-soft:#3a241f;
+  --blue:#8fb4dd; --blue-soft:#1f2a37;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent-ink);text-decoration:none}
+a:hover{text-decoration:underline}
+code,.mono,pre{font-family:var(--mono)}
+code{background:var(--panel2);padding:1px 5px;border-radius:5px;font-size:.86em;color:var(--ink2)}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:var(--r2);padding:14px 16px;overflow-x:auto;font-size:.82rem;line-height:1.55;color:var(--ink2);margin:12px 0}
+pre code{background:none;padding:0}
+html[data-lang="vi"] .t-en{display:none}
+html[data-lang="en"] .t-vi{display:none}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 22px;background:var(--bg);border-bottom:1px solid var(--line)}
+.brandline{display:flex;align-items:center;gap:9px;font-size:.94rem;font-weight:700}
+.brandline .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+.brandline .subtle{color:var(--muted);font-weight:500}
+.langsw{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--panel)}
+.langsw button{border:0;background:none;padding:6px 18px;font:inherit;font-weight:600;font-size:.8rem;color:var(--ink2);cursor:pointer}
+.langsw button.on{background:var(--accent);color:#fff}
+#navfab{display:none;position:fixed;bottom:16px;left:16px;z-index:60;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:1.1rem;cursor:pointer;box-shadow:0 8px 20px -10px rgba(0,0,0,.4)}
+
+/* ---------- 3-column shell ---------- */
+.shell{display:grid;grid-template-columns:238px minmax(0,1fr) 208px;gap:0;max-width:1400px;margin:0 auto}
+.side{position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto;padding:26px 14px 40px 22px;border-right:1px solid var(--line)}
+.side .grp{color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin:20px 0 7px;padding-left:11px}
+.side .grp:first-child{margin-top:0}
+.side nav{display:flex;flex-direction:column;gap:1px}
+.side nav a{display:block;padding:7px 11px;border-radius:9px;color:var(--ink2);font-size:.86rem;border-left:2px solid transparent}
+.side nav a:hover{background:var(--panel2);text-decoration:none;color:var(--ink)}
+.side nav a.on{background:var(--accent-soft);color:var(--accent-ink);font-weight:600;border-left-color:var(--accent)}
+.rail{position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto;padding:34px 22px 40px 6px;border-left:1px solid var(--line2)}
+.rail .rl{color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.rail a{display:block;color:var(--muted);font-size:.79rem;padding:4px 0 4px 12px;border-left:1px solid var(--line2);line-height:1.4}
+.rail a:hover,.rail a.on{color:var(--accent-ink);border-left-color:var(--accent);text-decoration:none}
+main{padding:34px 34px 100px;min-width:0}
+@media(max-width:1080px){.shell{grid-template-columns:220px minmax(0,1fr)}.rail{display:none}}
+@media(max-width:780px){
+  .shell{grid-template-columns:1fr}
+  .side{position:fixed;top:0;left:0;bottom:0;width:78vw;max-width:290px;height:auto;z-index:70;background:var(--bg);transform:translateX(-104%);transition:transform .22s;box-shadow:0 0 40px rgba(0,0,0,.35);padding-top:64px}
+  body.open .side{transform:none}
+  #navfab{display:block}
+  main{padding:26px 18px 80px}
+}
+
+/* ---------- typography ---------- */
+.eyebrow{color:var(--accent);font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+h1{font-family:var(--serif);font-size:clamp(1.7rem,3vw,2.3rem);line-height:1.15;margin:0 0 12px;letter-spacing:-.01em}
+h2{font-family:var(--serif);font-size:clamp(1.3rem,2.2vw,1.6rem);margin:0 0 6px;letter-spacing:-.01em}
+h3{font-size:.98rem;margin:26px 0 8px;font-weight:700}
+h4{font-size:.86rem;margin:18px 0 6px;font-weight:700;color:var(--ink2)}
+.lead{color:var(--ink2);font-size:1rem;max-width:72ch;margin:0 0 8px}
+section{padding:34px 0 10px;border-bottom:1px solid var(--line2)}
+section:last-of-type{border-bottom:0}
+.sec-sub{color:var(--muted);font-size:.86rem;margin:0 0 18px}
+p{margin:0 0 12px;max-width:78ch}
+ul,ol{margin:0 0 14px;padding-left:22px;max-width:78ch}
+li{margin:0 0 6px}
+.muted{color:var(--muted)}
+.small{font-size:.82rem}
+
+/* ---------- components ---------- */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 6px}
+@media(max-width:900px){.cards{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.cards{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px}
+.card .n{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:7px;background:var(--accent-soft);color:var(--accent-ink);font-size:.72rem;font-weight:700;margin-bottom:9px}
+.card b{display:block;font-size:.9rem;margin-bottom:5px}
+.card span{color:var(--ink2);font-size:.83rem;line-height:1.5}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0 4px}
+@media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r2);padding:12px 14px}
+.stat .v{font-family:var(--serif);font-size:1.35rem;font-weight:700;line-height:1.1}
+.stat .k{color:var(--muted);font-size:.72rem;margin-top:3px;line-height:1.35}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.85rem}
+th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line2);vertical-align:top}
+th{color:var(--muted);font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--line)}
+tbody tr:hover{background:var(--panel)}
+.pill{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.info{background:var(--blue-soft);color:var(--blue)}
+.pill.neutral{background:var(--panel2);color:var(--muted)}
+.gate{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r2);padding:14px 16px;margin:14px 0}
+.gate > b{display:block;font-size:.85rem;margin-bottom:5px}
+.gate p{margin:0;color:var(--ink2);font-size:.85rem}
+.bar{display:grid;grid-template-columns:170px 1fr 62px;gap:10px;align-items:center;margin:6px 0;font-size:.82rem}
+.bar .lb{color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar .tr{background:var(--panel2);border-radius:6px;height:16px;overflow:hidden}
+.bar .fi{height:100%;background:linear-gradient(90deg,var(--accent),#f0a37f);border-radius:6px}
+.bar .vv{text-align:right;color:var(--muted);font-family:var(--mono);font-size:.76rem}
+.kv{display:grid;grid-template-columns:180px 1fr;gap:4px 14px;font-size:.86rem;margin:12px 0}
+.kv .k{color:var(--muted)}
+.kv .v{color:var(--ink2)}
+.note{background:var(--amber-soft);border:1px solid var(--line);border-radius:var(--r2);padding:12px 15px;font-size:.84rem;color:var(--ink2);margin:14px 0}
+.note b{color:var(--ink)}
+.foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.76rem;font-family:var(--mono)}
+
+/* ---------- workflow ---------- */
+.wf-overview{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr) minmax(0,1fr);gap:30px;align-items:stretch;position:relative;margin:16px 0 8px}
+.wf-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 20px;display:flex;flex-direction:column;gap:12px;position:relative}
+.wf-ptitle{display:flex;align-items:center;gap:8px;font-size:.63rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.wf-ptitle .dt{width:8px;height:8px;border-radius:99px;background:var(--accent);flex:none}
+.wf-panel h3{margin:0;font-family:var(--serif);font-size:1.08rem;font-weight:700}
+.wf-panel p.wf-sub{margin:0;color:var(--muted);font-size:.8rem;line-height:1.45}
+.wf-arrow{position:absolute;top:50%;right:-30px;transform:translateY(-50%);width:30px;height:30px;border-radius:99px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;z-index:3;box-shadow:0 6px 16px -6px rgba(0,0,0,.45);animation:wfnudge 2.4s ease-in-out infinite;font-size:1.15rem;line-height:1;padding-bottom:2px}
+@keyframes wfnudge{0%,100%{transform:translate(0,-50%)}50%{transform:translate(4px,-50%)}}
+.wf-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.wf-list li{display:flex;gap:11px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);transition:transform .2s,border-color .2s}
+.wf-list li:hover{transform:translateX(3px);border-color:var(--accent)}
+.wf-list .gl{width:26px;height:26px;flex:0 0 26px;border-radius:8px;background:var(--accent-soft);color:var(--accent-ink);display:flex;align-items:center;justify-content:center}
+.wf-list .lb{font-weight:600;font-size:.82rem;line-height:1.25}
+.wf-list .ds{color:var(--muted);font-size:.76rem;line-height:1.4}
+.wf-bb{background:radial-gradient(600px 200px at 80% -20%,rgba(232,115,74,.22),transparent 60%),linear-gradient(180deg,#2b2118 0%,#3a2e24 100%);border:1px solid #2b2118;color:#f6eedf}
+.wf-bb .wf-ptitle{color:#d9c7a8}
+.wf-bb .wf-ptitle .dt{background:#d9a24b}
+.wf-bb h3{color:#f6eedf}
+.wf-bb p.wf-sub{color:#c9b693}
+.wf-counters{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;z-index:1}
+.wf-counter{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 13px 10px;position:relative;overflow:hidden}
+.wf-counter::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#d9a24b,var(--accent))}
+.wf-counter .n{font-family:var(--mono);font-size:1.9rem;font-weight:700;line-height:1;color:#f6eedf;font-variant-numeric:tabular-nums}
+.wf-counter .l{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#c9b693;margin-top:5px;font-weight:700}
+.wf-counter .h{font-size:.7rem;color:#b8a889;margin-top:5px;line-height:1.35}
+.wf-sum{margin-top:2px;font-size:.79rem;color:#d9c7a8;line-height:1.6;border-top:1px dashed rgba(255,255,255,.16);padding-top:11px;position:relative;z-index:1}
+.wf-sum b{color:#f6eedf}
+.wf-agents{display:flex;align-items:center;gap:7px;margin-top:auto;padding-top:11px;flex-wrap:wrap;position:relative;z-index:1;border-top:1px dashed rgba(255,255,255,.16)}
+.wf-agents .lab{width:100%;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#c9b693;font-weight:700;margin-bottom:2px}
+.wf-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(232,115,74,.14);border:1px solid rgba(232,115,74,.3);color:#f8d8c6;font-size:.68rem;font-weight:600;padding:3px 10px 3px 4px;border-radius:99px;font-family:var(--mono);white-space:nowrap}
+.wf-pill .mk{width:15px;height:15px;border-radius:99px;background:#fff;color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;flex:none}
+.wf-out{display:flex;flex-direction:column;gap:9px}
+.wf-ocard{display:flex;gap:11px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--panel2);transition:transform .2s,border-color .2s}
+.wf-ocard:hover{transform:translateX(-3px);border-color:var(--accent)}
+.wf-ocard .rl{width:4px;border-radius:99px;background:var(--accent);flex:none}
+.wf-ocard .tt{font-size:.82rem;font-weight:600;margin:0 0 2px}
+.wf-ocard .dd{color:var(--muted);font-size:.74rem;line-height:1.45;margin:0}
+.wf-tag{display:inline-block;font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.06em;padding:1px 6px;border-radius:4px;background:var(--accent-soft);color:var(--accent-ink);margin-right:6px;vertical-align:middle}
+/* at-a-glance flow strip */
+.wf-flow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:12px 0 16px}
+.wf-flow .fs{display:inline-flex;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:5px 13px;font-size:.77rem;font-weight:600;white-space:nowrap}
+.wf-flow .fs em{font-style:normal;font-family:var(--mono);font-size:.66rem;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);border-radius:99px;padding:1px 7px}
+.wf-flow .fa{color:var(--accent);font-weight:700;flex:none}
+/* vertical stage timeline */
+.wf-tl{list-style:none;margin:6px 0 4px;padding:0;position:relative}
+.wf-tl::before{content:"";position:absolute;left:15px;top:14px;bottom:18px;width:2px;background:linear-gradient(180deg,var(--accent),rgba(232,115,74,.12));border-radius:2px}
+.wf-tl > li{position:relative;display:grid;grid-template-columns:32px minmax(0,1fr);gap:15px;padding:0 0 14px}
+.wf-tl > li:last-child{padding-bottom:0}
+.wf-dot{width:32px;height:32px;border-radius:10px;background:var(--panel);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.67rem;font-weight:700;color:var(--accent-ink);position:relative;z-index:1;box-shadow:0 0 0 4px var(--bg)}
+.wf-step{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px 14px}
+.wf-shead{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:5px}
+.wf-sname{font-family:var(--serif);font-size:1rem;font-weight:700}
+.wf-sph{font-family:var(--mono);font-size:.65rem;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);border-radius:99px;padding:1px 8px}
+.wf-sdesc{color:var(--muted);font-size:.78rem;margin:0 0 10px;line-height:1.45;max-width:none}
+.wf-chips{display:flex;flex-wrap:wrap;gap:7px}
+.wf-chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--bg);border-radius:9px;padding:6px 10px;max-width:100%}
+.wf-chip .ic{width:9px;height:9px;border-radius:3px;flex:none;background:var(--muted)}
+.wf-chip .n{font-family:var(--mono);font-size:.6rem;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);border-radius:5px;padding:1px 5px;flex:none}
+.wf-chip .tx{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.wf-chip .tx b{font-size:.75rem;font-weight:600}
+.wf-chip .tx i{font-style:normal;color:var(--muted);font-size:.69rem}
+.wf-chip.k-trig .ic{background:#7a8ca6}
+.wf-chip.k-agent .ic{background:var(--accent)}
+.wf-chip.k-skill .ic{background:#b08968}
+.wf-chip.k-tool .ic{background:#4b7f52}
+.wf-chip.k-tool .ic{border-radius:99px}
+.wf-chip.k-out .ic{background:#a65e3f}
+.wf-chip.k-gate{background:var(--bad-soft);border-color:var(--bad)}
+.wf-chip.k-gate .ic{background:var(--bad)}
+.wf-chip.k-gate .tx b{color:var(--bad)}
+.wf-legend{display:flex;flex-wrap:wrap;gap:14px;margin:12px 0 2px;font-size:.74rem;color:var(--muted);align-items:center}
+.wf-legend .lg{display:flex;align-items:center;gap:6px}
+.wf-legend .sw{width:12px;height:12px;border-radius:4px;background:var(--muted);flex:none}
+.wf-legend .sw.trigger{background:#7a8ca6}
+.wf-legend .sw.agent{background:var(--accent)}
+.wf-legend .sw.tool{background:#4b7f52}
+.wf-legend .sw.skill{background:#b08968}
+.wf-legend .sw.gate{background:var(--bad)}
+.wf-legend .sw.deliv{background:#a65e3f}
+/* key mechanisms */
+.wf-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:14px 0 6px}
+.wf-fact{background:var(--panel);border:1px solid var(--line);border-radius:var(--r2);padding:13px 14px}
+.wf-fact .fi{width:26px;height:26px;border-radius:8px;background:var(--accent-soft);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.wf-fact b{display:block;font-size:.81rem;margin-bottom:4px}
+.wf-fact span{color:var(--muted);font-size:.75rem;line-height:1.45}
+/* hard gates */
+.gates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0 4px}
+.gates .gate{margin:0;display:flex;flex-direction:column}
+.gtop{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
+.gnum{font-family:var(--serif);font-size:1.5rem;font-weight:700;line-height:1;color:var(--accent)}
+.rowgate .gd{display:inline-block;width:7px;height:7px;border-radius:99px;background:var(--bad);margin-right:6px;vertical-align:1px}
+@media(max-width:1399px){
+  .wf-overview{grid-template-columns:1fr;gap:34px}
+  .wf-arrow{top:auto;bottom:-31px;left:50%;right:auto;animation:wfnudgeY 2.4s ease-in-out infinite}
+  .wf-facts{grid-template-columns:1fr 1fr}
+}
+@keyframes wfnudgeY{0%,100%{transform:translate(-50%,0) rotate(90deg)}50%{transform:translate(-50%,5px) rotate(90deg)}}
+@media(max-width:900px){.gates{grid-template-columns:1fr}}
+@media(max-width:560px){
+  .wf-facts{grid-template-columns:1fr}
+  .wf-tl > li{grid-template-columns:26px minmax(0,1fr);gap:12px}
+  .wf-tl::before{left:12px}
+  .wf-dot{width:26px;height:26px;border-radius:8px;font-size:.6rem}
+}/* ---------- charts ---------- */
+figure{margin:0}
+.ch-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:14px 0 6px}
+.ch-grid .ch.wide{grid-column:1/-1}
+.ch{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px 16px;display:flex;flex-direction:column;gap:11px;min-width:0;margin:0}
+.ch-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ch-title{font-size:.87rem;font-weight:700}
+.ch-big{font-family:var(--serif);font-size:1.35rem;font-weight:700;line-height:1;color:var(--accent)}
+.ch-note{color:var(--muted);font-size:.71rem;font-family:var(--mono)}
+.ch figcaption{color:var(--muted);font-size:.73rem;line-height:1.45}
+/* donut */
+.ch-donutwrap{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.ch-donut{width:152px;height:152px;flex:none}
+.ch-donut circle{fill:none;stroke-width:6}
+.ch-donut .d-bg{stroke:var(--panel2)}
+.ch-legend{list-style:none;margin:0;padding:0;display:grid;gap:5px;flex:1;min-width:180px}
+.ch-legend li{display:flex;align-items:center;gap:7px;font-size:.73rem;line-height:1.2}
+.ch-legend .sw{width:10px;height:10px;border-radius:3px;flex:none}
+.ch-legend .vv{margin-left:auto;font-family:var(--mono);font-size:.7rem;color:var(--muted)}
+.ch-legend .vv b{color:var(--ink2);font-weight:600}
+/* ring */
+.ch-ringwrap{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.ch-ring{width:142px;height:142px;flex:none;border-radius:50%;background:conic-gradient(var(--ok) 0 96.46%,var(--amber) 0 100%);display:grid;place-items:center;position:relative}
+.ch-ring-in{width:104px;height:104px;border-radius:50%;background:var(--panel);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;text-align:center}
+.ch-ring-in b{font-family:var(--serif);font-size:1.55rem;font-weight:700;line-height:1;color:var(--ok)}
+.ch-ring-in span{font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.ch-ring-in i{font-style:normal;font-size:.66rem;color:var(--muted)}
+.ch-kv{list-style:none;margin:0;padding:0;display:grid;gap:7px;flex:1;min-width:170px}
+.ch-kv li{display:flex;align-items:center;gap:8px;font-size:.74rem}
+.ch-kv .sw{width:10px;height:10px;border-radius:3px;flex:none}
+.ch-kv .vv{margin-left:auto;font-family:var(--mono);font-size:.71rem;color:var(--ink2)}
+/* area / line */
+.ch-area{width:100%;height:auto;display:block}
+.ch-area .gl line{stroke:var(--line2);stroke-width:1;stroke-dasharray:3 4}
+.ch-area .line{fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:600;stroke-dashoffset:600;animation:chdraw 1.7s .15s ease forwards}
+.ch-area .area{opacity:0;animation:chfade .8s 1.5s ease forwards}
+.ch-area .dots circle{fill:var(--panel);stroke:var(--accent);stroke-width:2;opacity:0;animation:chfade .5s 1.6s ease forwards}
+.ch-area text{fill:var(--muted);font-family:var(--mono);font-size:9px}
+.ch-area .end{fill:var(--accent);font-weight:700}
+@keyframes chdraw{to{stroke-dashoffset:0}}
+@keyframes chfade{to{opacity:1}}
+/* heatmap */
+.ch-heatwrap{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.ch-heat{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:6px;flex:1;min-width:260px}
+.ch-heat i{display:block;aspect-ratio:1;border-radius:5px;background:linear-gradient(140deg,#5a8f6b,#82bf96);animation:chpop .45s cubic-bezier(.2,.8,.3,1.3) backwards;animation-delay:calc(var(--i) * 45ms)}
+.ch-heat i.dgm{background:repeating-linear-gradient(45deg,var(--panel2),var(--panel2) 4px,transparent 4px,transparent 8px);border:1px dashed var(--line)}
+@keyframes chpop{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:none}}
+.ch-score{flex:none;text-align:center;min-width:96px}
+.ch-score .n{font-family:var(--serif);font-size:1.9rem;font-weight:700;line-height:1;color:var(--ok)}
+.ch-score .l{font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-top:4px}
+/* segmented bar */
+.ch-seg{display:flex;height:56px;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.ch-seg span{display:flex;flex-direction:column;justify-content:center;gap:2px;padding:0 13px;font-size:.7rem;min-width:0;line-height:1.25}
+.ch-seg span b{font-family:var(--mono);font-size:.88rem}
+.ch-seg span em{font-style:normal;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ch-seg .got{background:linear-gradient(135deg,var(--accent),#f2a884);color:#fff}
+.ch-seg .miss{background:repeating-linear-gradient(45deg,var(--panel2),var(--panel2) 6px,transparent 6px,transparent 12px);color:var(--muted);border-left:1px dashed var(--bad)}
+/* gantt */
+.ch-gantt{display:grid;grid-template-columns:136px minmax(0,1fr);gap:10px}
+.ch-glab{display:flex;flex-direction:column;font-size:.73rem;color:var(--ink2)}
+.ch-glab span{height:22px;display:flex;align-items:center;margin-bottom:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ch-glab .hd{height:20px;margin-bottom:6px}
+.ch-gbody{position:relative;min-width:0}
+.ch-gaxis{position:relative;height:20px;margin-bottom:6px;border-bottom:1px solid var(--line2)}
+.ch-gaxis b{position:absolute;top:0;font-family:var(--mono);font-size:.61rem;color:var(--muted);font-weight:600}
+.ch-rows{position:relative}
+.ch-gtrack{position:relative;height:22px;margin-bottom:6px;background:var(--panel2);border-radius:6px}
+.ch-gbar{position:absolute;top:3px;bottom:3px;border-radius:5px;background:var(--accent)}
+.ch-gbar.g{background:var(--bad)}
+.ch-gline{position:absolute;top:0;bottom:0;border-left:1px dashed var(--bad);opacity:.5}
+.ch-gbadges{position:relative;height:20px;margin-top:3px}
+.ch-gbadges i{position:absolute;transform:translateX(-50%);font-style:normal;font-family:var(--mono);font-size:.6rem;font-weight:700;background:var(--bad-soft);color:var(--bad);border-radius:99px;padding:1px 7px;white-space:nowrap}
+/* raw data disclosure */
+.ch-raw{margin:14px 0 2px;border:1px solid var(--line);border-radius:var(--r2);background:var(--panel);padding:0 14px}
+.ch-raw summary{cursor:pointer;padding:11px 0;font-size:.82rem;font-weight:600;list-style:none}
+.ch-raw summary::-webkit-details-marker{display:none}
+.ch-raw summary::before{content:"\25B8";display:inline-block;margin-right:8px;color:var(--accent);transition:transform .2s}
+.ch-raw[open] summary::before{transform:rotate(90deg)}
+.ch-raw table{margin-top:0;font-size:.78rem}
+@media(max-width:820px){.ch-grid{grid-template-columns:1fr}.ch-gantt{grid-template-columns:104px minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){
+  .ch-heat i,.ch-donut circle{animation:none!important}
+  .ch-area .line{animation:none!important;stroke-dashoffset:0}
+  .ch-area .area,.ch-area .dots circle{animation:none!important;opacity:1}
+  .wf-arrow{animation:none!important}
+}
+/* ---------- obstacles ---------- */
+.steps{list-style:none;margin:14px 0 4px;padding:0;display:grid;gap:10px}
+.steps li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:13px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r2);padding:12px 14px}
+.steps .n{width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.72rem;font-weight:700;flex:none}
+.steps > div > b{display:block;font-size:.84rem;margin-bottom:3px}
+.steps p{margin:0;color:var(--muted);font-size:.78rem;line-height:1.5;max-width:none}
+.ob-lead{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0 4px}
+.ob-lead .card{border-left:3px solid var(--line)}
+.ob-lead .card.hot{border-left-color:var(--bad)}
+.ob-lead .card.cold{border-left-color:var(--warn)}
+.ob-lead .card b{display:block;font-size:.86rem;margin-bottom:5px}
+.ob-lead .card span{color:var(--ink2);font-size:.8rem;line-height:1.5}
+@media(max-width:820px){.ob-lead{grid-template-columns:1fr}}
+/* ---------- obstacle solution ---------- */
+.quotes{list-style:none;margin:12px 0 4px;padding:0;display:grid;gap:8px}
+.quotes li{border-left:3px solid var(--accent);background:var(--panel2);border-radius:0 8px 8px 0;padding:8px 12px;font-size:.79rem;color:var(--ink2);line-height:1.5}
+.quotes li.neg{border-left-color:var(--bad);background:var(--bad-soft)}
+.quotes li em{display:block;font-style:normal;color:var(--muted);font-size:.71rem;margin-top:4px;font-family:var(--mono)}
+.steps li.lay{border-left:3px solid var(--line)}
+.steps li.lay.ok{border-left-color:var(--ok)}
+.steps li.lay.part{border-left-color:var(--warn)}
+.steps li.lay.no{border-left-color:var(--bad)}
+.steps .hdr{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.steps .hdr b{margin-bottom:0}
+</style>
+</head><body>
+<div class="topbar">
+  <div class="brandline"><span class="dot"></span> technext-sales-proposal <span class="subtle">· docs</span></div>
+  <div class="langsw">
+    <button id="sw-vi" class="on" onclick="setLang('vi')">VI</button>
+    <button id="sw-en" onclick="setLang('en')">EN</button>
+  </div>
+</div>
+
+<button id="navfab" onclick="document.body.classList.toggle('open')" aria-label="Toggle menu">☰</button>
+
+<div class="shell">
+  <aside class="side">
+    <nav id="sidenav">
+      <div class="grp"><span class="t-vi">Bắt đầu</span><span class="t-en">Getting started</span></div>
+      <a href="#overview"><span class="t-vi">Tổng quan</span><span class="t-en">Overview</span></a>
+      <a href="#quick-start"><span class="t-vi">Chạy nhanh</span><span class="t-en">Quick start</span></a>
+      <div class="grp"><span class="t-vi">Quy trình</span><span class="t-en">Pipeline</span></div>
+      <a href="#workflow"><span class="t-vi">Luồng chạy</span><span class="t-en">Workflow</span></a>
+      <a href="#tools"><span class="t-vi">Công cụ</span><span class="t-en">Tools</span></a>
+      <div class="grp"><span class="t-vi">Phát hành</span><span class="t-en">Shipping</span></div>
+      <a href="#packaging"><span class="t-vi">Quy trình đóng gói</span><span class="t-en">Packaging process</span></a>
+      <a href="#demo-run"><span class="t-vi">Báo cáo demo run</span><span class="t-en">Demo run report</span></a>
+      <div class="grp"><span class="t-vi">Vấn đề mở</span><span class="t-en">Open problems</span></div>
+      <a href="#obstacles"><span class="t-vi">Trở ngại hiện tại</span><span class="t-en">Current obstacles</span></a>
+    </nav>
+  </aside>
+
+  <main>
+    <section id="overview">
+      <template class="railsrc">
+        <a href="#key-concepts"><span class="t-vi">Khái niệm chính</span><span class="t-en">Key concepts</span></a>
+        <a href="#outputs"><span class="t-vi">Đầu ra</span><span class="t-en">Outputs</span></a>
+        <a href="#not-doing"><span class="t-vi">Điều không làm</span><span class="t-en">What it won't do</span></a>
+      </template>
+      <div class="eyebrow"><span class="t-vi">Bắt đầu</span><span class="t-en">Getting started</span></div>
+      <h1><span class="t-vi">Biến một cái tên khách hàng thành đề xuất bán hàng hoàn chỉnh</span><span class="t-en">Turn a client name into a complete sales proposal</span></h1>
+      <p class="lead"><span class="t-vi"><code>technext-sales-proposal</code> là một Agent Skill: đưa vào tên công ty, website hoặc một brief ngắn, nhận về một website đề xuất song ngữ (VI/EN) tự chứa — phủ cả ba dòng dịch vụ Odoo ERP, AI Solutions và Social Media Marketing.</span><span class="t-en"><code>technext-sales-proposal</code> is an Agent Skill: give it a company name, a website, or a short brief, and it returns one self-contained bilingual (VI/EN) proposal website — covering all three TechNext service lines: Odoo ERP, AI Solutions, and Social Media Marketing.</span></p>
+
+      <h3 id="key-concepts"><span class="t-vi">Khái niệm chính</span><span class="t-en">Key concepts</span></h3>
+      <div class="kv">
+        <div class="k">Skill</div><div class="v"><span class="t-vi">Một thư mục có <code>SKILL.md</code> dạy agent cách làm một việc cụ thể.</span><span class="t-en">A folder containing <code>SKILL.md</code> that teaches an agent how to do one specific job.</span></div>
+        <div class="k">Orchestrator</div><div class="v"><span class="t-vi">Skill gốc điều phối 12 phase và gọi 10 sub-skill theo tên.</span><span class="t-en">The root skill that drives 12 phases and dispatches 10 sub-skills by name.</span></div>
+        <div class="k">Sub-agent</div><div class="v"><span class="t-vi">4 nhóm nghiên cứu chạy song song + 1 worker cho mỗi đối thủ, mỗi nhóm sở hữu một tập section và chart riêng.</span><span class="t-en">4 research groups running in parallel, plus 1 worker per competitor; each group owns its own set of sections and charts.</span></div>
+        <div class="k">Checkpoint</div><div class="v"><span class="t-vi"><code>&lt;slug&gt;-checkpoint.json</code> ghi phase nào đã xong, để lần chạy sau resume thay vì làm lại từ đầu.</span><span class="t-en"><code>&lt;slug&gt;-checkpoint.json</code> records which phases are done, so a later run resumes instead of rebuilding from scratch.</span></div>
+        <div class="k">Hard gate</div><div class="v"><span class="t-vi">Cổng chặn thật, không phải báo cáo tham khảo: <code>source-auditor</code> (chạy 2 lần — sau phase 0.9 và sau Phase 1) và <code>mechanical-validator</code> phải PASS mới được đi tiếp.</span><span class="t-en">A real blocking gate, not an FYI: <code>source-auditor</code> (it runs twice — after phase 0.9 and after Phase 1) and <code>mechanical-validator</code> must pass before the pipeline continues.</span></div>
+        <div class="k">Bind check</div><div class="v"><span class="t-vi">Kiểm tra tự động rằng đoạn trích dẫn thật sự xuất hiện trên trang nguồn — chống bịa nguồn.</span><span class="t-en">An automated check that every quoted excerpt really appears on the page it cites — the anti-fabrication guard.</span></div>
+      </div>
+
+      <h3 id="outputs"><span class="t-vi">Đầu ra của một lần chạy</span><span class="t-en">What one run produces</span></h3>
+      <div class="stats">
+        <div class="stat"><div class="v">12</div><div class="k"><span class="t-vi">phase</span><span class="t-en">phases</span></div></div>
+        <div class="stat"><div class="v">10</div><div class="k"><span class="t-vi">sub-skill</span><span class="t-en">sub-skills</span></div></div>
+        <div class="stat"><div class="v">5</div><div class="k"><span class="t-vi">agent definition</span><span class="t-en">agent definitions</span></div></div>
+        <div class="stat"><div class="v">14</div><div class="k"><span class="t-vi">check tự động</span><span class="t-en">automated checks</span></div></div>
+        <div class="stat"><div class="v">18</div><div class="k"><span class="t-vi">chart</span><span class="t-en">charts</span></div></div>
+        <div class="stat"><div class="v">40</div><div class="k"><span class="t-vi">section trong sidebar</span><span class="t-en">sidebar sections</span></div></div>
+      </div>
+      <table>
+        <thead><tr><th><span class="t-vi">Sản phẩm</span><span class="t-en">Artefact</span></th><th><span class="t-vi">Nội dung</span><span class="t-en">What it is</span></th></tr></thead>
+        <tbody>
+          <tr><td class="mono">&#42;-proposal.html</td><td><span class="t-vi">Một file HTML duy nhất, toàn bộ CSS/JS/chart inline, mở được qua <code>file://</code> khi không có mạng.</span><span class="t-en">One HTML file with all CSS/JS/charts inlined; opens over <code>file://</code> with no network.</span></td></tr>
+          <tr><td class="mono">&#42;-findings.json</td><td><span class="t-vi">Dữ liệu nghiên cứu + nguồn, dạng máy đọc được; validator đối chiếu với phần thân bài.</span><span class="t-en">Machine-readable research + sources; the validator cross-checks it against the document body.</span></td></tr>
+          <tr><td class="mono">&#42;-cost-report.csv</td><td><span class="t-vi">Chi phí thật theo từng task, lấy từ log phiên của agent.</span><span class="t-en">Real per-task cost, read from the agent's own session logs.</span></td></tr>
+          <tr><td class="mono">manifest/icons/sw.js</td><td><span class="t-vi">Bộ PWA đi kèm để mở đề xuất như một app cài được.</span><span class="t-en">A companion PWA bundle so the proposal installs like an app.</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="not-doing"><span class="t-vi">Điều skill cố ý <em>không</em> làm</span><span class="t-en">What the skill deliberately won't do</span></h3>
+      <ul>
+        <li><span class="t-vi"><b>Không bịa số.</b> Số không đọc được thì ghi <code>null</code> + lý do, không ghi <code>0</code> như thể là dữ liệu thật.</span><span class="t-en"><b>No invented numbers.</b> A metric it could not read is written as <code>null</code> plus a reason — never as <code>0</code> pretending to be data.</span></li>
+        <li><span class="t-vi"><b>Không dùng CDN.</b> Đề xuất giao cho khách phải mở được khi offline.</span><span class="t-en"><b>No CDN.</b> A proposal handed to a client must open while offline.</span></li>
+        <li><span class="t-vi"><b>Không cần API key trả tiền.</b> Định danh doanh nghiệp dùng GLEIF, Wikidata, Companies House, OpenCorporates, SEC EDGAR — đều miễn phí.</span><span class="t-en"><b>No paid API keys.</b> Entity lookups use GLEIF, Wikidata, Companies House, OpenCorporates and SEC EDGAR — all free.</span></li>
+        <li><span class="t-vi"><b>Không vượt tường chặn.</b> Login wall hay Cloudflare thì ghi nhận là nguồn không truy cập được, không tìm cách lách.</span><span class="t-en"><b>No bypassing walls.</b> A login wall or Cloudflare means the source is recorded as unreachable, not circumvented.</span></li>
+      </ul>
+      <div class="note"><span class="t-vi"><b>Phần mềm độc quyền.</b> Xem <code>LICENSE</code>. Repo chỉ chia sẻ cho cộng tác viên được nêu tên.</span><span class="t-en"><b>Proprietary software.</b> See <code>LICENSE</code>. The repository is shared with named collaborators only.</span></div>
+    </section>    <section id="quick-start">
+      <template class="railsrc">
+        <a href="#requirements"><span class="t-vi">Cần gì</span><span class="t-en">Requirements</span></a>
+        <a href="#install"><span class="t-vi">Cài đặt</span><span class="t-en">Install</span></a>
+        <a href="#run"><span class="t-vi">Cách chạy</span><span class="t-en">How to run</span></a>
+        <a href="#before-you-start"><span class="t-vi">Trước khi bắt đầu</span><span class="t-en">Before you start</span></a>
+      </template>
+      <div class="eyebrow"><span class="t-vi">Bắt đầu</span><span class="t-en">Getting started</span></div>
+      <h2><span class="t-vi">Chạy nhanh</span><span class="t-en">Quick start</span></h2>
+      <p class="sec-sub"><span class="t-vi">Từ repo trống đến đề xuất đầu tiên, không cần API key.</span><span class="t-en">From a clean clone to a first proposal, with no API keys.</span></p>
+
+      <h3 id="requirements"><span class="t-vi">Cần gì</span><span class="t-en">Requirements</span></h3>
+      <table>
+        <thead><tr><th><span class="t-vi">Cần</span><span class="t-en">Need</span></th><th><span class="t-vi">Vì sao</span><span class="t-en">Why</span></th></tr></thead>
+        <tbody>
+          <tr><td><span class="t-vi">Agent hỗ trợ Agent Skills</span><span class="t-en">An agent that supports Agent Skills</span></td><td><span class="t-vi">Claude Code, Codex, OpenCode, GitHub Copilot CLI, Gemini CLI.</span><span class="t-en">Claude Code, Codex, OpenCode, GitHub Copilot CLI, Gemini CLI.</span></td></tr>
+          <tr><td>Python 3.9+</td><td><span class="t-vi">Validator, bind-check, stitch fragment, báo cáo chi phí. Chỉ dùng thư viện chuẩn.</span><span class="t-en">Validation, citation binding, fragment stitching, cost reporting. Standard library only.</span></td></tr>
+          <tr><td>Node.js 18+ <span class="pill neutral"><span class="t-vi">tuỳ chọn</span><span class="t-en">optional</span></span></td><td><span class="t-vi"><code>npx ccusage</code> để tính chi phí. Thiếu thì chỉ mất phần báo cáo chi phí.</span><span class="t-en"><code>npx ccusage</code> for per-task cost. Without it, only the cost report is skipped.</span></td></tr>
+          <tr><td><span class="t-vi">Internet</span><span class="t-en">Internet access</span></td><td><span class="t-vi">Nghiên cứu khách hàng qua Jina Reader (<code>r.jina.ai</code>, không cần key).</span><span class="t-en">Client research via Jina Reader (<code>r.jina.ai</code>, no API key).</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="install"><span class="t-vi">Cài đặt</span><span class="t-en">Install</span></h3>
+      <p><span class="t-vi">Clone repo ra <b>cạnh</b> (không phải bên trong) thư mục skills của agent, rồi chạy installer:</span><span class="t-en">Clone the repo <b>next to</b> — not inside — your agent's skills directory, then run the installer:</span></p>
+      <pre><code>git clone https://github.com/aidev3-web/technext-sales-proposal.git
+pwsh -File install.ps1                 # Windows
+./install.sh                           # macOS / Linux</code></pre>
+      <p><span class="t-vi">Installer tạo liên kết cho <b>skill gốc + 10 sub-skill</b> vào thư mục skills bạn chọn, vì pipeline gọi sub-skill theo tên nên chúng phải tự tìm thấy được. Thư mục thật đang tồn tại sẽ không bị ghi đè — chỉ báo và bỏ qua.</span><span class="t-en">The installer links the <b>orchestrator skill plus its 10 sub-skills</b> into the skills directory you choose, because the pipeline dispatches sub-skills by name — they must be discoverable on their own. An existing real folder is never overwritten; it is reported and skipped.</span></p>
+      <ul class="small">
+        <li><code>-Destination &lt;path&gt;</code> — <span class="t-vi">chọn thư mục skills; bỏ trống thì installer liệt kê các thư mục nó tìm thấy.</span><span class="t-en">pick the skills directory; if omitted the installer lists the ones it finds.</span></li>
+        <li><code>-Copy</code> — <span class="t-vi">copy file thay vì tạo liên kết (khi junction/symlink không dùng được).</span><span class="t-en">copy files instead of linking (when junctions/symlinks aren't available).</span></li>
+        <li><code>-SkipSubSkills</code> / <code>-DryRun</code> — <span class="t-vi">chỉ cài skill gốc / xem trước mà không đụng gì.</span><span class="t-en">orchestrator only / preview without touching anything.</span></li>
+      </ul>
+      <p><span class="t-vi">Máy mới tinh, chưa có repo: copy nội dung <code>BOOTSTRAP-PROMPT.md</code> đưa cho agent — agent tự cài vào chính nó rồi tự kiểm tra lại.</span><span class="t-en">On a fresh machine with no clone yet: hand the contents of <code>BOOTSTRAP-PROMPT.md</code> to the agent — it installs the skill into itself and verifies the result.</span></p>
+
+      <h3 id="run"><span class="t-vi">Cách chạy</span><span class="t-en">How to run</span></h3>
+      <p><span class="t-vi">Chỉ cần nói bằng ngôn ngữ tự nhiên:</span><span class="t-en">Just ask in plain language:</span></p>
+      <pre><code>làm sales proposal cho &lt;tên khách hàng&gt;
+nghiên cứu khách hàng &lt;công ty&gt; rồi làm đề xuất
+research &lt;company&gt; + &lt;website&gt; and build a proposal</code></pre>
+      <p><span class="t-vi">Mọi sản phẩm của lần chạy được ghi vào <code>_runs/&lt;client-slug&gt;/</code> — một thư mục cho mỗi khách, để chạy lại giữa chừng vẫn resume được.</span><span class="t-en">Every artefact from a run lands in <code>_runs/&lt;client-slug&gt;/</code> — one folder per client, so an interrupted run can resume.</span></p>
+
+      <h3 id="before-you-start"><span class="t-vi">Trước khi bắt đầu</span><span class="t-en">Before you start</span></h3>
+      <div class="cards">
+        <div class="card"><div class="n">1</div><b><span class="t-vi">Đã cài</span><span class="t-en">Installed</span></b><span><span class="t-vi">Chạy xong installer — cả 11 mục (skill gốc + 10 sub-skill) đã nằm trong thư mục skills.</span><span class="t-en">Installer finished — all 11 entries (orchestrator + 10 sub-skills) are in the skills directory.</span></span></div>
+        <div class="card"><div class="n">2</div><b><span class="t-vi">Đã khởi động lại</span><span class="t-en">Restarted</span></b><span><span class="t-vi">Khởi động lại agent một lần sau khi cài, để nó đọc lại danh sách skill.</span><span class="t-en">Restart the agent once after installing so it re-reads its skill list.</span></span></div>
+        <div class="card"><div class="n">3</div><b><span class="t-vi">Có quyền đọc repo</span><span class="t-en">Repo read access</span></b><span><span class="t-vi">Repo private cần quyền collaborator để <b>đọc</b>. Muốn đóng góp thì không cần quyền ghi — chỉ cần fork và mở PR.</span><span class="t-en">The private repo needs collaborator access to <b>read</b>. Contributing needs no write access — fork the repo and open a PR.</span></span></div>
+      </div>
+    </section>
+
+    <section id="workflow">
+      <template class="railsrc">
+        <a href="#wf-input"><span class="t-vi">Đầu vào &rarr; hộp đen &rarr; đầu ra</span><span class="t-en">Input &rarr; black box &rarr; output</span></a>
+        <a href="#wf-flow"><span class="t-vi">Sơ đồ 6 giai đoạn</span><span class="t-en">The 6 stages</span></a>
+        <a href="#wf-facts"><span class="t-vi">Cơ chế then chốt</span><span class="t-en">Key mechanisms</span></a>
+        <a href="#gates"><span class="t-vi">Ba cổng chặn</span><span class="t-en">The 3 hard gates</span></a>
+        <a href="#phases"><span class="t-vi">Chi tiết từng phase</span><span class="t-en">Phase by phase</span></a>
+        <a href="#cost-rule"><span class="t-vi">Quy tắc chi phí</span><span class="t-en">Cost rule</span></a>
+      </template>
+      <div class="eyebrow"><span class="t-vi">Quy trình</span><span class="t-en">Pipeline</span></div>
+      <h2><span class="t-vi">Luồng chạy</span><span class="t-en">Workflow</span></h2>
+      <p class="sec-sub"><span class="t-vi">Đây là cơ chế <b>đang chạy thật</b>, không phải kế hoạch: 1 orchestrator điều phối 4 nhóm nghiên cứu song song, 10 sub-skill, 5 agent definition, và ba cổng chặn nằm trước lúc giao bài.</span><span class="t-en">This is the mechanism that <b>actually runs</b>, not a plan: 1 orchestrator driving 4 parallel research groups, 10 sub-skills, 5 agent definitions, and three hard gates placed before anything is delivered.</span></p>
+
+      <h3 id="wf-input"><span class="t-vi">Đầu vào &rarr; hộp đen &rarr; đầu ra</span><span class="t-en">Input &rarr; black box &rarr; output</span></h3>
+      <div class="wf-overview">
+        <div class="wf-panel">
+          <div class="wf-ptitle"><span class="dt"></span><span class="t-vi">Đầu vào</span><span class="t-en">Input</span></div>
+          <h3><span class="t-vi">Quy trình cần gì để bắt đầu</span><span class="t-en">What the pipeline needs to start</span></h3>
+          <p class="wf-sub"><span class="t-vi">Chỉ cần mục đầu tiên là đã chạy được.</span><span class="t-en">The first item alone is enough to run.</span></p>
+          <ul class="wf-list">
+            <li>
+              <span class="gl" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/></svg></span>
+              <div><div class="lb"><span class="t-vi">Tên hoặc website khách hàng</span><span class="t-en">Client name or website</span></div><div class="ds"><span class="t-vi">Yêu cầu tối thiểu — "làm sales proposal cho X".</span><span class="t-en">The minimum — "build a proposal for X".</span></div></div>
+            </li>
+            <li>
+              <span class="gl" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 013 3v6a3 3 0 01-6 0V6a3 3 0 013-3z"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></span>
+              <div><div class="lb"><span class="t-vi">Ghi chú cuộc gọi khám phá</span><span class="t-en">Discovery-call notes</span> <span class="pill neutral"><span class="t-vi">tuỳ chọn</span><span class="t-en">optional</span></span></div><div class="ds"><span class="t-vi">Càng nhiều bối cảnh, phần khuyến nghị càng sát.</span><span class="t-en">More context makes the recommendations sharper.</span></div></div>
+            </li>
+            <li>
+              <span class="gl" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/></svg></span>
+              <div><div class="lb"><span class="t-vi">Checkpoint JSON</span><span class="t-en">Checkpoint JSON</span> <span class="pill neutral"><span class="t-vi">tuỳ chọn</span><span class="t-en">optional</span></span></div><div class="ds"><span class="t-vi">Có thì lần chạy sau chỉ chạy lại đúng phần cần.</span><span class="t-en">With it, a later run re-runs only what is needed.</span></div></div>
+            </li>
+          </ul>
+          <span class="wf-arrow" aria-hidden="true">&#8250;</span>
+        </div>
+
+        <div class="wf-panel wf-bb">
+          <div class="wf-ptitle"><span class="dt"></span><span class="t-vi">Hộp đen</span><span class="t-en">Black box</span></div>
+          <h3 id="wf-black"><span class="t-vi">Bên trong chạy gì</span><span class="t-en">What runs inside</span></h3>
+          <p class="wf-sub"><span class="t-vi">Người dùng không nhìn thấy phần này, nhưng nó quyết định chất lượng đầu ra.</span><span class="t-en">The user never sees this part, yet it decides the quality of the output.</span></p>
+          <div class="wf-counters">
+            <div class="wf-counter"><div class="n">1</div><div class="l"><span class="t-vi">Orchestrator</span><span class="t-en">Orchestrator</span></div><div class="h"><span class="t-vi">Điều phối cả pipeline, giữ checkpoint</span><span class="t-en">Drives the pipeline, keeps the checkpoint</span></div></div>
+            <div class="wf-counter"><div class="n">4</div><div class="l"><span class="t-vi">Nhóm song song</span><span class="t-en">Parallel groups</span></div><div class="h"><span class="t-vi">Mỗi nhóm sở hữu section + chart riêng</span><span class="t-en">Each owns its own sections + charts</span></div></div>
+            <div class="wf-counter"><div class="n">10</div><div class="l"><span class="t-vi">Sub-skill</span><span class="t-en">Sub-skills</span></div><div class="h"><span class="t-vi">Gọi theo tên, mỗi cái một việc</span><span class="t-en">Dispatched by name, one job each</span></div></div>
+            <div class="wf-counter"><div class="n">6</div><div class="l"><span class="t-vi">Tool ngoài</span><span class="t-en">External tools</span></div><div class="h"><span class="t-vi">Miễn phí, không cần API key</span><span class="t-en">Free, no API keys required</span></div></div>
+          </div>
+          <div class="wf-sum"><span class="t-vi">Điểm mấu chốt: site khách được quét <b>một lần</b> rồi cache mọi URL liên quan, và <b>ba cổng chặn</b> nằm rải trên đường đi — xem hai mục ngay bên dưới.</span><span class="t-en">The essentials: the client's site is scanned <b>once</b> and every related URL cached, and <b>three hard gates</b> sit along the way — see the next two sections.</span></div>
+          <div class="wf-agents">
+            <span class="lab"><span class="t-vi">Agent chính</span><span class="t-en">Key agents</span></span>
+            <span class="wf-pill"><span class="mk">C</span>competitor-research-worker</span>
+            <span class="wf-pill"><span class="mk">C</span>research-due-diligence-agent</span>
+            <span class="wf-pill"><span class="mk">C</span>research-ops-tech-agent</span>
+            <span class="wf-pill"><span class="mk">C</span>research-delivery-growth-agent</span>
+            <span class="wf-pill"><span class="mk">C</span>tools-documents-agent</span>
+          </div>
+          <span class="wf-arrow" aria-hidden="true">&#8250;</span>
+        </div>
+
+        <div class="wf-panel">
+          <div class="wf-ptitle"><span class="dt"></span><span class="t-vi">Đầu ra</span><span class="t-en">Output</span></div>
+          <h3 id="wf-output"><span class="t-vi">Người dùng nhận được gì</span><span class="t-en">What the user receives</span></h3>
+          <p class="wf-sub"><span class="t-vi">Năm sản phẩm bàn giao, mỗi cái gắn với phase đã tạo ra nó.</span><span class="t-en">Five deliverables, each tied to the phase that produced it.</span></p>
+          <div class="wf-out">
+            <div class="wf-ocard"><div class="rl"></div><div><p class="tt"><span class="wf-tag">HTML</span><span class="t-vi">Đề xuất bán hàng song ngữ</span><span class="t-en">Bilingual sales proposal</span></p><p class="dd"><span class="t-vi">Một file tự chứa — 40 section, 18 chart, 4 sơ đồ; mở được khi offline.</span><span class="t-en">One self-contained file — 40 sections, 18 charts, 4 diagrams; opens offline.</span></p></div></div>
+            <div class="wf-ocard"><div class="rl"></div><div><p class="tt"><span class="wf-tag">JSON</span><span class="t-vi">Cơ sở dữ liệu phát hiện</span><span class="t-en">Findings database</span></p><p class="dd"><span class="t-vi">Claim / section / nguồn / hạng A–D, đã xác nhận — sẵn sàng nạp vào Odoo CRM.</span><span class="t-en">Claim / section / source / grade A–D, verified — ready to load into Odoo CRM.</span></p></div></div>
+            <div class="wf-ocard"><div class="rl"></div><div><p class="tt"><span class="wf-tag">CSV</span><span class="t-vi">Chi phí thật theo từng task</span><span class="t-en">Real per-task cost</span></p><p class="dd"><span class="t-vi">Sinh bởi <code>ccusage</code>, một dòng một task.</span><span class="t-en">Produced by <code>ccusage</code>, one row per task.</span></p></div></div>
+            <div class="wf-ocard"><div class="rl"></div><div><p class="tt"><span class="wf-tag">PWA</span><span class="t-vi">Bộ file PWA đi kèm</span><span class="t-en">Companion PWA bundle</span></p><p class="dd"><span class="t-vi"><code>manifest.webmanifest</code> + service worker + 2 icon — cài được như một app.</span><span class="t-en"><code>manifest.webmanifest</code> + service worker + 2 icons — installs like an app.</span></p></div></div>
+            <div class="wf-ocard"><div class="rl"></div><div><p class="tt"><span class="wf-tag">HTML</span><span class="t-vi">Bảng điều khiển chi phí</span><span class="t-en">Cost dashboard</span></p><p class="dd"><span class="t-vi">Dựng một lần, nạp nhiều <code>&#42;-cost-report.csv</code> để xem bảng gộp.</span><span class="t-en">Built once, loads many <code>&#42;-cost-report.csv</code> files into one merged table.</span></p></div></div>
+          </div>
+        </div>
+      </div>
+
+      <h3 id="wf-flow"><span class="t-vi">Sáu giai đoạn, đi từ trên xuống</span><span class="t-en">Six stages, read top to bottom</span></h3>
+      <p class="sec-sub"><span class="t-vi">Mỗi giai đoạn là một dòng: số phase, việc xảy ra, rồi các node tham gia. Ô màu đỏ là <b>cổng chặn</b> — không qua được thì pipeline dừng.</span><span class="t-en">Each stage is one row: the phase numbers, what happens, then the nodes involved. Red boxes are <b>hard gates</b> — the pipeline stops if one fails.</span></p>
+      <div class="wf-flow">
+        <span class="fs"><em>0</em><span class="t-vi">Nhận brief</span><span class="t-en">Intake</span></span>
+        <span class="fa">&rarr;</span>
+        <span class="fs"><em>0.5&ndash;0.7</em><span class="t-vi">Xác minh &amp; quét</span><span class="t-en">Verify &amp; scan</span></span>
+        <span class="fa">&rarr;</span>
+        <span class="fs"><em>0.9</em><span class="t-vi">Đối thủ</span><span class="t-en">Competitors</span></span>
+        <span class="fa">&rarr;</span>
+        <span class="fs"><em>1</em><span class="t-vi">Nghiên cứu</span><span class="t-en">Research</span></span>
+        <span class="fa">&rarr;</span>
+        <span class="fs"><em>2&ndash;2.6</em><span class="t-vi">Viết &amp; soát</span><span class="t-en">Write &amp; audit</span></span>
+        <span class="fa">&rarr;</span>
+        <span class="fs"><em>3&ndash;4</em><span class="t-vi">Ráp &amp; kiểm</span><span class="t-en">Assemble &amp; check</span></span>
+      </div>
+      <ol class="wf-tl">
+        <li>
+          <span class="wf-dot">0</span>
+          <div class="wf-step">
+            <div class="wf-shead"><span class="wf-sname"><span class="t-vi">Nhận brief</span><span class="t-en">Intake</span></span><span class="wf-sph">Phase 0</span></div>
+            <p class="wf-sdesc"><span class="t-vi">Người dùng đưa tên khách hoặc website; orchestrator chốt slug và mở checkpoint cho lần chạy này.</span><span class="t-en">The user supplies a client name or website; the orchestrator fixes the slug and opens the checkpoint for this run.</span></p>
+            <div class="wf-chips">
+              <span class="wf-chip k-trig"><span class="ic"></span><span class="tx"><b>Trigger</b><i><span class="t-vi">Tên khách / website / brief</span><span class="t-en">Client name / website / brief</span></i></span></span>
+              <span class="wf-chip k-agent"><span class="n">0</span><span class="tx"><b>orchestrator</b><i><span class="t-vi">Chốt slug, mở checkpoint</span><span class="t-en">Fixes slug, opens checkpoint</span></i></span></span>
+            </div>
+          </div>
+        </li>
+        <li>
+          <span class="wf-dot">0.5</span>
+          <div class="wf-step">
+            <div class="wf-shead"><span class="wf-sname"><span class="t-vi">Xác minh &amp; quét</span><span class="t-en">Verify &amp; scan</span></span><span class="wf-sph">Phase 0.5 &ndash; 0.7</span></div>
+            <p class="wf-sdesc"><span class="t-vi">Chốt đúng pháp nhân trước khi tốn công nghiên cứu, rồi quét site <b>một lần</b> và cache toàn bộ URL liên quan để cả pipeline đọc lại.</span><span class="t-en">Pin the legal entity before research spends effort, then scan the site <b>once</b> and cache every related URL for the whole pipeline to reuse.</span></p>
+            <div class="wf-chips">
+              <span class="wf-chip k-skill"><span class="n">0.5</span><span class="tx"><b>company-verifier</b><i>GLEIF + Wikidata</i></span></span>
+              <span class="wf-chip k-skill"><span class="n">0.6</span><span class="tx"><b>officers-lookup</b><i><span class="t-vi">Sổ đăng ký công khai</span><span class="t-en">Public registries</span></i></span></span>
+              <span class="wf-chip k-skill"><span class="n">0.7</span><span class="tx"><b>web-osint-scanner</b><i><span class="t-vi">Quét site + pre-fetch URL</span><span class="t-en">Scans site + pre-fetches URLs</span></i></span></span>
+              <span class="wf-chip k-out"><span class="ic"></span><span class="tx"><b>web-scan.json</b><i><span class="t-vi">+ captures/ dùng chung</span><span class="t-en">+ captures/ shared downstream</span></i></span></span>
+            </div>
+          </div>
+        </li>
+        <li>
+          <span class="wf-dot">0.9</span>
+          <div class="wf-step">
+            <div class="wf-shead"><span class="wf-sname"><span class="t-vi">Nghiên cứu đối thủ</span><span class="t-en">Competitor research</span></span><span class="wf-sph">Phase 0.9</span></div>
+            <p class="wf-sdesc"><span class="t-vi">Mỗi đối thủ một worker riêng, chạy song song, với budget cứng. Kết quả phải qua cổng 1 trước khi Phase 1 được phép chạy.</span><span class="t-en">One worker per competitor, running in parallel, on a hard budget. The output must clear gate 1 before Phase 1 is allowed to run.</span></p>
+            <div class="wf-chips">
+              <span class="wf-chip k-agent"><span class="n">0.9</span><span class="tx"><b>competitor-research-worker</b><i><span class="t-vi">1 worker / đối thủ, &le;8 fetch, &le;8 phút</span><span class="t-en">1 worker / competitor, &le;8 fetches, &le;8 min</span></i></span></span>
+              <span class="wf-chip k-gate"><span class="ic"></span><span class="tx"><b>bind_check.py --facts</b><i><span class="t-vi">Cổng 1 &middot; chặn trước Phase 1</span><span class="t-en">Gate 1 &middot; blocks before Phase 1</span></i></span></span>
+            </div>
+          </div>
+        </li>
+        <li>
+          <span class="wf-dot">1</span>
+          <div class="wf-step">
+            <div class="wf-shead"><span class="wf-sname"><span class="t-vi">Nghiên cứu fan-out</span><span class="t-en">Research fan-out</span></span><span class="wf-sph">Phase 1</span></div>
+            <p class="wf-sdesc"><span class="t-vi">Bốn nhóm chạy song song, mỗi nhóm tự viết section và chart của mình, đọc từ <code>captures/</code> thay vì fetch lại trang.</span><span class="t-en">Four groups run in parallel, each writing its own sections and charts, reading from <code>captures/</code> instead of re-fetching pages.</span></p>
+            <div class="wf-chips">
+              <span class="wf-chip k-agent"><span class="ic"></span><span class="tx"><b>due-diligence</b><i>13 section</i></span></span>
+              <span class="wf-chip k-agent"><span class="ic"></span><span class="tx"><b>ops-tech</b><i>3 section</i></span></span>
+              <span class="wf-chip k-agent"><span class="ic"></span><span class="tx"><b>delivery-growth</b><i>5 section</i></span></span>
+              <span class="wf-chip k-agent"><span class="ic"></span><span class="tx"><b>tools-documents</b><i>11 section</i></span></span>
+            </div>
+          </div>
+        </li>
+        <li>
+          <span class="wf-dot">2</span>
+          <div class="wf-step">
+            <div class="wf-shead"><span class="wf-sname"><span class="t-vi">Viết &amp; soát nguồn</span><span class="t-en">Write &amp; audit</span></span><span class="wf-sph">Phase 2 &ndash; 2.6</span></div>
+            <p class="wf-sdesc"><span class="t-vi">Viết phần mở đầu, rồi tới cổng 2 — cổng soát nguồn. Chưa PASS thì không được ráp trang.</span><span class="t-en">Write the front matter, then gate 2 — the source audit. Nothing is assembled before it passes.</span></p>
+            <div class="wf-chips">
+              <span class="wf-chip k-skill"><span class="n">2</span><span class="tx"><b>front-matter-writer</b><i><span class="t-vi">Mở đầu + 3 bài pitch</span><span class="t-en">Front matter + 3 pitches</span></i></span></span>
+              <span class="wf-chip k-gate"><span class="ic"></span><span class="tx"><b>source-auditor</b><i><span class="t-vi">Cổng 2 &middot; chặn việc viết</span><span class="t-en">Gate 2 &middot; blocks writing</span></i></span></span>
+              <span class="wf-chip k-skill"><span class="n">2.6</span><span class="tx"><b>chart-data-analyst</b><i><span class="t-vi">Chốt số cho 18 chart + 4 sơ đồ</span><span class="t-en">Fixes numbers for 18 charts + 4 diagrams</span></i></span></span>
+            </div>
+          </div>
+        </li>
+        <li>
+          <span class="wf-dot">3</span>
+          <div class="wf-step">
+            <div class="wf-shead"><span class="wf-sname"><span class="t-vi">Ráp trang &amp; kiểm tra</span><span class="t-en">Assemble &amp; validate</span></span><span class="wf-sph">Phase 3 &ndash; 4</span></div>
+            <p class="wf-sdesc"><span class="t-vi">Ráp section vào template, rồi hai lớp kiểm tra cuối trước khi giao: máy kiểm cấu trúc, người đọc kiểm nội dung.</span><span class="t-en">Sections are dropped into the template, then two final checks before delivery: a machine checks structure, a person-style read checks content.</span></p>
+            <div class="wf-chips">
+              <span class="wf-chip k-skill"><span class="n">3</span><span class="tx"><b>assembler</b><i><span class="t-vi">Ráp section vào template</span><span class="t-en">Drops sections into the template</span></i></span></span>
+              <span class="wf-chip k-gate"><span class="ic"></span><span class="tx"><b>mechanical-validator</b><i><span class="t-vi">Cổng 3 &middot; 14 check</span><span class="t-en">Gate 3 &middot; 14 checks</span></i></span></span>
+              <span class="wf-chip k-skill"><span class="n">4b</span><span class="tx"><b>judgment-reviewer</b><i><span class="t-vi">Đọc như người</span><span class="t-en">Reads it like a person</span></i></span></span>
+              <span class="wf-chip k-tool"><span class="ic"></span><span class="tx"><b>ccusage</b><i><span class="t-vi">Đo chi phí từng task</span><span class="t-en">Measures per-task cost</span></i></span></span>
+              <span class="wf-chip k-out"><span class="ic"></span><span class="tx"><b>proposal.html</b><i><span class="t-vi">+ findings.json + cost CSV + PWA</span><span class="t-en">+ findings.json + cost CSV + PWA</span></i></span></span>
+            </div>
+          </div>
+        </li>
+      </ol>
+      <div class="wf-legend">
+        <div class="lg"><span class="sw trigger"></span>Trigger</div>
+        <div class="lg"><span class="sw agent"></span>Agent</div>
+        <div class="lg"><span class="sw skill"></span>Skill</div>
+        <div class="lg"><span class="sw tool"></span>Tool</div>
+        <div class="lg"><span class="sw gate"></span><span class="t-vi">Cổng chặn</span><span class="t-en">Hard gate</span></div>
+        <div class="lg"><span class="sw deliv"></span><span class="t-vi">Bàn giao</span><span class="t-en">Deliverable</span></div>
+      </div>
+
+      <h3 id="wf-facts"><span class="t-vi">Bốn cơ chế làm nó nhanh và đáng tin</span><span class="t-en">Four mechanisms that make it fast and trustworthy</span></h3>
+      <div class="wf-facts">
+        <div class="wf-fact">
+          <div class="fi"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z"/><path d="M4 7v10c0 1.7 3.6 3 8 3s8-1.3 8-3V7"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></div>
+          <b><span class="t-vi">Quét một lần, đọc lại nhiều lần</span><span class="t-en">Fetch once, read many times</span></b>
+          <span><span class="t-vi">Site khách được quét một lần, mọi URL liên quan đổ vào <code>captures/</code>; các nhóm đọc cache thay vì fetch lại — cắt hẳn hàng chục phút.</span><span class="t-en">The client's site is scanned once and every related URL lands in <code>captures/</code>; groups read the cache instead of re-fetching — removing tens of minutes.</span></span>
+        </div>
+        <div class="wf-fact">
+          <div class="fi"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4.4-2.9 7.9-7 9-4.1-1.1-7-4.6-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <b><span class="t-vi">Chốt pháp nhân trước</span><span class="t-en">Legal entity pinned first</span></b>
+          <span><span class="t-vi">GLEIF xác minh đúng pháp nhân (0.5) và tra ban lãnh đạo (0.6) trước khi bất kỳ nghiên cứu nào tốn công.</span><span class="t-en">GLEIF confirms the exact legal entity (0.5) and officers are resolved (0.6) before any research spends effort.</span></span>
+        </div>
+        <div class="wf-fact">
+          <div class="fi"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <b><span class="t-vi">Đối thủ có budget cứng</span><span class="t-en">Competitors on a hard budget</span></b>
+          <span><span class="t-vi">Mỗi worker tối đa 8 fetch trong 8 phút, và kết quả phải qua bind-check trước Phase 1 — vì một đoạn trích sai sẽ chảy vào hai section cùng lúc.</span><span class="t-en">Each worker gets at most 8 fetches in 8 minutes, and its output must clear the bind-check before Phase 1 — a bad excerpt would otherwise land in two sections at once.</span></span>
+        </div>
+        <div class="wf-fact">
+          <div class="fi"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v16M20 4v16M4 9h16M4 15h16"/></svg></div>
+          <b><span class="t-vi">Ba cổng không thể bỏ qua</span><span class="t-en">Three gates you cannot skip</span></b>
+          <span><span class="t-vi">Máy soát cấu trúc (14 check), <code>source-auditor</code> soát từng trích dẫn và gộp nguồn trùng gốc, <code>judgment-reviewer</code> đọc bằng mắt người.</span><span class="t-en">A machine checks structure (14 checks), <code>source-auditor</code> re-checks every citation and collapses duplicate origins, and <code>judgment-reviewer</code> reads it like a person.</span></span>
+        </div>
+      </div>
+
+      <h3 id="gates"><span class="t-vi">Ba cổng chặn</span><span class="t-en">The 3 hard gates</span></h3>
+      <p class="sec-sub"><span class="t-vi">Cổng chặn nghĩa là pipeline <b>dừng</b>, không phải chỉ ghi chú lại rồi đi tiếp.</span><span class="t-en">A hard gate means the pipeline <b>stops</b>, not that it takes a note and moves on.</span></p>
+      <div class="gates">
+        <div class="gate">
+          <div class="gtop"><span class="gnum">1</span><span class="pill warn"><span class="t-vi">trước Phase 1</span><span class="t-en">before Phase 1</span></span></div>
+          <b>Competitor-facts bind check</b>
+          <p><span class="t-vi">Một đoạn trích sai ở đây sẽ chảy vào <b>hai</b> section cùng lúc (Group A và Group C), nên nó bị chặn ngay sau Phase 0.9 thay vì để phát hiện muộn.</span><span class="t-en">A bad excerpt here would land in <b>two</b> sections at once (Group A and Group C), so it is stopped right after Phase 0.9 instead of being caught late.</span></p>
+        </div>
+        <div class="gate">
+          <div class="gtop"><span class="gnum">2</span><span class="pill warn"><span class="t-vi">chặn việc viết</span><span class="t-en">blocks writing</span></span></div>
+          <b>Source audit</b>
+          <p><span class="t-vi"><code>bind_check.py</code> xác nhận từng đoạn trích thật sự nằm trên trang được dẫn; mọi phát hiện phải được gắn nguồn, gắn nhãn <code>.assess</code>, hoặc trả về cho nhóm sở hữu sửa. Chưa PASS thì không được viết hay ráp trang.</span><span class="t-en"><code>bind_check.py</code> confirms every excerpt really appears on the page it cites; each finding must be properly sourced, tagged <code>.assess</code>, or sent back to its owning group to fix. Nothing is written or assembled before it passes.</span></p>
+        </div>
+        <div class="gate">
+          <div class="gtop"><span class="gnum">3</span><span class="pill warn"><span class="t-vi">chặn giao hàng</span><span class="t-en">blocks delivery</span></span></div>
+          <b>Mechanical validator</b>
+          <p><span class="t-vi">Chạy <code>validate-proposal.py</code> với 14 check đếm được — manifest chart, markup trích dẫn, placeholder, tính nhất quán với findings.json, không CDN, và <b>chart có thật sự vẽ được hay không</b>.</span><span class="t-en">Runs <code>validate-proposal.py</code>'s 14 countable checks — chart manifest, citation markup, leftovers, findings.json consistency, no CDN, and <b>whether the charts actually paint</b>.</span></p>
+        </div>
+      </div>
+
+      <h3 id="phases"><span class="t-vi">Chi tiết 12 phase</span><span class="t-en">The 12 phases in detail</span></h3>
+      <table>
+        <thead><tr><th><span class="t-vi">Phase</span><span class="t-en">Phase</span></th><th><span class="t-vi">Ai làm</span><span class="t-en">Owner</span></th><th><span class="t-vi">Sản phẩm</span><span class="t-en">Artefact</span></th></tr></thead>
+        <tbody>
+          <tr><td>0 <span class="t-vi">Nhận brief</span><span class="t-en">Intake</span></td><td class="mono">orchestrator</td><td><span class="t-vi">tên khách + slug</span><span class="t-en">client name + slug</span></td></tr>
+          <tr><td>0.5 <span class="t-vi">Xác minh pháp nhân</span><span class="t-en">Company verification</span></td><td class="mono">company-verifier</td><td class="mono">company-identity.json</td></tr>
+          <tr><td>0.6 <span class="t-vi">Tra ban lãnh đạo</span><span class="t-en">Officers lookup</span></td><td class="mono">officers-lookup</td><td class="mono">officers.json</td></tr>
+          <tr><td>0.7 <span class="t-vi">Quét web/OSINT</span><span class="t-en">Web/OSINT scan</span></td><td class="mono">web-osint-scanner</td><td class="mono">web-scan.json + captures/</td></tr>
+          <tr class="rowgate"><td><span class="gd"></span>0.9 <span class="t-vi">Nghiên cứu đối thủ</span><span class="t-en">Competitor research</span></td><td class="mono">competitor-research-worker &times;N</td><td class="mono">competitor-research/&#42;.json</td></tr>
+          <tr><td>1 <span class="t-vi">Nghiên cứu fan-out</span><span class="t-en">Research fan-out</span></td><td class="mono">4 research agents</td><td class="mono">p1-group&#123;A..D&#125;.html</td></tr>
+          <tr><td>2 <span class="t-vi">Phần mở đầu</span><span class="t-en">Front matter</span></td><td class="mono">front-matter-writer</td><td class="mono">p2-frontmatter.html</td></tr>
+          <tr class="rowgate"><td><span class="gd"></span>2.5 <span class="t-vi">Soát nguồn</span><span class="t-en">Source audit</span></td><td class="mono">source-auditor</td><td class="mono">audited-findings.json</td></tr>
+          <tr><td>2.6 <span class="t-vi">Dữ liệu chart</span><span class="t-en">Chart data</span></td><td class="mono">chart-data-analyst</td><td class="mono">chart-manifest.json</td></tr>
+          <tr><td>3 <span class="t-vi">Ráp trang</span><span class="t-en">Assembly</span></td><td class="mono">assembler</td><td class="mono">&lt;slug&gt;-proposal.html</td></tr>
+          <tr class="rowgate"><td><span class="gd"></span>4a <span class="t-vi">Kiểm tra máy</span><span class="t-en">Mechanical validation</span></td><td class="mono">mechanical-validator</td><td><span class="t-vi">14 check, exit code</span><span class="t-en">14 checks, exit code</span></td></tr>
+          <tr><td>4b <span class="t-vi">Review phán đoán + chi phí</span><span class="t-en">Judgment review + cost</span></td><td class="mono">judgment-reviewer</td><td class="mono">&#42;-cost-report.csv</td></tr>
+        </tbody>
+      </table>
+      <p class="small muted"><span class="t-vi"><span class="gd" style="background:var(--bad)"></span> = có cổng chặn. <code>checkpoint-manager</code> chạy xuyên suốt: quyết định phase nào cần chạy lại và ghi lại tiến độ sau mỗi phase.</span><span class="t-en"><span class="gd" style="background:var(--bad)"></span> = carries a hard gate. <code>checkpoint-manager</code> runs throughout: it decides which phases need to re-run and records progress after each one.</span></p>
+
+      <h3 id="cost-rule"><span class="t-vi">Quy tắc chi phí</span><span class="t-en">Cost rule</span></h3>
+      <p><span class="t-vi">Mỗi task tách riêng ghi <code>session_id</code> của chính nó. Task chạy ngay trong session của orchestrator (Phase 0.5, 0.7, 2, 2.5, 2.6, 3, 4) ghi <code>shared_session: true</code> — nhờ vậy chi phí của chúng <b>không</b> bị mất, và dashboard không báo sai là "thiếu dòng chi phí".</span><span class="t-en">A separately dispatched task records its own <code>session_id</code>. Tasks that run inline in the orchestrator's session (Phases 0.5, 0.7, 2, 2.5, 2.6, 3, 4) record <code>shared_session: true</code> — so their cost is <b>not</b> dropped, and the dashboard no longer flags them as having a missing row.</span></p>
+    </section>
+    
+    <section id="tools">
+      <template class="railsrc">
+        <a href="#skills"><span class="t-vi">10 sub-skill</span><span class="t-en">The 10 sub-skills</span></a>
+        <a href="#agents"><span class="t-vi">Agent definition</span><span class="t-en">Agent definitions</span></a>
+        <a href="#scripts"><span class="t-vi">Script</span><span class="t-en">Scripts</span></a>
+      </template>
+      <div class="eyebrow"><span class="t-vi">Quy trình</span><span class="t-en">Pipeline</span></div>
+      <h2><span class="t-vi">Công cụ</span><span class="t-en">Tools</span></h2>
+      <p class="sec-sub"><span class="t-vi">Skill gốc không tự làm hết — nó gọi 10 sub-skill và 5 agent definition, mỗi thứ một việc.</span><span class="t-en">The orchestrator does not do the work itself — it dispatches 10 sub-skills and 5 agent definitions, one job each.</span></p>
+
+      <h3 id="skills"><span class="t-vi">10 sub-skill</span><span class="t-en">The 10 sub-skills</span></h3>
+      <table>
+        <thead><tr><th><span class="t-vi">Sub-skill</span><span class="t-en">Sub-skill</span></th><th><span class="t-vi">Việc nó làm</span><span class="t-en">What it does</span></th></tr></thead>
+        <tbody>
+          <tr><td class="mono">company-verifier</td><td><span class="t-vi">Chốt đúng pháp nhân trước khi tốn công nghiên cứu: tên pháp lý, domain chính thức, quốc gia, còn hoạt động không — qua API LEI miễn phí của GLEIF, bổ sung Wikidata.</span><span class="t-en">Pins the exact legal entity before research spends effort: legal name, official domain, country, active status — via GLEIF's free LEI API, supplemented by Wikidata.</span></td></tr>
+          <tr><td class="mono">officers-lookup</td><td><span class="t-vi">Tra giám đốc/ban lãnh đạo/người sáng lập từ sổ đăng ký công khai (Companies House, OpenCorporates, SEC EDGAR) — ghi <code>officers.json</code> để agent nghiên cứu không phải đoán tên người.</span><span class="t-en">Resolves directors/officers/founders from official public registries (Companies House, OpenCorporates, SEC EDGAR) — writes <code>officers.json</code> so research agents never guess a named person.</span></td></tr>
+          <tr><td class="mono">web-osint-scanner</td><td><span class="t-vi">Đọc website khách từ đầu đến cuối qua Jina Reader, trích mọi link liên quan (social, review, báo chí, đối tác), rồi pre-fetch một lần cho cả pipeline.</span><span class="t-en">Reads the client's site end to end via Jina Reader, extracts every related link (social, review, press, partner), then pre-fetches once for the whole pipeline.</span></td></tr>
+          <tr><td class="mono">checkpoint-manager</td><td><span class="t-vi">Quyết định phase/group/section nào thật sự cần chạy, và đọc/ghi file checkpoint để lần chạy sau resume thay vì làm lại.</span><span class="t-en">Decides which phase/group/section actually needs to run, and reads/writes the checkpoint file so a later run resumes instead of rebuilding.</span></td></tr>
+          <tr><td class="mono">source-auditor</td><td><span class="t-vi">Cổng chặn cứng: soát lại toàn bộ findings của 4 nhóm, chạy bind-check miễn phí, gộp nguồn trùng một gốc, chấm lại độ tin cậy.</span><span class="t-en">A hard gate: re-checks all four groups' findings, runs the free bind-check, collapses sources that trace to one origin, and re-grades confidence.</span></td></tr>
+          <tr><td class="mono">chart-data-analyst</td><td><span class="t-vi">Một chỗ duy nhất quyết định số cho cả 18 chart + 4 diagram, thay vì mỗi nhóm tự bịa giá trị riêng.</span><span class="t-en">One place decides the numbers for all 18 charts + 4 diagrams, instead of each group inventing its own values.</span></td></tr>
+          <tr><td class="mono">front-matter-writer</td><td><span class="t-vi">Viết Overview, Executive Summary, Recommendations và 3 bài pitch giải pháp trực tiếp từ digest của 4 nhóm — không cần thêm nghiên cứu.</span><span class="t-en">Writes Overview, Executive Summary, Recommendations and the 3 solution pitches straight from the four groups' digests — no extra research.</span></td></tr>
+          <tr><td class="mono">assembler</td><td><span class="t-vi">Trích đúng khối <code>&lt;section&gt;</code> từ file preview của từng nhóm và đặt vào bản template mới, theo đúng thứ tự sidebar cố định.</span><span class="t-en">Extracts the finished <code>&lt;section&gt;</code> blocks from each group's preview file and drops them into a fresh template copy, in fixed sidebar order.</span></td></tr>
+          <tr><td class="mono">mechanical-validator</td><td><span class="t-vi">Chạy <code>validate-proposal.py</code> — 14 check đếm được, có exit code.</span><span class="t-en">Runs <code>validate-proposal.py</code> — 14 countable checks with an exit code.</span></td></tr>
+          <tr><td class="mono">judgment-reviewer</td><td><span class="t-vi">Soát bằng phán đoán: spot-check trích dẫn, phản biện kiến trúc/lộ trình/khuyến nghị, phát hiện section mỏng — rồi báo cáo chi phí thật theo từng task.</span><span class="t-en">Judgment-based pass: citation spot-check, devil's-advocate review of architecture/roadmap/recommendations, thin-section detection — then the real per-task cost report.</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="agents"><span class="t-vi">Agent definition</span><span class="t-en">Agent definitions</span></h3>
+      <table>
+        <thead><tr><th><span class="t-vi">Agent</span><span class="t-en">Agent</span></th><th><span class="t-vi">Phụ trách</span><span class="t-en">Responsible for</span></th></tr></thead>
+        <tbody>
+          <tr><td class="mono">research-due-diligence-agent</td><td><span class="t-vi">Due Diligence + Strategic Analysis (13 section)</span><span class="t-en">Due Diligence + Strategic Analysis (13 sections)</span></td></tr>
+          <tr><td class="mono">research-ops-tech-agent</td><td><span class="t-vi">Operations (3 section)</span><span class="t-en">Operations (3 sections)</span></td></tr>
+          <tr><td class="mono">research-delivery-growth-agent</td><td><span class="t-vi">Competitive Intel + Growth (5 section)</span><span class="t-en">Competitive Intel + Growth (5 sections)</span></td></tr>
+          <tr><td class="mono">tools-documents-agent</td><td><span class="t-vi">Tools &amp; Documents (11 section)</span><span class="t-en">Tools &amp; Documents (11 sections)</span></td></tr>
+          <tr><td class="mono">competitor-research-worker</td><td><span class="t-vi">Một đối thủ mỗi worker, có budget cứng: &le;8 lần fetch, &le;8 phút.</span><span class="t-en">One competitor per worker, with a hard budget: &le;8 fetches, &le;8 minutes.</span></td></tr>
+        </tbody>
+      </table>
+      <div class="note"><span class="t-vi"><b>Lưu ý portability.</b> 5 file agent definition dùng frontmatter <code>tools:</code> và <code>model:</code> — đó là quy ước của Claude Code. Với agent khác, phần dùng được là <b>nội dung</b> của file (nghiên cứu gì, sở hữu section/chart nào, trả về gì); hãy diễn đạt lại tool/model bằng cơ chế của agent đó. Nếu agent không có khái niệm sub-agent, chạy tuần tự 4 nhóm và ghi rõ trong checkpoint rằng lần chạy này không fan-out.</span><span class="t-en"><b>Portability note.</b> The 5 agent definition files use <code>tools:</code> and <code>model:</code> frontmatter — Claude Code's own convention. Under another agent, the portable part is the file's <b>body</b> (what to research, which sections/charts it owns, what to return); re-express the tool/model choice with that agent's own mechanism. If the agent has no sub-agent concept, run the 4 groups in sequence and state clearly in the checkpoint that the run did not fan out.</span></div>
+
+      <h3 id="scripts"><span class="t-vi">Script</span><span class="t-en">Scripts</span></h3>
+      <table>
+        <thead><tr><th><span class="t-vi">File</span><span class="t-en">File</span></th><th><span class="t-vi">Việc</span><span class="t-en">Job</span></th></tr></thead>
+        <tbody>
+          <tr><td class="mono">assets/validate-proposal.py</td><td><span class="t-vi">14 check cơ học, exit code 0/1. Cần 2 tham số: file HTML và findings.json.</span><span class="t-en">14 mechanical checks, exit code 0/1. Takes two arguments: the HTML file and findings.json.</span></td></tr>
+          <tr><td class="mono">skills/source-auditor/assets/bind_check.py</td><td><span class="t-vi">Xác nhận đoạn trích thật sự có trên trang nguồn; có chế độ <code>--facts</code> và <code>--from-cache</code>.</span><span class="t-en">Confirms an excerpt really appears on its source page; supports <code>--facts</code> and <code>--from-cache</code> modes.</span></td></tr>
+          <tr><td class="mono">assets/stitch_group.py</td><td><span class="t-vi">Ghép fragment của một nhóm vào template thành trang preview mở được trong browser — không cần đưa cả template ~250KB vào context của agent.</span><span class="t-en">Stitches one group's fragments into the template as a browser-openable preview page — without putting the whole ~250KB template into an agent's context.</span></td></tr>
+          <tr><td class="mono">skills/judgment-reviewer/assets/ccusage_to_csv.py</td><td><span class="t-vi">Sinh báo cáo chi phí CSV từ log phiên; gộp các task chia sẻ session thành một dòng nhãn <code>shared-session:</code>.</span><span class="t-en">Produces the CSV cost report from session logs; groups tasks that share a session into one <code>shared-session:</code> row.</span></td></tr>
+          <tr><td class="mono">skills/judgment-reviewer/assets/cost-dashboard.html</td><td><span class="t-vi">Một file HTML dựng một lần, nạp nhiều file <code>&#42;-cost-report.csv</code> và hiển thị bảng gộp kèm tổng.</span><span class="t-en">A single HTML file, built once, that loads any number of <code>&#42;-cost-report.csv</code> files and shows a merged table with a grand total.</span></td></tr>
+          <tr><td class="mono">install.ps1 / install.sh</td><td><span class="t-vi">Cài skill gốc + 10 sub-skill vào thư mục skills của agent.</span><span class="t-en">Installs the orchestrator plus 10 sub-skills into an agent's skills directory.</span></td></tr>
+        </tbody>
+      </table>
+    </section>    <section id="packaging">
+      <template class="railsrc">
+        <a href="#pkg-goal"><span class="t-vi">Mục tiêu</span><span class="t-en">Goal</span></a>
+        <a href="#pkg-steps"><span class="t-vi">Các bước</span><span class="t-en">Steps</span></a>
+        <a href="#pkg-releases"><span class="t-vi">Lịch sử phát hành</span><span class="t-en">Release history</span></a>
+        <a href="#pkg-inside"><span class="t-vi">Trong gói có gì</span><span class="t-en">What's in the package</span></a>
+        <a href="#pkg-gaps"><span class="t-vi">Còn thiếu</span><span class="t-en">Known gaps</span></a>
+      </template>
+      <div class="eyebrow"><span class="t-vi">Phát hành</span><span class="t-en">Shipping</span></div>
+      <h2><span class="t-vi">Quy trình đóng gói</span><span class="t-en">Packaging process</span></h2>
+      <p class="sec-sub"><span class="t-vi">Mục tiêu: người khác và agency cài được, chạy được, và không nhìn thấy dữ liệu khách hàng thật.</span><span class="t-en">Goal: other people and agencies can install it, run it, and never see a real client's data.</span></p>
+
+      <h3 id="pkg-goal"><span class="t-vi">Mục tiêu</span><span class="t-en">Goal</span></h3>
+      <ul>
+        <li><span class="t-vi"><b>Giao được:</b> một repo private, cài bằng 1 lệnh, chạy trên agent bất kỳ hỗ trợ Agent Skills.</span><span class="t-en"><b>Hand-off ready:</b> one private repo, one-command install, runs on any agent that supports Agent Skills.</span></li>
+        <li><span class="t-vi"><b>Không rò dữ liệu:</b> không tên khách thật, không <code>session_id</code> thật, không output đề xuất thật trong gói.</span><span class="t-en"><b>No data leakage:</b> no real client names, no real <code>session_id</code>, no real proposal outputs inside the package.</span></li>
+        <li><span class="t-vi"><b>Truy vết được:</b> mọi thay đổi đều có CHANGELOG + tag semver.</span><span class="t-en"><b>Traceable:</b> every change carries a CHANGELOG entry and a semver tag.</span></li>
+      </ul>
+
+      <h3 id="pkg-steps"><span class="t-vi">Các bước</span><span class="t-en">Steps</span></h3>
+      <ol>
+        <li><span class="t-vi"><b>Làm sạch dữ liệu khách.</b> Tên khách thật trong tài liệu demo được đổi thành <code>client-nova</code> / <code>client-delta</code> / <code>client-orchid</code>; một <code>session_id</code> thật bị xoá.</span><span class="t-en"><b>Scrub client data.</b> Real client names in demo documents became <code>client-nova</code> / <code>client-delta</code> / <code>client-orchid</code>; a real <code>session_id</code> was removed.</span></li>
+        <li><span class="t-vi"><b>Chốt gì vào gói.</b> <code>demo/</code> (đề xuất của khách thật) và <code>_runs/</code> (sản phẩm mỗi lần chạy) bị loại khỏi git; file vẫn còn trên máy nhưng bị gitignore.</span><span class="t-en"><b>Decide what ships.</b> <code>demo/</code> (real client proposals) and <code>_runs/</code> (per-run artefacts) were dropped from git; the files stay on disk but are ignored.</span></li>
+        <li><span class="t-vi"><b>Giấy tờ gói.</b> Thêm <code>README.md</code>, <code>QUICKSTART.md</code>, <code>CHANGELOG.md</code>, <code>LICENSE</code> (độc quyền).</span><span class="t-en"><b>Package documents.</b> Added <code>README.md</code>, <code>QUICKSTART.md</code>, <code>CHANGELOG.md</code>, and a proprietary <code>LICENSE</code>.</span></li>
+        <li><span class="t-vi"><b>Installer.</b> <code>install.ps1</code> / <code>install.sh</code> liên kết skill gốc + 10 sub-skill, có <code>-Copy</code>, <code>-SkipSubSkills</code>, <code>-DryRun</code>, và không bao giờ ghi đè thư mục thật.</span><span class="t-en"><b>Installers.</b> <code>install.ps1</code> / <code>install.sh</code> link the orchestrator plus 10 sub-skills, with <code>-Copy</code>, <code>-SkipSubSkills</code>, <code>-DryRun</code>, and never overwrite a real folder.</span></li>
+        <li><span class="t-vi"><b>Chuẩn hoá line-ending.</b> <code>.gitattributes</code> giữ LF trên mọi nền tảng để một checkout mới không bị đổi toàn bộ file.</span><span class="t-en"><b>Line-ending hygiene.</b> <code>.gitattributes</code> keeps LF on every platform so a fresh checkout does not rewrite every file.</span></li>
+        <li><span class="t-vi"><b>Trung lập hoá agent.</b> Đường dẫn riêng của Claude, hướng dẫn chỉ dùng <code>WebFetch</code>, và tên model Claude-only được thay bằng câu chữ trung lập.</span><span class="t-en"><b>Agent-neutral wording.</b> Claude-only paths, <code>WebFetch</code>-only fetch instructions and Claude model names were replaced with tool-neutral wording.</span></li>
+        <li><span class="t-vi"><b>Phát hành.</b> CHANGELOG + tag semver, push <code>main</code> + tag, rồi mirror sang SKILL-LIB.</span><span class="t-en"><b>Release.</b> CHANGELOG entry + semver tag, push <code>main</code> and the tag, then mirror to SKILL-LIB.</span></li>
+      </ol>
+
+      <h3 id="pkg-releases"><span class="t-vi">Lịch sử phát hành</span><span class="t-en">Release history</span></h3>
+      <table>
+        <thead><tr><th><span class="t-vi">Tag</span><span class="t-en">Tag</span></th><th><span class="t-vi">Nội dung</span><span class="t-en">What changed</span></th></tr></thead>
+        <tbody>
+          <tr><td class="mono">v1.0.0</td><td><span class="t-vi">Bản đóng gói đầu tiên: README, QUICKSTART, LICENSE, installer, <code>.gitattributes</code>, cost dashboard, loại <code>demo/</code>, xoá tên khách thật.</span><span class="t-en">First packaged release: README, QUICKSTART, LICENSE, installers, <code>.gitattributes</code>, cost dashboard, <code>demo/</code> dropped, real client names removed.</span></td></tr>
+          <tr><td class="mono">v1.0.1</td><td><span class="t-vi">Thêm <code>BOOTSTRAP-PROMPT.md</code> — prompt để agent trên máy mới tự cài skill vào chính nó.</span><span class="t-en">Added <code>BOOTSTRAP-PROMPT.md</code> — a prompt that lets an agent on a new machine install the skill into itself.</span></td></tr>
+          <tr><td class="mono">v1.1.0</td><td><span class="t-vi">Báo cáo chi phí phủ cả phase chạy inline (trước đó một run thật mất $0.4817 trong tổng $1.1150); brand <code>Technext</code>&nbsp;&rarr;&nbsp;<code>TechNext</code>; quy tắc ghi output vào <code>_runs/&lt;slug&gt;/</code>.</span><span class="t-en">Cost reporting now covers phases that run inline (a real run previously hid $0.4817 of $1.1150); brand <code>Technext</code>&nbsp;&rarr;&nbsp;<code>TechNext</code>; made the <code>_runs/&lt;slug&gt;/</code> output rule explicit.</span></td></tr>
+          <tr><td class="mono">v1.1.1</td><td><span class="t-vi"><b>Sửa lỗi toàn bộ chart trắng.</b> Khung chart được đưa lên <code>&lt;head&gt;</code> để luôn định nghĩa trước mọi section; sửa một lỗi cú pháp JS (<code>+</code> thay vì <code>,</code>); thêm check 14 — "chart có thật sự vẽ được".</span><span class="t-en"><b>Fixed every chart rendering blank.</b> The chart framework moved into <code>&lt;head&gt;</code> so it is always defined before any section; fixed a JS syntax error (<code>+</code> instead of <code>,</code>); added check 14 — "charts are actually wired up".</span></td></tr>
+          <tr><td class="mono">v1.1.2</td><td><span class="t-vi">Sửa <code>SKILL.md</code> còn ghi "13 hard checks" sau khi v1.1.1 thêm check thứ 14.</span><span class="t-en">Corrected <code>SKILL.md</code>, which still said "13 hard checks" after v1.1.1 added the 14th.</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="pkg-inside"><span class="t-vi">Trong gói có gì</span><span class="t-en">What's in the package</span></h3>
+      <pre><code>SKILL.md                  orchestrator map — start here
+agents/                   5 sub-agent definitions
+skills/                   10 sub-skills the pipeline dispatches
+assets/                   proposal-template.html, validate-proposal.py,
+                          stitch_group.py, menu-structure.md, section-shell.md,
+                          charts-and-diagrams.md, research-rules.md, PWA files
+install.ps1 / install.sh  install the skill + its 10 sub-skills
+BOOTSTRAP-PROMPT.md       self-install prompt for a fresh machine
+README / QUICKSTART / CHANGELOG / LICENSE</code></pre>
+      <div class="kv">
+        <div class="k">Repo</div><div class="v mono">github.com/aidev3-web/technext-sales-proposal <span class="pill neutral"><span class="t-vi">private</span><span class="t-en">private</span></span></div>
+        <div class="k"><span class="t-vi">Nhánh / tag</span><span class="t-en">Branch / tags</span></div><div class="v"><code>main</code> + 5 tag (v1.0.0 &rarr; v1.1.2)</div>
+        <div class="k"><span class="t-vi">File được track</span><span class="t-en">Tracked files</span></div><div class="v">47</div>
+      </div>
+
+      <h3 id="pkg-gaps"><span class="t-vi">Còn thiếu — nói thẳng</span><span class="t-en">Known gaps — stated plainly</span></h3>
+      <table>
+        <thead><tr><th><span class="t-vi">Vấn đề</span><span class="t-en">Issue</span></th><th><span class="t-vi">Ảnh hưởng</span><span class="t-en">Impact</span></th></tr></thead>
+        <tbody>
+          <tr><td><span class="t-vi">Không có test và không có CI</span><span class="t-en">No tests and no CI</span></td><td><span class="t-vi">Sửa template có thể lại làm trắng 18 chart mà không ai biết — đúng loại lỗi đã xảy ra ở v1.1.1.</span><span class="t-en">A template edit can silently blank all 18 charts again — exactly the class of bug fixed in v1.1.1.</span></td></tr>
+          <tr><td><span class="t-vi">Còn đồ nội bộ trong gói</span><span class="t-en">Internal tooling still in the package</span></td><td><span class="t-vi"><code>api/answers.js</code> (serverless function, cần <code>GITHUB_TOKEN</code>), <code>blocker/answers.json</code> (dữ liệu test đã commit), <code>report/&#42;</code> (tài liệu review nội bộ).</span><span class="t-en"><code>api/answers.js</code> (a serverless function needing <code>GITHUB_TOKEN</code>), <code>blocker/answers.json</code> (committed test data), <code>report/&#42;</code> (internal review documents).</span></td></tr>
+          <tr><td><span class="t-vi">Validator chưa kiểm nội dung ngữ nghĩa</span><span class="t-en">Validator doesn't check semantics</span></td><td><span class="t-vi">Chưa kiểm: số trên chart có khớp dữ liệu không, cặp <code>t-vi</code>/<code>t-en</code> có đủ không, palette đã đổi chưa, sidebar có đúng thứ tự không.</span><span class="t-en">Not yet checked: whether chart numbers match the data, whether every string has both <code>t-vi</code>/<code>t-en</code>, whether the palette was overridden, whether the sidebar order matches.</span></td></tr>
+          <tr><td><span class="t-vi">Agent definition còn phụ thuộc Claude Code</span><span class="t-en">Agent definitions still Claude-Code-shaped</span></td><td><span class="t-vi">Trên Codex/Gemini phải chạy tuần tự 4 nhóm, mất lợi thế fan-out.</span><span class="t-en">On Codex/Gemini the 4 groups must run in sequence, losing the fan-out advantage.</span></td></tr>
+          <tr><td><span class="t-vi">Chưa chạy benchmark end-to-end</span><span class="t-en">No end-to-end benchmark yet</span></td><td><span class="t-vi">Chưa xác minh trên máy sạch chỉ có Codex.</span><span class="t-en">Not yet verified on a clean machine running Codex only.</span></td></tr>
+        </tbody>
+      </table>
+    </section>    <section id="demo-run">
+      <template class="railsrc">
+        <a href="#dr-facts"><span class="t-vi">Thông tin run</span><span class="t-en">Run facts</span></a>
+        <a href="#dr-results"><span class="t-vi">Kết quả pipeline</span><span class="t-en">Pipeline results</span></a>
+        <a href="#dr-cost"><span class="t-vi">Chi phí</span><span class="t-en">Cost</span></a>
+        <a href="#dr-charts"><span class="t-vi">Biểu đồ</span><span class="t-en">Charts</span></a>
+        <a href="#dr-incidents"><span class="t-vi">Sự cố &amp; cách sửa</span><span class="t-en">Incidents &amp; fixes</span></a>
+        <a href="#dr-verdict"><span class="t-vi">Kết luận</span><span class="t-en">Verdict</span></a>
+      </template>
+      <div class="eyebrow"><span class="t-vi">Phát hành</span><span class="t-en">Shipping</span></div>
+      <h2><span class="t-vi">Báo cáo demo run</span><span class="t-en">Demo run report</span></h2>
+      <p class="sec-sub"><span class="t-vi">Một lần chạy thật, số liệu lấy từ checkpoint và báo cáo chi phí của chính lần chạy đó.</span><span class="t-en">One real run, with numbers taken from that run's own checkpoint and cost report.</span></p>
+
+      <h3 id="dr-facts"><span class="t-vi">Thông tin run</span><span class="t-en">Run facts</span></h3>
+      <div class="kv">
+        <div class="k"><span class="t-vi">Khách hàng</span><span class="t-en">Client</span></div><div class="v">Casa Escondida Anilao Resort &amp; Dive Center <span class="muted small">— Anilao, Batangas, Philippines · resort lặn 24 phòng, PADI 5&#9733; IDC</span></div>
+        <div class="k"><span class="t-vi">Slug</span><span class="t-en">Slug</span></div><div class="v mono">casa-escondida</div>
+        <div class="k"><span class="t-vi">Ngày chạy</span><span class="t-en">Run date</span></div><div class="v">2026-09-25</div>
+        <div class="k">Agent / model</div><div class="v mono">codex / deepseek-v4-flash</div>
+        <div class="k">Palette</div><div class="v"><span class="t-vi">"tropical ocean" — teal/aqua làm chính, amber cát, coral làm điểm nhấn; lý do: thương hiệu resort lặn, hợp ảnh dưới nước và hoàng hôn hơn là navy công sở.</span><span class="t-en">"tropical ocean" — deep teal/aqua primary, sand-amber accent, coral highlight; chosen because a dive-resort brand matches underwater and sunset imagery rather than a fixed corporate navy.</span></div>
+        <div class="k"><span class="t-vi">Trạng thái</span><span class="t-en">Status</span></div><div class="v"><span class="pill ok"><span class="t-vi">cả 12 phase done</span><span class="t-en">all 12 phases done</span></span></div>
+      </div>
+
+      <h3 id="dr-results"><span class="t-vi">Kết quả pipeline</span><span class="t-en">Pipeline results</span></h3>
+      <div class="stats">
+        <div class="stat"><div class="v">43</div><div class="k"><span class="t-vi">URL pre-fetch</span><span class="t-en">URLs pre-fetched</span></div></div>
+        <div class="stat"><div class="v">4</div><div class="k"><span class="t-vi">đối thủ, 1 worker mỗi cái</span><span class="t-en">competitors, 1 worker each</span></div></div>
+        <div class="stat"><div class="v">480</div><div class="k"><span class="t-vi">trích dẫn được soát</span><span class="t-en">citations audited</span></div></div>
+        <div class="stat"><div class="v">40</div><div class="k"><span class="t-vi">section</span><span class="t-en">sections</span></div></div>
+        <div class="stat"><div class="v">18</div><div class="k"><span class="t-vi">chart</span><span class="t-en">charts</span></div></div>
+        <div class="stat"><div class="v">948&nbsp;KB</div><div class="k"><span class="t-vi">một file HTML duy nhất</span><span class="t-en">one single HTML file</span></div></div>
+      </div>
+      <table>
+        <thead><tr><th><span class="t-vi">Cổng chặn</span><span class="t-en">Gate</span></th><th><span class="t-vi">Kết quả</span><span class="t-en">Result</span></th></tr></thead>
+        <tbody>
+          <tr><td><span class="t-vi">Competitor facts (sau 0.9)</span><span class="t-en">Competitor facts (after 0.9)</span></td><td><span class="pill ok">PASS</span> <span class="muted small">36 bound / 22 partial / <b>0 unbound</b></span></td></tr>
+          <tr><td><span class="t-vi">Source audit (2.5)</span><span class="t-en">Source audit (2.5)</span></td><td><span class="pill ok">PASS</span> <span class="muted small">463 bound / 17 partial / <b>0 unbound</b> / 0 unreachable &mdash; trên 480 trích dẫn</span></td></tr>
+          <tr><td><span class="t-vi">Mechanical validator (4a)</span><span class="t-en">Mechanical validator (4a)</span></td><td><span class="pill ok">PASS</span> <span class="muted small">exit 0</span></td></tr>
+          <tr><td><span class="t-vi">Chart vẽ được (check 14)</span><span class="t-en">Charts paint (check 14)</span></td><td><span class="pill ok">PASS</span> <span class="muted small">18/18 canvas có Chart instance, 0 blank</span></td></tr>
+        </tbody>
+      </table>
+      <p class="small muted"><span class="t-vi">Check 14 và con số "18/18 vẽ được" được xác minh bằng browser headless thật, không chỉ bằng regex.</span><span class="t-en">Check 14 and the "18/18 paint" figure were verified in a real headless browser, not just by regex.</span></p>
+
+      <h3 id="dr-cost"><span class="t-vi">Chi phí</span><span class="t-en">Cost</span></h3>
+      <p><span class="t-vi">8 task được dispatch riêng, theo <code>casa-escondida-cost-report.csv</code>:</span><span class="t-en">The 8 separately dispatched tasks, per <code>casa-escondida-cost-report.csv</code>:</span></p>
+      <div class="bar"><div class="lb mono">phase1_groupA</div><div class="tr"><div class="fi" style="width:100%"></div></div><div class="vv">$0.1659</div></div>
+      <div class="bar"><div class="lb mono">phase1_groupD</div><div class="tr"><div class="fi" style="width:82%"></div></div><div class="vv">$0.1363</div></div>
+      <div class="bar"><div class="lb mono">phase1_groupC</div><div class="tr"><div class="fi" style="width:80%"></div></div><div class="vv">$0.1322</div></div>
+      <div class="bar"><div class="lb mono">phase1_groupB</div><div class="tr"><div class="fi" style="width:62%"></div></div><div class="vv">$0.1021</div></div>
+      <div class="bar"><div class="lb mono">competitor_altamare</div><div class="tr"><div class="fi" style="width:19%"></div></div><div class="vv">$0.0308</div></div>
+      <div class="bar"><div class="lb mono">competitor_buceo</div><div class="tr"><div class="fi" style="width:16%"></div></div><div class="vv">$0.0266</div></div>
+      <div class="bar"><div class="lb mono">competitor_saltitude</div><div class="tr"><div class="fi" style="width:14%"></div></div><div class="vv">$0.0229</div></div>
+      <div class="bar"><div class="lb mono">competitor_eaglepoint</div><div class="tr"><div class="fi" style="width:10%"></div></div><div class="vv">$0.0165</div></div>
+      <p style="margin-top:14px"><span class="t-vi"><b>Tổng 8 dòng: $0.6333.</b> Nhưng con số đó <b>chưa phải</b> toàn bộ pipeline: 4 task chạy inline trong session orchestrator (0.5, 0.7, 2.5, 2.6) không có <code>session_id</code> nên không có dòng chi phí — checkpoint của chính lần chạy này ghi rõ như vậy.</span><span class="t-en"><b>Those 8 rows total $0.6333.</b> That is <b>not</b> the whole pipeline: 4 tasks ran inline in the orchestrator session (0.5, 0.7, 2.5, 2.6) with no <code>session_id</code>, so they have no cost row — the run's own checkpoint says exactly this.</span></p>
+      <div class="note"><span class="t-vi"><b>Đây chính là lỗi mà v1.1.0 sửa.</b> Từ v1.1.0 trở đi, task chạy inline ghi <code>shared_session: true</code>; dashboard gộp chúng thành một dòng nhãn <code>shared-session:</code>. Ước tính khi tính đủ, lần chạy này rơi vào khoảng <b>$1.1</b> — tức CSV cũ đã bỏ sót gần một nửa chi phí.</span><span class="t-en"><b>This is exactly the bug v1.1.0 fixed.</b> From v1.1.0 on, inline tasks record <code>shared_session: true</code>, and the dashboard merges them into one <code>shared-session:</code> row. Counting everything, this run lands around <b>$1.1</b> — the old CSV hid almost half the cost.</span></div>
+
+      <h3 id="dr-charts"><span class="t-vi">Số liệu, nhìn bằng biểu đồ</span><span class="t-en">The numbers, visualised</span></h3>
+      <p class="sec-sub"><span class="t-vi">Sáu biểu đồ, sáu kỹ thuật HTML/CSS/SVG khác nhau — tất cả đều vẽ bằng CSS và SVG nội tuyến, không thư viện, không CDN, nên file vẫn mở được offline.</span><span class="t-en">Six charts, six different HTML/CSS/SVG techniques — all drawn with inline CSS and SVG, no libraries and no CDN, so the file still opens offline.</span></p>
+      <div class="ch-grid">
+
+        <figure class="ch wide">
+          <div class="ch-head">
+            <span class="ch-title"><span class="t-vi">Sáu giai đoạn trên trục phase, và ba cổng chặn nằm ở đâu</span><span class="t-en">The six stages on the phase axis, and where the three gates sit</span></span>
+            <span class="ch-note">CSS grid + absolute</span>
+          </div>
+          <div class="ch-gantt" role="img" aria-label="Stage timeline from phase 0 to phase 4 with gates after 0.9, 2.5 and 4a">
+            <div class="ch-glab">
+              <span class="hd"></span>
+              <span><span class="t-vi">Nhận brief</span><span class="t-en">Intake</span></span>
+              <span><span class="t-vi">Xác minh &amp; quét</span><span class="t-en">Verify &amp; scan</span></span>
+              <span><span class="t-vi">Nghiên cứu đối thủ</span><span class="t-en">Competitors</span></span>
+              <span><span class="t-vi">Nghiên cứu fan-out</span><span class="t-en">Research fan-out</span></span>
+              <span><span class="t-vi">Viết &amp; soát nguồn</span><span class="t-en">Write &amp; audit</span></span>
+              <span><span class="t-vi">Ráp trang &amp; kiểm tra</span><span class="t-en">Assemble &amp; validate</span></span>
+            </div>
+            <div class="ch-gbody">
+              <div class="ch-gaxis">
+                <b style="left:0;transform:none">0</b>
+                <b style="left:23.81%;transform:translateX(-50%)">1</b>
+                <b style="left:47.62%;transform:translateX(-50%)">2</b>
+                <b style="left:71.43%;transform:translateX(-50%)">3</b>
+                <b style="left:95.24%;transform:translateX(-50%)">4</b>
+              </div>
+              <div class="ch-rows">
+                <div class="ch-gtrack"><i class="ch-gbar" style="left:0%;width:5.95%"></i></div>
+                <div class="ch-gtrack"><i class="ch-gbar" style="left:11.9%;width:4.76%"></i></div>
+                <div class="ch-gtrack"><i class="ch-gbar g" style="left:21.43%;width:2.38%"></i></div>
+                <div class="ch-gtrack"><i class="ch-gbar" style="left:23.81%;width:23.81%"></i></div>
+                <div class="ch-gtrack"><i class="ch-gbar g" style="left:47.62%;width:14.29%"></i></div>
+                <div class="ch-gtrack"><i class="ch-gbar g" style="left:71.43%;width:23.81%"></i></div>
+                <i class="ch-gline" style="left:23.81%"></i>
+                <i class="ch-gline" style="left:59.52%"></i>
+                <i class="ch-gline" style="left:95.24%"></i>
+              </div>
+              <div class="ch-gbadges">
+                <i style="left:23.81%"><span class="t-vi">Cổng 1</span><span class="t-en">Gate 1</span></i>
+                <i style="left:59.52%"><span class="t-vi">Cổng 2</span><span class="t-en">Gate 2</span></i>
+                <i style="left:95.24%"><span class="t-vi">Cổng 3</span><span class="t-en">Gate 3</span></i>
+              </div>
+            </div>
+          </div>
+          <figcaption><span class="t-vi">Trục hoành là <b>số phase</b>, không phải thời gian thực — phase 1 nặng nhất về khối lượng nhưng các phase lẻ rất nhanh. Thanh <b>đỏ</b> là giai đoạn kết thúc bằng một cổng chặn: chưa PASS thì pipeline dừng tại đó.</span><span class="t-en">The axis is the <b>phase number</b>, not wall-clock time — Phase 1 carries the most work while the decimal phases are quick. <b>Red</b> bars mark stages that end in a hard gate: the pipeline stops there unless it passes.</span></figcaption>
+        </figure>
+
+        <figure class="ch">
+          <div class="ch-head"><span class="ch-title"><span class="t-vi">Chi phí chia theo ai tiêu</span><span class="t-en">Where the money went</span></span><span class="ch-note">SVG donut</span></div>
+          <div class="ch-donutwrap">
+            <svg class="ch-donut" viewBox="0 0 42 42" role="img" aria-label="Cost share: 4 research groups 84.7%, 4 competitor workers 15.3%">
+              <circle class="d-bg" cx="21" cy="21" r="15.9155"></circle>
+              <circle cx="21" cy="21" r="15.9155" stroke="#e8734a" stroke-dasharray="26.2 73.8" stroke-dashoffset="25"></circle>
+              <circle cx="21" cy="21" r="15.9155" stroke="#c8853c" stroke-dasharray="21.52 78.48" stroke-dashoffset="-1.2"></circle>
+              <circle cx="21" cy="21" r="15.9155" stroke="#d9a24b" stroke-dasharray="20.87 79.13" stroke-dashoffset="-22.72"></circle>
+              <circle cx="21" cy="21" r="15.9155" stroke="#b08968" stroke-dasharray="16.12 83.88" stroke-dashoffset="-43.59"></circle>
+              <circle cx="21" cy="21" r="15.9155" stroke="#3f6fa8" stroke-dasharray="4.86 95.14" stroke-dashoffset="-59.71"></circle>
+              <circle cx="21" cy="21" r="15.9155" stroke="#5a8f6b" stroke-dasharray="4.2 95.8" stroke-dashoffset="-64.57"></circle>
+              <circle cx="21" cy="21" r="15.9155" stroke="#7a8ca6" stroke-dasharray="3.62 96.38" stroke-dashoffset="-68.77"></circle>
+              <circle cx="21" cy="21" r="15.9155" stroke="#a65e3f" stroke-dasharray="2.61 97.39" stroke-dashoffset="-72.39"></circle>
+            </svg>
+            <ul class="ch-legend">
+              <li><span class="sw" style="background:#e8734a"></span>phase1_groupA<span class="vv"><b>26.2%</b> &middot; $0.1659</span></li>
+              <li><span class="sw" style="background:#c8853c"></span>phase1_groupD<span class="vv"><b>21.5%</b> &middot; $0.1363</span></li>
+              <li><span class="sw" style="background:#d9a24b"></span>phase1_groupC<span class="vv"><b>20.9%</b> &middot; $0.1322</span></li>
+              <li><span class="sw" style="background:#b08968"></span>phase1_groupB<span class="vv"><b>16.1%</b> &middot; $0.1021</span></li>
+              <li><span class="sw" style="background:#3f6fa8"></span>competitor_altamare<span class="vv"><b>4.9%</b> &middot; $0.0308</span></li>
+              <li><span class="sw" style="background:#5a8f6b"></span>competitor_buceo<span class="vv"><b>4.2%</b> &middot; $0.0266</span></li>
+              <li><span class="sw" style="background:#7a8ca6"></span>competitor_saltitude<span class="vv"><b>3.6%</b> &middot; $0.0229</span></li>
+              <li><span class="sw" style="background:#a65e3f"></span>competitor_eaglepoint<span class="vv"><b>2.6%</b> &middot; $0.0165</span></li>
+            </ul>
+          </div>
+          <figcaption><span class="t-vi">Bốn nhóm nghiên cứu (Phase 1) ăn <b>84.7%</b> chi phí; bốn worker đối thủ chỉ <b>15.3%</b> — tức việc rải 4 đối thủ ra chạy song song gần như không đáng kể so với phần viết section.</span><span class="t-en">The four research groups (Phase 1) take <b>84.7%</b> of the spend; the four competitor workers only <b>15.3%</b> — fanning competitors out in parallel is nearly free next to writing the sections.</span></figcaption>
+        </figure>
+
+        <figure class="ch">
+          <div class="ch-head"><span class="ch-title"><span class="t-vi">Cổng 2 soát được bao nhiêu trích dẫn</span><span class="t-en">How much of gate 2's citations held up</span></span><span class="ch-note">conic-gradient</span></div>
+          <div class="ch-ringwrap">
+            <div class="ch-ring" role="img" aria-label="463 bound, 17 partial, 0 unbound out of 480 citations">
+              <div class="ch-ring-in"><b>0</b><span>unbound</span><i><span class="t-vi">trên 480 trích dẫn</span><span class="t-en">out of 480 citations</span></i></div>
+            </div>
+            <ul class="ch-kv">
+              <li><span class="sw" style="background:var(--ok)"></span><span class="t-vi">Bound — trích dẫn khớp trang nguồn</span><span class="t-en">Bound — excerpt matches its source page</span><span class="vv">463</span></li>
+              <li><span class="sw" style="background:var(--amber)"></span><span class="t-vi">Partial — khớp một phần, gắn nhãn <code>.assess</code></span><span class="t-en">Partial — partly matches, tagged <code>.assess</code></span><span class="vv">17</span></li>
+              <li><span class="sw" style="background:var(--bad)"></span><span class="t-vi">Unbound — không tìm thấy trên trang</span><span class="t-en">Unbound — not found on the page</span><span class="vv">0</span></li>
+              <li><span class="sw" style="background:var(--panel2);border:1px solid var(--line)"></span><span class="t-vi">Tổng đã soát</span><span class="t-en">Audited in total</span><span class="vv">480</span></li>
+            </ul>
+          </div>
+          <figcaption><span class="t-vi">Vòng tròn là 480 trích dẫn: <b>96.5%</b> bound, <b>3.5%</b> partial, <b>0</b> unbound. Mười bảy trích dẫn partial là con số đáng chú ý — cổng này không chỉ đếm, nó phân loại mức độ khớp.</span><span class="t-en">The ring is 480 citations: <b>96.5%</b> bound, <b>3.5%</b> partial, <b>0</b> unbound. The 17 partials are the interesting number — this gate doesn't just count, it grades how well each excerpt matches.</span></figcaption>
+        </figure>
+
+        <figure class="ch wide">
+          <div class="ch-head">
+            <span class="ch-title"><span class="t-vi">Sản phẩm chart của lần chạy: 18/18 vẽ được</span><span class="t-en">The run's chart output: 18/18 painted</span></span>
+            <span class="ch-note">CSS grid heatmap</span>
+          </div>
+          <div class="ch-heatwrap">
+            <div class="ch-heat" role="img" aria-label="18 chart canvases all painted, 4 diagrams">
+              <i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i><i style="--i:8"></i><i style="--i:9"></i><i style="--i:10"></i><i style="--i:11"></i><i style="--i:12"></i><i style="--i:13"></i><i style="--i:14"></i><i style="--i:15"></i><i style="--i:16"></i><i style="--i:17"></i>
+              <i class="dgm" style="--i:18"></i><i class="dgm" style="--i:19"></i><i class="dgm" style="--i:20"></i><i class="dgm" style="--i:21"></i>
+            </div>
+            <div class="ch-score"><div class="n">18/18</div><div class="l"><span class="t-vi">chart vẽ</span><span class="t-en">charts paint</span></div></div>
+          </div>
+          <figcaption><span class="t-vi">Mười tám ô xanh là 18 <code>&lt;canvas&gt;</code> mà check 14 xác nhận có Chart instance thật trong browser headless — đúng lỗi "18 chart trắng" mà v1.1.1 sửa. Bốn ô gạch chéo là 4 sơ đồ, không tính vào check 14.</span><span class="t-en">The 18 green cells are the <code>&lt;canvas&gt;</code> elements that check 14 confirmed carry a real Chart instance in a headless browser — exactly the "18 blank charts" defect v1.1.1 fixed. The four hatched cells are the 4 diagrams, which check 14 does not cover.</span></figcaption>
+        </figure>
+
+        <figure class="ch wide">
+          <div class="ch-head"><span class="ch-title"><span class="t-vi">Chi phí tích luỹ qua 8 task được dispatch</span><span class="t-en">Cumulative cost across the 8 dispatched tasks</span></span><span class="ch-note">inline SVG + draw-in</span></div>
+          <svg class="ch-area" viewBox="0 0 640 190" role="img" aria-label="Cumulative cost rising from 0.0266 dollars to 0.6333 dollars over eight tasks">
+            <defs>
+              <linearGradient id="chAreaFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#e8734a" stop-opacity=".40"></stop>
+                <stop offset="100%" stop-color="#e8734a" stop-opacity="0"></stop>
+              </linearGradient>
+            </defs>
+            <g class="gl">
+              <line x1="60" y1="31.2" x2="620" y2="31.2"></line>
+              <line x1="60" y1="75.8" x2="620" y2="75.8"></line>
+              <line x1="60" y1="120.4" x2="620" y2="120.4"></line>
+              <line x1="60" y1="165" x2="620" y2="165"></line>
+            </g>
+            <path class="area" d="M60,165 L60,159.1 L140,154 L220,147.1 L300,143.4 L380,106.4 L460,83.6 L540,54.1 L620,23.7 L620,165 Z" fill="url(#chAreaFill)"></path>
+            <polyline class="line" points="60,159.1 140,154 220,147.1 300,143.4 380,106.4 460,83.6 540,54.1 620,23.7"></polyline>
+            <g class="dots">
+              <circle cx="60" cy="159.1" r="3.2"></circle>
+              <circle cx="140" cy="154" r="3.2"></circle>
+              <circle cx="220" cy="147.1" r="3.2"></circle>
+              <circle cx="300" cy="143.4" r="3.2"></circle>
+              <circle cx="380" cy="106.4" r="3.2"></circle>
+              <circle cx="460" cy="83.6" r="3.2"></circle>
+              <circle cx="540" cy="54.1" r="3.2"></circle>
+              <circle cx="620" cy="23.7" r="3.2"></circle>
+            </g>
+            <text x="54" y="33.5" text-anchor="end">$0.60</text>
+            <text x="54" y="78.1" text-anchor="end">$0.40</text>
+            <text x="54" y="122.7" text-anchor="end">$0.20</text>
+            <text x="54" y="167.3" text-anchor="end">$0.00</text>
+            <text x="620" y="16" text-anchor="end" class="end">$0.6333</text>
+            <text x="60" y="181" text-anchor="middle">buceo</text>
+            <text x="140" y="181" text-anchor="middle">saltitude</text>
+            <text x="220" y="181" text-anchor="middle">altamare</text>
+            <text x="300" y="181" text-anchor="middle">eaglepoint</text>
+            <text x="380" y="181" text-anchor="middle">groupA</text>
+            <text x="460" y="181" text-anchor="middle">groupB</text>
+            <text x="540" y="181" text-anchor="middle">groupC</text>
+            <text x="620" y="181" text-anchor="middle">groupD</text>
+          </svg>
+          <figcaption><span class="t-vi">Thứ tự task theo checkpoint. Bốn worker đối thủ (bên trái) cộng lại chỉ <b>$0.0968</b>, rồi bốn nhóm nghiên cứu đẩy đường cong vọt lên — bước nhảy lớn nhất là groupA, <b>+$0.1659</b> trong một task.</span><span class="t-en">Tasks in checkpoint order. The four competitor workers (left) total just <b>$0.0968</b>, then the four research groups send the curve up — the biggest single jump is groupA at <b>+$0.1659</b>.</span></figcaption>
+        </figure>
+
+        <figure class="ch wide">
+          <div class="ch-head"><span class="ch-title"><span class="t-vi">Báo cáo chi phí phủ được bao nhiêu</span><span class="t-en">How much of the spend the cost report covers</span></span><span class="ch-note">flex segments</span></div>
+          <div class="ch-seg" role="img" aria-label="0.63 dollars recorded on the CSV, about 0.47 dollars unrecorded, of roughly 1.10 dollars total">
+            <span class="got" style="flex:58"><b>$0.6333</b><em><span class="t-vi">8 dòng CSV ghi được &middot; 58%</span><span class="t-en">8 CSV rows recorded &middot; 58%</span></em></span>
+            <span class="miss" style="flex:42"><b>~$0.47</b><em><span class="t-vi">4 task inline, không có dòng &middot; 42%</span><span class="t-en">4 inline tasks, no row &middot; 42%</span></em></span>
+          </div>
+          <figcaption><span class="t-vi">Tổng thật của lần chạy rơi vào khoảng <b>$1.1</b>, nhưng CSV chỉ ghi $0.6333 — gần một nửa chi phí vô hình. Đây là lỗi mà <code>shared_session: true</code> (v1.1.0) sinh ra để bịt, và cũng là lý do mọi biểu đồ chi phí ở đây đều ghi rõ "8 dòng đã ghi" chứ không nói "tổng chi phí".</span><span class="t-en">The run really cost around <b>$1.1</b>, but the CSV only records $0.6333 — nearly half the spend was invisible. That is the gap <code>shared_session: true</code> (v1.1.0) was built to close, and the reason every cost chart here says "8 rows recorded" rather than "total spend".</span></figcaption>
+        </figure>
+
+      </div>
+
+      <details class="ch-raw">
+        <summary><span class="t-vi">Số liệu gốc phía sau sáu biểu đồ</span><span class="t-en">The raw numbers behind the six charts</span></summary>
+        <table>
+          <thead><tr><th><span class="t-vi">Hạng mục</span><span class="t-en">Item</span></th><th><span class="t-vi">Số liệu</span><span class="t-en">Value</span></th><th><span class="t-vi">Nguồn</span><span class="t-en">Source</span></th></tr></thead>
+          <tbody>
+            <tr><td>phase1_groupA</td><td class="mono">$0.1659</td><td class="mono">casa-escondida-cost-report.csv</td></tr>
+            <tr><td>phase1_groupB</td><td class="mono">$0.1021</td><td class="mono">casa-escondida-cost-report.csv</td></tr>
+            <tr><td>phase1_groupC</td><td class="mono">$0.1322</td><td class="mono">casa-escondida-cost-report.csv</td></tr>
+            <tr><td>phase1_groupD</td><td class="mono">$0.1363</td><td class="mono">casa-escondida-cost-report.csv</td></tr>
+            <tr><td>competitor_buceo</td><td class="mono">$0.0266</td><td class="mono">casa-escondida-cost-report.csv</td></tr>
+            <tr><td>competitor_saltitude</td><td class="mono">$0.0229</td><td class="mono">casa-escondida-cost-report.csv</td></tr>
+            <tr><td>competitor_altamare</td><td class="mono">$0.0308</td><td class="mono">casa-escondida-cost-report.csv</td></tr>
+            <tr><td>competitor_eaglepoint</td><td class="mono">$0.0165</td><td class="mono">casa-escondida-cost-report.csv</td></tr>
+            <tr><td><span class="t-vi">Tổng 8 dòng đã ghi</span><span class="t-en">Total of the 8 recorded rows</span></td><td class="mono">$0.6333</td><td class="mono">casa-escondida-cost-report.csv</td></tr>
+            <tr><td><span class="t-vi">Ước tính khi tính đủ cả 4 task inline</span><span class="t-en">Estimated including the 4 inline tasks</span></td><td class="mono">~$1.1</td><td class="mono">casa-escondida-checkpoint.json</td></tr>
+            <tr><td><span class="t-vi">Trích dẫn bound</span><span class="t-en">Citations bound</span></td><td class="mono">463 / 480</td><td class="mono">audited-findings.json</td></tr>
+            <tr><td><span class="t-vi">Trích dẫn partial</span><span class="t-en">Citations partial</span></td><td class="mono">17 / 480</td><td class="mono">audited-findings.json</td></tr>
+            <tr><td><span class="t-vi">Trích dẫn unbound</span><span class="t-en">Citations unbound</span></td><td class="mono">0 / 480</td><td class="mono">audited-findings.json</td></tr>
+            <tr><td><span class="t-vi">Chart vẽ được</span><span class="t-en">Charts that paint</span></td><td class="mono">18 / 18</td><td class="mono">validate-proposal.py check 14</td></tr>
+            <tr><td><span class="t-vi">Sơ đồ (không tính vào check 14)</span><span class="t-en">Diagrams (not covered by check 14)</span></td><td class="mono">4</td><td class="mono">casa-escondida-proposal.html</td></tr>
+          </tbody>
+        </table>
+      </details>      <h3 id="dr-incidents"><span class="t-vi">Sự cố &amp; cách sửa</span><span class="t-en">Incidents &amp; fixes</span></h3>
+      <table>
+        <thead><tr><th><span class="t-vi">Sự cố</span><span class="t-en">Incident</span></th><th><span class="t-vi">Nguyên nhân gốc</span><span class="t-en">Root cause</span></th><th><span class="t-vi">Xử lý</span><span class="t-en">Fix</span></th></tr></thead>
+        <tbody>
+          <tr><td><span class="t-vi"><b>Toàn bộ 18 chart trắng.</b> Đủ 18 thẻ <code>&lt;canvas&gt;</code> trong DOM nhưng không chart nào vẽ.</span><span class="t-en"><b>All 18 charts blank.</b> All 18 <code>&lt;canvas&gt;</code> elements present in the DOM, none of them painted.</span></td><td><span class="t-vi">Template định nghĩa <code>regChart</code>/<code>mkChart</code> trong script nằm <b>sau</b> mọi section, trong khi mỗi section gọi <code>regChart(...)</code> ngay tại chỗ — 18 lần <code>ReferenceError</code>. Thêm một lỗi cú pháp JS (<code>+</code> thay vì <code>,</code>) làm cả một khối script không chạy.</span><span class="t-en">The template defined <code>regChart</code>/<code>mkChart</code> in a script placed <b>after</b> every section, while each section called <code>regChart(...)</code> inline — 18 <code>ReferenceError</code>s. A second JS syntax error (<code>+</code> instead of <code>,</code>) stopped another script block from running at all.</span></td><td><span class="pill ok">v1.1.1</span> <span class="t-vi">Dời khung chart vào <code>&lt;head&gt;</code>, sửa cú pháp, thêm check 14. File giao được rebuild: 18/18 chart vẽ, 0 blank.</span><span class="t-en">Moved the chart framework into <code>&lt;head&gt;</code>, fixed the syntax, added check 14. The delivered file was rebuilt: 18/18 paint, 0 blank.</span></td></tr>
+          <tr><td><span class="t-vi"><b>Sai số học ở bảng báo giá.</b> Các dòng cộng lại 196 person-day / PHP 1,666,000 nhưng dòng TOTAL và mọi số suy ra đều ghi 194 / 1,649,000.</span><span class="t-en"><b>Quotation arithmetic wrong.</b> The line items summed to 196 person-days / PHP 1,666,000 but the TOTAL row and every derived figure said 194 / 1,649,000.</span></td><td><span class="t-vi">Lỗi tính toán khi sinh section, không cổng tự động nào bắt được vì đó là số học, không phải cấu trúc.</span><span class="t-en">A computation error while generating the section; no automated gate caught it because it is arithmetic, not structure.</span></td><td><span class="pill info">judgment review</span> <span class="t-vi">Review phán đoán bắt được; sửa cả HTML lẫn <code>chart-manifest.json</code> (tranche 30/30/30/10, tỉ lệ Odoo, dữ liệu <code>cRoi</code>/<code>cRevMix</code> đều được tính lại).</span><span class="t-en">The judgment review caught it; both the HTML and <code>chart-manifest.json</code> were corrected (tranches, the Odoo share, and the <code>cRoi</code>/<code>cRevMix</code> data were all recomputed).</span></td></tr>
+          <tr><td><span class="t-vi"><b>Thiếu registration cho chart.</b> Phase 2.6 phát hiện Group A có canvas nhưng <b>không</b> có lời gọi <code>regChart()</code>.</span><span class="t-en"><b>Missing chart registrations.</b> Phase 2.6 found Group A had canvases but <b>no</b> <code>regChart()</code> calls.</span></td><td><span class="t-vi">Việc sinh chart bị làm muộn và thủ công, tách khỏi lúc viết section — đây cũng là nguồn gốc của sự cố chart trắng ở trên.</span><span class="t-en">Chart generation happened late and by hand, detached from writing the sections — also the origin of the blank-chart incident above.</span></td><td><span class="pill warn"><span class="t-vi">đã vá trong run</span><span class="t-en">patched in-run</span></span> <span class="t-vi">12 registration còn thiếu được sinh và chèn vào đúng section.</span><span class="t-en">The 12 missing registrations were generated and inserted into the owning sections.</span></td></tr>
+          <tr><td><span class="t-vi"><b>Báo cáo chi phí thiếu gần một nửa.</b></span><span class="t-en"><b>Cost report missed nearly half the spend.</b></span></td><td><span class="t-vi">Task chạy inline không có <code>session_id</code> nên không được ghi dòng nào.</span><span class="t-en">Inline tasks had no <code>session_id</code>, so they produced no row at all.</span></td><td><span class="pill ok">v1.1.0</span> <span class="t-vi">Ghi <code>shared_session: true</code> và gộp thành một dòng trong dashboard.</span><span class="t-en">Records <code>shared_session: true</code> and merges them into one dashboard row.</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="dr-verdict"><span class="t-vi">Kết luận</span><span class="t-en">Verdict</span></h3>
+      <p><span class="t-vi"><b>Chứng minh được:</b> pipeline chạy hết 12 phase trên một khách thật; hai cổng nguồn chặn được lỗi trước khi vào bài (0 unbound trên 480 trích dẫn); bản giao là một file HTML tự chứa, song ngữ, 18 chart vẽ được, không CDN; chi phí đo được theo từng task.</span><span class="t-en"><b>What it proves:</b> the pipeline completes all 12 phases on a real client; the two sourcing gates catch defects before they reach the document (0 unbound across 480 citations); the deliverable is one self-contained bilingual HTML file with 18 working charts and no CDN; and cost is measurable per task.</span></p>
+      <p><span class="t-vi"><b>Chưa chứng minh được:</b> lỗi chart trắng lọt qua <b>cả</b> một cổng chặn và tới tay người dùng — nghĩa là cổng thứ ba kiểm tra cấu trúc nhưng chưa kiểm tra <em>hành vi render</em>; đúng lỗ hổng mà check 14 sinh ra để bịt. Và vì gói chưa có test/CI, một sửa đổi template trong tương lai vẫn có thể gây lại đúng lỗi đó.</span><span class="t-en"><b>What it does not prove:</b> the blank-chart defect passed <b>through</b> a hard gate and reached the user — meaning the third gate checked structure but not <em>render behaviour</em>; exactly the hole check 14 was written to close. And because the package has no tests or CI, a future template edit can reintroduce the same defect.</span></p>
+      <p class="small muted"><span class="t-vi">Đây là lý do việc ưu tiên tiếp theo là bộ test + CI, chứ không phải thêm tính năng.</span><span class="t-en">This is why the next priority is a test suite plus CI, not more features.</span></p>
+
+    </section>
+    <section id="obstacles">
+      <template class="railsrc">
+        <a href="#ob-social"><span class="t-vi">Trở ngại 1 — review mạng xã hội</span><span class="t-en">Obstacle 1 — social reviews</span></a>
+        <a href="#ob-ladder"><span class="t-vi">Lời giải</span><span class="t-en">The solution</span></a>
+        <a href="#ob-proof"><span class="t-vi">Bằng chứng</span><span class="t-en">Proof</span></a>
+        <a href="#ob-rest"><span class="t-vi">Các trở ngại còn lại</span><span class="t-en">The remaining obstacles</span></a>
+        <a href="#ob-next"><span class="t-vi">Việc cần làm tiếp</span><span class="t-en">What to do next</span></a>
+      </template>
+      <div class="eyebrow"><span class="t-vi">Vấn đề mở</span><span class="t-en">Open problems</span></div>
+      <h2><span class="t-vi">Trở ngại hiện tại</span><span class="t-en">Current obstacles</span></h2>
+      <p class="sec-sub"><span class="t-vi">Đây là danh sách những thứ <b>đang chặn</b>, không phải roadmap. Mỗi mục đều có bằng chứng đo được và một lời giải đã chạy thứ thật — không phải đề xuất trên giấy.</span><span class="t-en">These are the things that <b>block us today</b>, not a roadmap. Each one carries measured evidence and a solution that was actually test-run — not a paper proposal.</span></p>
+
+      <h3 id="ob-social"><span class="t-vi">Trở ngại 1 — không đọc được review trên mạng xã hội</span><span class="t-en">Obstacle 1 — reviews on social platforms can't be read</span></h3>
+      <p><span class="t-vi">Đây là vấn đề khó nhất của cả skill, và nó <b>không nằm ở code</b> — nó nằm ở chỗ các nền tảng không cho đọc. Review là loại dữ liệu giá trị nhất (tiếng nói thật của khách), nhưng cũng chính là loại bị khoá chặt nhất. Đã đo trực tiếp trên máy này:</span><span class="t-en">This is the hardest problem in the whole skill, and it is <b>not a code problem</b> — it is that the platforms refuse to be read. Reviews are the most valuable data we could gather (real customer voice) and also the most tightly locked. Measured directly on this machine:</span></p>
+      <table>
+        <thead><tr><th><span class="t-vi">Nền tảng</span><span class="t-en">Platform</span></th><th><span class="t-vi">Cách thử</span><span class="t-en">How we tried</span></th><th><span class="t-vi">Kết quả</span><span class="t-en">Result</span></th><th><span class="t-vi">Đọc được</span><span class="t-en">Read</span></th></tr></thead>
+        <tbody>
+          <tr><td>Facebook <span class="muted small">(page)</span></td><td class="mono">Jina Reader</td><td><span class="t-vi">trang đăng nhập, 3.9&nbsp;KB</span><span class="t-en">login page, 3.9&nbsp;KB</span></td><td><span class="pill bad">no</span></td></tr>
+          <tr><td>Facebook <span class="muted small">(mbasic)</span></td><td class="mono">Jina Reader</td><td><span class="t-vi">vẫn là trang đăng nhập</span><span class="t-en">still the login page</span></td><td><span class="pill bad">no</span></td></tr>
+          <tr><td>Facebook</td><td class="mono"><span class="t-vi">fetch thẳng</span><span class="t-en">direct fetch</span></td><td class="mono">HTTP 400</td><td><span class="pill bad">no</span></td></tr>
+          <tr><td>Instagram</td><td class="mono">Jina Reader</td><td class="mono">HTTP 403</td><td><span class="pill bad">no</span></td></tr>
+          <tr><td>TripAdvisor</td><td class="mono">Jina Reader</td><td>CAPTCHA</td><td><span class="pill bad">no</span></td></tr>
+          <tr><td>TikTok</td><td class="mono">oEmbed</td><td class="mono">HTTP 429</td><td><span class="pill bad">no</span></td></tr>
+          <tr><td>Reddit</td><td class="mono">.json</td><td class="mono">HTTP 403</td><td><span class="pill bad">no</span></td></tr>
+          <tr><td>g2.com</td><td class="mono">Jina Reader</td><td><span class="t-vi"><b>HTTP 200 nhưng body rỗng</b> + cảnh báo CAPTCHA (DataDome sau Cloudflare)</span><span class="t-en"><b>HTTP 200 with an empty body</b> + CAPTCHA warning (DataDome behind Cloudflare)</span></td><td><span class="pill warn"><span class="t-vi">âm thầm</span><span class="t-en">silently</span></span></td></tr>
+          <tr><td>Meta Ad Library</td><td class="mono">direct</td><td class="mono">HTTP 200</td><td><span class="pill ok">yes</span></td></tr>
+          <tr><td>Google Maps <span class="muted small">(place)</span></td><td class="mono">Jina Reader</td><td><span class="t-vi">HTTP 200 nhưng chỉ có tile bản đồ &mdash; <b>0 review</b></span><span class="t-en">HTTP 200 but only map tiles &mdash; <b>0 reviews</b></span></td><td><span class="pill warn">no rev.</span></td></tr>
+          <tr><td><b>Brave Search</b></td><td class="mono">HTML</td><td><span class="t-vi">HTTP 200 &mdash; <b>rating, số review, xếp hạng, trích đoạn nguyên văn</b></span><span class="t-en">HTTP 200 &mdash; <b>rating, review count, ranking, verbatim excerpts</b></span></td><td><span class="pill ok">yes</span></td></tr>
+          <tr><td>Bing Search</td><td class="mono">HTML</td><td><span class="t-vi">HTTP 200 nhưng gần như không có kết quả hữu ích</span><span class="t-en">HTTP 200 but almost no useful results</span></td><td><span class="pill bad">no</span></td></tr>
+          <tr><td>DuckDuckGo <span class="muted small">(html)</span></td><td class="mono">HTML</td><td><span class="t-vi">HTTP 202 &mdash; trang chống bot</span><span class="t-en">HTTP 202 &mdash; bot-detection page</span></td><td><span class="pill bad">no</span></td></tr>
+          <tr><td>Google Search</td><td class="mono"><span class="t-vi">qua Jina</span><span class="t-en">via Jina</span></td><td class="mono">&ldquo;Just a moment&hellip;&rdquo; Cloudflare</td><td><span class="pill bad">no</span></td></tr>
+          <tr><td>Wayback Machine</td><td class="mono">availability API</td><td><span class="t-vi">API báo <b>có</b> snapshot; tải nội dung trả <code>429</code></span><span class="t-en">API reports a snapshot <b>exists</b>; fetching content returns <code>429</code></span></td><td><span class="pill warn"><span class="t-vi">chập chờn</span><span class="t-en">flaky</span></span></td></tr>
+          <tr><td>Wayback <span class="muted small">(<span class="t-vi">qua Jina</span><span class="t-en">via Jina</span>)</span></td><td class="mono">Jina Reader</td><td><span class="t-vi">HTTP 403 &mdash; Jina chặn domain tới 2035</span><span class="t-en">HTTP 403 &mdash; Jina blocks the domain until 2035</span></td><td><span class="pill bad">no</span></td></tr>
+        </tbody>
+      </table>
+      <p class="small muted"><span class="t-vi">g2.com thử thêm bằng Chrome headless thật: vẫn thất bại (2,595 bytes). <code>cf-browser-rendering</code> của Cloudflare thì cần API key trả tiền.</span><span class="t-en">g2.com was also tried with a real headless Chrome: it still failed (2,595 bytes). Cloudflare's own <code>cf-browser-rendering</code> needs a paid API key.</span></p>
+
+      <div class="ob-lead">
+        <div class="card hot">
+          <b><span class="t-vi">Lỗi ồn ào — biết ngay</span><span class="t-en">Loud failure — you know at once</span></b>
+          <span><span class="t-vi">403, 400, 429, CAPTCHA. Nền tảng nói thẳng "không cho đọc". Xử lý được: đổi nguồn, hoặc báo thiếu dữ liệu.</span><span class="t-en">403, 400, 429, CAPTCHA. The platform says outright it will not be read. Manageable: switch source, or declare the gap.</span></span>
+        </div>
+        <div class="card cold">
+          <b><span class="t-vi">Lỗi im lặng — nguy hiểm hơn nhiều</span><span class="t-en">Silent failure — far more dangerous</span></b>
+          <span><span class="t-vi">HTTP 200 kèm body rỗng. Nhìn như thành công, thực chất là trang chặn. Nếu không kiểm, pipeline sẽ coi "không có dữ liệu" là "dữ liệu bằng 0".</span><span class="t-en">HTTP 200 with an empty body. It looks like success but it is a block page. Unchecked, the pipeline reads "no data" as "the value is zero".</span></span>
+        </div>
+      </div>
+
+      <h4><span class="t-vi">Vì sao pipeline hiện tại làm nó tệ hơn</span><span class="t-en">Why the current pipeline makes it worse</span></h4>
+      <p><span class="t-vi">Phase 0.8 (<code>web-osint-scanner</code>) đẩy <b>mọi</b> URL tìm được qua Jina Reader và lưu text vào <code>captures/&lt;sha1&gt;.md</code>; <code>captures/manifest.json</code> chỉ có hai trường: <code>file</code> và <code>fetched_at</code>. <b>Không có khái niệm "bị chặn".</b> Nghĩa là một trang đăng nhập được cache y hệt một trang nội dung thật, rồi cả 4 nhóm nghiên cứu đọc lại nó như dữ liệu đã kiểm chứng. Cộng với việc một chỉ số không đọc được dễ bị ghi thành <code>0</code>, ta có thể giao cho khách một con số <b>sai</b> thay vì một khoảng trống <b>trung thực</b>.</span><span class="t-en">Phase 0.8 (<code>web-osint-scanner</code>) pushes <b>every</b> discovered URL through Jina Reader and stores the text in <code>captures/&lt;sha1&gt;.md</code>; <code>captures/manifest.json</code> carries just two fields: <code>file</code> and <code>fetched_at</code>. <b>There is no notion of "blocked".</b> So a login page is cached exactly like a real content page, and all four research groups then read it as if it were verified data. Combined with the ease of writing <code>0</code> for a metric that could not be read, we can hand a client a <b>wrong number</b> instead of an <b>honest gap</b>.</span></p>
+      <div class="note"><span class="t-vi"><b>Luật đã chốt:</b> không bao giờ ghi <code>0</code> cho một chỉ số không đọc được. Phải là <code>null</code> kèm lý do. Một chỉ số thiếu thì sửa được; một chỉ số sai thì phá cả bản đề xuất.</span><span class="t-en"><b>Rule already agreed:</b> never write <code>0</code> for a metric that could not be read. It must be <code>null</code> with a reason. A missing number can be fixed; a wrong number destroys the whole proposal.</span></div>
+
+      <h3 id="ob-ladder"><span class="t-vi">Lời giải — bốn lớp, đã kiểm chứng bằng thử nghiệm thật</span><span class="t-en">The solution — four layers, verified by real tests</span></h3>
+      <p class="sec-sub"><span class="t-vi">Không phải đề xuất trên giấy: mỗi lớp dưới đây đều đã được chạy thử từ máy này, kèm kết quả đo được và cả chỗ nó hỏng.</span><span class="t-en">Not a paper proposal: every layer below was actually run from this machine, with measured results and the places it still breaks.</span></p>
+      <ol class="steps">
+        <li class="lay ok">
+          <span class="n">1</span>
+          <div>
+            <div class="hdr"><b><span class="t-vi">Thu hoạch từ chỉ mục tìm kiếm — chạy được ngay, không cần quyền gì</span><span class="t-en">Harvest from a search index — works today, needs no permission</span></b><span class="pill ok"><span class="t-vi">đã chạy được</span><span class="t-en">verified working</span></span></div>
+            <p><span class="t-vi">Brave Search trả HTTP 200 và cho ngay thứ mình cần: <b>điểm đánh giá, số lượng review, xếp hạng, và trích đoạn nguyên văn của review</b>. Nó cũng là cách tìm ra URL gốc — trang TripAdvisor, page Facebook của khách — mà không phải mò. Nguyên tắc: <b>không mở trang bị chặn</b>, chỉ đọc phần mà chỉ mục công khai đã lưu sẵn.</span><span class="t-en">Brave Search returns HTTP 200 and hands over exactly what we need: <b>the rating, the review count, the ranking, and verbatim review excerpts</b>. It is also how we find the canonical URLs — the TripAdvisor page, the client's Facebook page — without guessing. The principle: <b>never open the blocked page</b>, only read what the public index already stored.</span></p>
+            <p><span class="t-vi"><b>Chỗ hỏng đo được:</b> Brave bắt đầu trả <code>429</code> sau 2–4 truy vấn liên tiếp. Nên thiết kế phải có giãn nhịp + cache, và khi chạy thật thì dùng Brave Search API (có key, có free tier) thay vì đọc HTML.</span><span class="t-en"><b>Measured failure:</b> Brave starts returning <code>429</code> after 2–4 back-to-back queries. So the design needs pacing plus a cache, and in production it should use the Brave Search API (keyed, with a free tier) rather than scraping HTML.</span></p>
+          </div>
+        </li>
+        <li class="lay part">
+          <span class="n">2</span>
+          <div>
+            <div class="hdr"><b><span class="t-vi">API chính thức bằng token của chính khách hàng — cửa duy nhất để có review đầy đủ và mới</span><span class="t-en">Official APIs with the client's own token — the only door to full, current reviews</span></b><span class="pill warn"><span class="t-vi">cần khách cấp quyền</span><span class="t-en">needs client consent</span></span></div>
+            <p><span class="t-vi">Chỉ mục tìm kiếm cho trích đoạn; chỉ API mới cho <b>toàn văn, đủ số lượng, và mới nhất</b>. Meta Graph API cho ratings và feed + comment của page; Instagram Graph API cho comment; Reddit OAuth (miễn phí, chỉ cần đăng ký app); Google Business Profile API cho review Google. Đã kiểm chứng: gọi Graph API không token trả <code>400 OAuthException</code> — xác nhận đây là cửa cần quyền, không phải cửa hỏng.</span><span class="t-en">A search index gives excerpts; only APIs give <b>full text, complete counts, and freshness</b>. Meta Graph API for page ratings and feed + comments; Instagram Graph API for comments; Reddit OAuth (free, just register an app); Google Business Profile API for Google reviews. Verified: calling the Graph API with no token returns <code>400 OAuthException</code> — confirming this is a door that needs permission, not a broken door.</span></p>
+            <p><span class="t-vi"><b>Việc phải làm:</b> biến "xin token hoặc bản export" thành một bước chuẩn ở Phase 0, kèm mẫu câu hỏi sẵn. Đây là thay đổi quy trình, không phải thay đổi code.</span><span class="t-en"><b>What to do:</b> make "ask for a token or an export" a standard Phase 0 step, with a ready-made request template. That is a process change, not a code change.</span></p>
+          </div>
+        </li>
+        <li class="lay part">
+          <span class="n">3</span>
+          <div>
+            <div class="hdr"><b><span class="t-vi">Kho lưu trữ công khai — dùng được, nhưng không đáng tin để làm đường chính</span><span class="t-en">Public archives — usable, but not dependable as the main road</span></b><span class="pill warn"><span class="t-vi">chập chờn</span><span class="t-en">flaky</span></span></div>
+            <p><span class="t-vi">Wayback <b>có</b> snapshot thật của trang TripAdvisor của khách (bản 2019) — API kiểm tra tồn tại chạy tốt. Nhưng tải nội dung thì hỏng: IP này bị <code>429</code> sau vài chục request, và Jina chặn hẳn <code>web.archive.org</code> (báo tới 2035, lý do "nghi ngờ DDoS").</span><span class="t-en">Wayback <b>does</b> hold a real snapshot of the client's TripAdvisor page (a 2019 capture) — the availability API works fine. But fetching content breaks: this IP gets <code>429</code> after a few dozen requests, and Jina blocks <code>web.archive.org</code> outright (until 2035, reason: "suspected DDoS").</span></p>
+            <p><span class="t-vi">Kết luận: giữ làm nguồn <b>bổ sung</b>, luôn ghi ngày chụp, và không bao giờ để nó là đường duy nhất.</span><span class="t-en">Conclusion: keep it as a <b>supplementary</b> source, always record the capture date, and never let it be the only road.</span></p>
+          </div>
+        </li>
+        <li class="lay no">
+          <span class="n">4</span>
+          <div>
+            <div class="hdr"><b><span class="t-vi">Phát hiện chặn + khai báo khoảng trống</span><span class="t-en">Block detection + declaring the gap</span></b><span class="pill bad"><span class="t-vi">chưa làm</span><span class="t-en">not built yet</span></span></div>
+            <p><span class="t-vi">Như đã thiết kế: phân loại <code>login_wall</code> / <code>cf_challenge</code> / <code>datadome</code> / <code>rate_limit</code>, ghi <code>blocked_reason</code> vào manifest, không bao giờ ghi <code>0</code>. <b>Bổ sung sau khi đo:</b> <code>429</code> và <code>403</code> phải được ghi là <code>rate_limit</code>, không phải "không có dữ liệu" — vì hôm nay chính Brave, archive.org và Jina đều trả 429/403 khi bị gọi nhanh. Đây là lớp <b>bắt buộc</b>: không có nó, ba lớp trên có thể âm thầm biến "bị chặn" thành "bằng 0".</span><span class="t-en">As designed: classify <code>login_wall</code> / <code>cf_challenge</code> / <code>datadome</code> / <code>rate_limit</code>, write <code>blocked_reason</code> into the manifest, never write <code>0</code>. <b>Added after measuring:</b> <code>429</code> and <code>403</code> must be recorded as <code>rate_limit</code>, not "no data" — because today Brave, archive.org and Jina all returned 429/403 when called quickly. This layer is <b>mandatory</b>: without it, the three layers above can silently turn "blocked" into "zero".</span></p>
+          </div>
+        </li>
+      </ol>
+
+      <h3 id="ob-proof"><span class="t-vi">Bằng chứng — chỉ riêng lớp 1 đã lấy được gì</span><span class="t-en">Proof — what layer 1 alone already produced</span></h3>
+      <p><span class="t-vi">Chạy cho đúng khách trong demo run, <b>không mở một trang bị chặn nào</b>, chỉ đọc chỉ mục tìm kiếm công khai:</span><span class="t-en">Run for the exact client from the demo run, <b>without opening a single blocked page</b>, reading only the public search index:</span></p>
+      <div class="stats">
+        <div class="stat"><div class="v">4.5&#9733;</div><div class="k"><span class="t-vi">điểm TripAdvisor đọc từ snippet</span><span class="t-en">TripAdvisor rating read from a snippet</span></div></div>
+        <div class="stat"><div class="v">82</div><div class="k"><span class="t-vi">review TripAdvisor</span><span class="t-en">TripAdvisor reviews</span></div></div>
+        <div class="stat"><div class="v">#35<span class="muted small">/1,417</span></div><div class="k"><span class="t-vi">xếp hạng specialty lodging Batangas/Mabini</span><span class="t-en">rank among Batangas/Mabini specialty lodging</span></div></div>
+        <div class="stat"><div class="v">0</div><div class="k"><span class="t-vi">trang bị chặn phải mở</span><span class="t-en">blocked pages opened</span></div></div>
+      </div>
+      <p class="small muted"><span class="t-vi">Ngoài ra còn tìm ra được: page Facebook chính thức của khách (<code>facebook.com/CasaEscondidaAnilao</code>), URL trang TripAdvisor và URL từng review riêng, và entity Google hotels của khách. Đây đều là <b>URL gốc</b> để lớp 2 xin quyền đọc.</span><span class="t-en">It also surfaced: the client's official Facebook page (<code>facebook.com/CasaEscondidaAnilao</code>), the TripAdvisor page URL and individual review URLs, and the client's Google hotels entity. These are the <b>canonical URLs</b> layer 2 asks permission to read.</span></p>
+
+      <h4><span class="t-vi">Trích đoạn review lấy được, nguyên văn</span><span class="t-en">Review excerpts recovered, verbatim</span></h4>
+      <ul class="quotes">
+        <li>&ldquo;Spacious Suites, Safe Diving, Dive Shop Hot Showers! We had a great time in Casa Escondida on our &hellip;&rdquo;<em>tripadvisor.com &middot; snippet</em></li>
+        <li>&ldquo;wont go wrong with choosing Casa Escondida, they have a pool for non-divers as well and an excellent lounge to watch the &hellip;&rdquo;<em>tripadvisor.com &middot; snippet</em></li>
+        <li>&ldquo;Though I have heard of this resort which comes highly recommended, I only got a chance to stay in Casa Escondida last month.&rdquo;<em>tripadvisor.com &middot; snippet</em></li>
+        <li>&ldquo;Can&rsquo;t wait to be back! I travelled and stayed in Casa Escondida for my Open Water Course.&rdquo;<em>tripadvisor.com &middot; snippet</em></li>
+        <li>&ldquo;Shirley P, 6 months ago &middot; Casa Escondida offered a picturesque setting and a truly enjoyable experience&rdquo;<em>google hotels entity &middot; snippet</em></li>
+        <li class="neg">&ldquo;There are many resorts in Anilao that charge much less and show far better hospitality.&rdquo;<em>tripadvisor.com &middot; <span class="t-vi">review tiêu cực, lấy được nhờ snippet</span><span class="t-en">negative review, recovered via snippet</span></em></li>
+      </ul>
+      <p><span class="t-vi">Điểm đáng chú ý: cả review <b>khen</b> lẫn review <b>chê</b> đều lấy được, kèm cả tên người đánh giá và mốc thời gian. Với một đề xuất bán hàng, đó chính là phần "tiếng nói khách hàng" mà trước đây pipeline phải bỏ trống.</span><span class="t-en">Worth noting: both <b>positive</b> and <b>negative</b> reviews came through, some with reviewer names and timestamps. For a sales proposal that is exactly the "voice of the customer" material the pipeline previously had to leave blank.</span></p>
+      <div class="note"><span class="t-vi"><b>Cảnh báo bắt buộc đi kèm:</b> snippet là ảnh chụp của chỉ mục, không phải số liệu sống. Cùng một ngày, cùng một khách, ta gặp cả &ldquo;82 traveler reviews&rdquo; lẫn &ldquo;81 reviews&rdquo; — vì hai lần crawl khác nhau. Nên mọi số lấy từ snippet <b>phải</b> ghi kèm ngày crawl và URL nguồn, và không được trình bày như số hiện tại. Đây là đúng lỗi mà mục này đang cố bịt.</span><span class="t-en"><b>A mandatory caveat:</b> a snippet is a snapshot of the index, not live data. On the same day, for the same client, we hit both &ldquo;82 traveler reviews&rdquo; and &ldquo;81 reviews&rdquo; — two different crawls. So every snippet-derived number <b>must</b> carry its crawl date and source URL, and must never be presented as current. That is precisely the defect this section exists to close.</span></div>
+      <h3 id="ob-rest"><span class="t-vi">Các trở ngại còn lại</span><span class="t-en">The remaining obstacles</span></h3>
+      <table>
+        <thead><tr><th><span class="t-vi">Trở ngại</span><span class="t-en">Obstacle</span></th><th><span class="t-vi">Bằng chứng</span><span class="t-en">Evidence</span></th><th><span class="t-vi">Mức độ</span><span class="t-en">Severity</span></th><th><span class="t-vi">Hướng xử lý</span><span class="t-en">Proposed fix</span></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b><span class="t-vi">Không có test, không có CI</span><span class="t-en">No tests, no CI</span></b></td>
+            <td><span class="t-vi">Không tồn tại <code>tests/</code> lẫn <code>.github/</code> trong repo.</span><span class="t-en">Neither <code>tests/</code> nor <code>.github/</code> exists in the repo.</span></td>
+            <td><span class="pill bad"><span class="t-vi">chặn chất lượng</span><span class="t-en">blocks quality</span></span></td>
+            <td><span class="t-vi">Thêm <code>tests/</code> + GitHub Actions chạy <code>validate-proposal.py</code> trên một fixture.</span><span class="t-en">Add <code>tests/</code> plus a GitHub Action running <code>validate-proposal.py</code> against a fixture.</span></td>
+          </tr>
+          <tr>
+            <td><b><span class="t-vi">Validator chỉ đếm cấu trúc</span><span class="t-en">The validator only counts structure</span></b></td>
+            <td><span class="t-vi">14 check không kiểm: cặp song ngữ, số liệu chart có khớp findings, palette có bị override, thứ tự sidebar.</span><span class="t-en">The 14 checks cover none of: bilingual pairs, whether chart data matches findings, palette overrides, sidebar order.</span></td>
+            <td><span class="pill warn"><span class="t-vi">chặn chất lượng</span><span class="t-en">blocks quality</span></span></td>
+            <td><span class="t-vi">Thêm một check cho mỗi lỗi trên — đều đếm được bằng máy.</span><span class="t-en">Add one check per gap — all four are mechanically countable.</span></td>
+          </tr>
+          <tr>
+            <td><b><span class="t-vi">Lắp ráp không tất định</span><span class="t-en">Assembly is non-deterministic</span></b></td>
+            <td><span class="t-vi">Cùng một pipeline có thể ra hai hình dạng HTML khác nhau giữa hai lần chạy.</span><span class="t-en">The same pipeline can produce two different HTML shapes across runs.</span></td>
+            <td><span class="pill warn"><span class="t-vi">chặn chất lượng</span><span class="t-en">blocks quality</span></span></td>
+            <td><span class="t-vi">Chốt thứ tự section bằng dữ liệu, không bằng quyết định của agent.</span><span class="t-en">Pin section order in data instead of leaving it to an agent's judgement.</span></td>
+          </tr>
+          <tr>
+            <td><b><span class="t-vi">Review phán đoán không tái lập được</span><span class="t-en">Judgment review isn't reproducible</span></b></td>
+            <td><span class="t-vi">Hai người đọc có thể ra hai kết luận; bằng chứng chỉ có một lần chạy.</span><span class="t-en">Two readers can reach two conclusions; the evidence is a single run.</span></td>
+            <td><span class="pill warn"><span class="t-vi">chặn chất lượng</span><span class="t-en">blocks quality</span></span></td>
+            <td><span class="t-vi">Checklist bắt buộc cho <code>judgment-reviewer</code> + ghi lại lý do từng phán đoán.</span><span class="t-en">A mandatory checklist for <code>judgment-reviewer</code> plus a written reason for each call.</span></td>
+          </tr>
+          <tr>
+            <td><b><span class="t-vi">Tool nội bộ bị đóng gói chung</span><span class="t-en">Internal tooling ships with the package</span></b></td>
+            <td><span class="t-vi"><code>api/answers.js</code>, <code>blocker/answers.json</code>, <code>blocker/questions.html</code> và <code>report/*.html</code> đang được git track.</span><span class="t-en"><code>api/answers.js</code>, <code>blocker/answers.json</code>, <code>blocker/questions.html</code> and <code>report/*.html</code> are all git-tracked.</span></td>
+            <td><span class="pill info"><span class="t-vi">nợ kỹ thuật</span><span class="t-en">tech debt</span></span></td>
+            <td><span class="t-vi">Tách sang <code>internal/</code>, hoặc đánh dấu <code>export-ignore</code> để không vào gói gửi đối tác.</span><span class="t-en">Move to <code>internal/</code>, or mark <code>export-ignore</code> so they stay out of the partner-facing package.</span></td>
+          </tr>
+          <tr>
+            <td><b><span class="t-vi">Agent definition đang ở dạng của một tool</span><span class="t-en">Agent definitions are shaped for one tool</span></b></td>
+            <td><span class="t-vi">Định nghĩa agent theo quy ước của Claude Code; tool khác có thể không đọc được.</span><span class="t-en">Agent definitions follow Claude Code's conventions, which another agent may not read.</span></td>
+            <td><span class="pill info"><span class="t-vi">nợ kỹ thuật</span><span class="t-en">tech debt</span></span></td>
+            <td><span class="t-vi">Mô tả trung lập + adapter cho từng tool.</span><span class="t-en">Tool-neutral descriptions plus a thin adapter per tool.</span></td>
+          </tr>
+          <tr>
+            <td><b><span class="t-vi">Chưa có benchmark trên máy sạch</span><span class="t-en">No benchmark on a clean machine</span></b></td>
+            <td><span class="t-vi">Mọi số liệu đến từ một lần chạy trên một máy, do chính người viết skill chạy.</span><span class="t-en">Every number comes from one run on one machine, driven by the skill's own author.</span></td>
+            <td><span class="pill info"><span class="t-vi">nợ kỹ thuật</span><span class="t-en">tech debt</span></span></td>
+            <td><span class="t-vi">Chạy lại trên một máy chỉ có Codex, không cài sẵn gì, và ghi lại toàn bộ chi phí.</span><span class="t-en">Re-run on a machine with only Codex installed and nothing pre-configured, recording the full cost.</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 id="ob-next"><span class="t-vi">Việc cần làm tiếp, theo thứ tự</span><span class="t-en">What to do next, in order</span></h3>
+      <ol class="steps">
+        <li><span class="n">1</span><div><b><span class="t-vi">Đưa lớp 1 vào <code>web-osint-scanner</code></span><span class="t-en">Put layer 1 into <code>web-osint-scanner</code></span></b><p><span class="t-vi">Thêm bước thu hoạch từ chỉ mục tìm kiếm (Brave), kèm giãn nhịp + cache + ghi ngày crawl. Đây là thứ <b>chạy được ngay hôm nay</b>, không cần xin quyền ai, và đã có bằng chứng ở trên.</span><span class="t-en">Add the search-index harvest step (Brave) with pacing, caching and a recorded crawl date. This is what <b>works today</b>, needs nobody's permission, and is already proven above.</span></p></div></li>
+        <li><span class="n">2</span><div><b><span class="t-vi">Phân loại chặn + <code>blocked_reason</code></span><span class="t-en">Block classification + <code>blocked_reason</code></span></b><p><span class="t-vi">Gồm cả luật mới: <code>429</code>/<code>403</code> là <code>rate_limit</code>, không phải "không có dữ liệu". Kèm check trong validator — một chỉ số không được phép lấy từ capture bị chặn.</span><span class="t-en">Including the new rule: <code>429</code>/<code>403</code> means <code>rate_limit</code>, not "no data". Ship with the validator check — a metric may not come from a blocked capture.</span></p></div></li>
+        <li><span class="n">3</span><div><b><span class="t-vi">Bước xin token / export ở Phase 0</span><span class="t-en">A token / export request step in Phase 0</span></b><p><span class="t-vi">Đây là con đường duy nhất để có review đầy đủ và mới. Biến nó thành một bước chuẩn, kèm mẫu câu hỏi và danh sách quyền cần xin cho từng nền tảng.</span><span class="t-en">The only route to full, current reviews. Make it a standard step, with a request template and the exact scopes needed per platform.</span></p></div></li>
+        <li><span class="n">4</span><div><b><span class="t-vi">Test + CI</span><span class="t-en">Tests + CI</span></b><p><span class="t-vi">Để một sửa template sau này không tái phát lỗi chart trắng — đúng lỗi đã từng lọt qua cả ba cổng.</span><span class="t-en">So a future template edit can't reintroduce the blank-chart defect — the one that slipped past all three gates.</span></p></div></li>
+        <li><span class="n">5</span><div><b><span class="t-vi">Tách tool nội bộ khỏi gói</span><span class="t-en">Split internal tooling out of the package</span></b><p><span class="t-vi">Trước khi đưa cho đối tác nào khác, để họ không nhận kèm công cụ nội bộ.</span><span class="t-en">Before handing this to another partner, so they don't receive our internal tools along with it.</span></p></div></li>
+      </ol>      <div class="foot">report/sales-proposal-report.html &middot; <span class="t-vi">mục "trở ngại" ghi lại đúng những gì đang chặn</span><span class="t-en">the obstacles section records exactly what is blocking</span></div>
+    </section>  </main>
+
+  <aside class="rail">
+    <div class="rl"><span class="t-vi">Trong trang này</span><span class="t-en">On this page</span></div>
+    <div id="rail-list"></div>
+  </aside>
+</div>
+
+<script>
+function setLang(l){
+  document.documentElement.setAttribute('data-lang', l);
+  document.getElementById('sw-vi').classList.toggle('on', l === 'vi');
+  document.getElementById('sw-en').classList.toggle('on', l === 'en');
+  try { localStorage.setItem('tsp-lang', l); } catch(e) {}
+}
+try {
+  var saved = localStorage.getItem('tsp-lang');
+  if (saved) { setLang(saved); }
+} catch(e) {}
+
+var navLinks = Array.prototype.slice.call(document.querySelectorAll('#sidenav a'));
+var sections = Array.prototype.slice.call(document.querySelectorAll('main > section'));
+var railList = document.getElementById('rail-list');
+var currentSection = null;
+
+function spy(){
+  var y = window.scrollY + 140;
+  var active = sections[0];
+  sections.forEach(function(s){ if (s.offsetTop <= y) { active = s; } });
+  if (active !== currentSection) {
+    currentSection = active;
+    navLinks.forEach(function(a){ a.classList.toggle('on', a.getAttribute('href') === '#' + active.id); });
+    var tpl = active.querySelector('template.railsrc');
+    railList.innerHTML = tpl ? tpl.innerHTML : '';
+  }
+  var rl = Array.prototype.slice.call(railList.querySelectorAll('a'));
+  var act = null;
+  rl.forEach(function(a){
+    var target = document.getElementById(a.getAttribute('href').slice(1));
+    if (target && target.offsetTop - 150 <= window.scrollY) { act = a; }
+  });
+  rl.forEach(function(a){ a.classList.toggle('on', a === act); });
+}
+window.addEventListener('scroll', spy, {passive:true});
+window.addEventListener('resize', spy);
+document.querySelectorAll('#sidenav a').forEach(function(a){
+  a.addEventListener('click', function(){ document.body.classList.remove('open'); });
+});
+spy();
+</script>
+</body>
+</html>
