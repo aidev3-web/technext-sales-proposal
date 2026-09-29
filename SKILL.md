@@ -1,7 +1,5 @@
 ---
 name: technext-sales-proposal
-version: 1.1.2
-license: Proprietary - see LICENSE. Not for redistribution.
 description: Turn a prospective TechNext client (a company name, website, or short brief) into one comprehensive, bilingual (VI/EN toggle) HTML sales proposal website (all CSS/JS/charts inline, no CDN — opens correctly via file:// with no network) covering all three TechNext service lines — Odoo ERP implementation, AI Solutions, and Social Media Marketing — deep web/social research, a fixed sidebar covering Due Diligence, Strategic Analysis (competitors/market), Operations, a Recommendations section, and a Tools & Documents section (AI Build Playbook, Profit Estimator, Quotation, Meeting Minutes, Discovery Questions, etc). Use when asked to research a client and build a sales proposal / due-diligence site, "làm sales proposal", "nghiên cứu khách hàng làm đề xuất", or when the request matches the client-research-to-proposal workflow (spin up agents, research a company, produce a growth plan with a big sidebar).
 ---
 
@@ -38,7 +36,7 @@ single `.html` file if those 4 aren't deployed alongside it (see `assets/referen
 **Every factual claim must be verifiable, not just plausible-sounding.** Any claim
 from a real source gets a hover-card citation; any TechNext inference/estimate gets an
 `.assess` tag. Never invent a number, quote, or named person with a fake-looking
-citation. Full rules: `<skill-root>/assets/research-rules.md`.
+citation. Full rules: `~/.claude/skills/technext-sales-proposal/assets/research-rules.md`.
 
 ## Reference map — read the linked file before doing that phase's work
 
@@ -50,14 +48,14 @@ citation. Full rules: `<skill-root>/assets/research-rules.md`.
 | 0.7 — Web/OSINT scan | Scan the client's own site + socials, categorize links (social/reviews/press), light tech scan — writes `web-scan.json`, the starting point every Phase 1 subagent reads first | Skill: `web-osint-scanner` |
 | Checkpointing | Decide which phase/group/section actually needs to run; resume logic; timeline/session_id bookkeeping for cost reporting; post-Phase-4 cleanup | Skill: `checkpoint-manager` |
 | 0.9 — Competitor research | 1 worker per identified competitor (hard-budgeted: ≤8 fetches, ≤8 min each), dispatched in parallel — the single shared source both Group A's `competitor-deep-dive` and Group C's `top3-competitor-deep-dive` read from. Immediately followed by `source-auditor`'s `bind_check.py --facts` gate on the resulting JSON, **before** Phase 1 is dispatched — a bad excerpt here would otherwise land in two sections at once | Agent named `competitor-research-worker`, dispatched once per competitor in `web-scan.json`'s new `competitors` array (written by `web-osint-scanner`'s own competitor-identification step) |
-| 1 — Research fan-out | 4 parallel subagents, each researches + writes its own section group + charts, reading `captures/*.md`/`officers.json`/`competitor-research/*.json` first (not live web fetches for anything already captured) | Agents named `research-due-diligence-agent`, `research-ops-tech-agent`, `research-delivery-growth-agent`, `tools-documents-agent` — find each one wherever this agent/tool keeps its own agent definitions (the portable definition files ship in `<skill-root>/agents/`; each tool also has its own convention — Claude Code reads `~/.claude/agents/`, another tool may have no such mechanism at all — see note below) — shared markup contract in `assets/section-shell.md` (not the full template — see note below), citation rules in `assets/research-rules.md` |
-| Charts & diagrams manifest | Exact canvas ids/diagram slots, ownership | `assets/charts-and-diagrams.md` |
+| 1 — Research fan-out | 4 parallel subagents, each researches + writes its own section group + charts, reading `captures/*.md`/`officers.json`/`competitor-research/*.json` first (not live web fetches for anything already captured) | Agents named `research-due-diligence-agent`, `research-ops-tech-agent`, `research-delivery-growth-agent`, `tools-documents-agent` — find each one wherever this agent/tool keeps its own agent definitions (Claude Code: `~/.claude/agents/<name>.md`; a different tool may have no such file at all — see note below) — shared markup contract in `assets/section-shell.md` (not the full template — see note below), citation rules in `assets/research-rules.md` |
+| Charts & diagrams manifest | Exact canvas ids/diagram slots, ownership; diagrams drawn with the bundled `diagram-design` skill (installed together with this skill) | `assets/charts-and-diagrams.md` + Skill: `diagram-design` |
 | Template/validator reference | The shell you must build from, the per-client palette rule, what `validate-proposal.py` checks | `assets/reference-files.md` |
 | 2 — Front matter | Overview/Executive Summary/Recommendations/3 Proposed Solutions, written directly (no agent) | Skill: `front-matter-writer` |
 | 2.5 — Source audit (hard gate) | Confirm every citation's excerpt is really on its source page (`bind_check.py`) before assembly proceeds — a blocking gate, not an FYI | Skill: `source-auditor` |
 | 2.6 — Chart data | Build the final `chart-manifest.json` from audited findings — only runs after `source-auditor` passes with an empty `blocking_issues` array | Skill: `chart-data-analyst` |
 | 3 — Assembly | Extract sections from Phase 1 previews, drop into the template in fixed order | Skill: `assembler` |
-| 4a — Mechanical validation | Run `validate-proposal.py`'s 14 hard checks (incl. no-CDN gate and chart-render wiring) | Skill: `mechanical-validator` |
+| 4a — Mechanical validation | Run `validate-proposal.py`'s 13 hard checks (incl. no-CDN gate) | Skill: `mechanical-validator` |
 | 4b — Judgment review | Content/citation spot-check, devil's-advocate pass, then a per-task `ccusage` cost report | Skill: `judgment-reviewer` |
 
 **Note on Phase 1's input cost.** Group agents no longer read the full
@@ -83,14 +81,47 @@ didn't fan out.
 
 ## Phase 0 — Intake
 
-Get the client identifier: company name, plus any URL/socials the user already gives,
-and ask once for discovery-call notes/transcript if the user hasn't offered any
-(*"Bạn có ghi chú/bản ghi/transcript nào từ buổi gọi hoặc họp với khách hàng này chưa?
-Nếu có, dán vào đây."* — treat this as `Confirmed`-grade, higher trust than anything
-web-researched). If all you have is a bare name, do one round of web search to find
-their site/socials yourself rather than stopping to ask — only ask the user directly
-if the name is too ambiguous to search confidently. Confirm the client name you'll use
-in the page `<title>`: `"<Client> · Strategic Due Diligence & Growth Blueprint (Odoo ERP · AI · Social Media) · TechNext"`.
+Get the client identifier: company name, plus any URL/socials the user already gives.
+If all you have is a bare name, do one round of web search to find their site/socials
+yourself rather than stopping to ask — only ask the user directly if the name is too
+ambiguous to search confidently. Confirm the client name you'll use in the page
+`<title>`: `"<Client> · Strategic Due Diligence & Growth Blueprint (Odoo ERP · AI · Social Media) · Technext"`.
+
+### Confirm what the user gave you — one short message, before any research
+
+Send **one** message (never a series of back-and-forth questions) that restates what the
+user provided and asks only what is still unknown. Skip any question the user already
+answered in their request. Keep it to **at most 4 numbered questions**:
+
+1. **Contact status** — *"Bạn đã gặp/họp với khách hàng này chưa? (chưa liên hệ / đã gọi
+   điện hoặc họp online / đã gặp trực tiếp) — nếu rồi thì ngày nào, gặp ai (vai trò)?"*
+2. **The problems they raised** — only if the user named any pain/problem. Restate each one
+   in one line and ask to confirm or sharpen it: who raised it (the client or TechNext's own
+   guess), and any detail or number known (e.g. *"Vấn đề 1: hóa đơn kế toán bị chậm — đây là
+   khách tự nói hay mình đoán? Chậm khoảng bao nhiêu ngày, ở khâu nào?"*). Do not invent new
+   problems here; just clarify the ones given.
+3. **Meeting content** — *"Bạn có ghi chú, nội dung cuộc họp hoặc transcript không? Nếu có,
+   dán vào đây."*
+4. **Colour theme** — *"Proposal mở bằng màu nào? Chọn 1 trong 8 màu (Xanh ngọc, Cam kem,
+   Xanh TechNext, Tím, Xanh lá, Đỏ rượu vang, Xám than, Vàng hổ phách) hoặc gửi mã màu riêng
+   (ví dụ #e8734a)."*
+
+End the message with *"Trả lời ngắn cũng được; câu nào chưa biết cứ bỏ qua."* If the user
+skips a question, use the default below and move on — never ask the same thing twice.
+
+**How the answers change the proposal:**
+
+| Answer | Effect |
+|---|---|
+| Not contacted yet | Every pain is `Assumed — to verify in the first meeting`, never `Confirmed`. `pre-meeting` is written as a first-meeting brief; `tool-discovery-questions` leads with questions that validate the assumed pains. |
+| Called / met, no notes | Pains the user says the **client** raised are `Reported by TechNext sales, <date>` (between Confirmed and web-sourced). Pains that were TechNext's guess stay `Assumed`. |
+| Notes / transcript pasted | Facts from it are `Confirmed — <meeting type>, <date>`, the highest trust grade, above anything web-researched; quote them in `meeting-minutes`. |
+| Problem clarified with detail/number | Use the user's detail verbatim as the starting point for that pain's charts/ROI defaults, labelled with its source. |
+| Colour | Set `data-palette-default="<key>"` on `<html>` (`teal`, `orange`, `blue`, `purple`, `green`, `wine`, `charcoal`, `amber`); for a custom hex keep `teal` and add `data-palette-custom="#rrggbb"`. No answer → `teal`. Viewers can still change it with the 🎨 button. |
+
+Record the answers in `<client-slug>-intake.json` (`contact_status`, `contact_date`,
+`contact_person_role`, `pains[]` with `{text, raised_by, detail}`, `has_notes`, `palette`)
+so every later phase reads the same facts instead of re-asking.
 
 Then run the `company-verifier` skill (GLEIF check), then the `checkpoint-manager`
 skill (decide what actually needs to run this invocation — full pipeline, or resume
@@ -108,16 +139,7 @@ and say why.
 
 ## Delivery
 
-**Every run writes its files into one folder: `_runs/<client-slug>/`** (create it if
-missing; `_runs/` is already gitignored at the repo root). Run the whole pipeline
-from wherever you like, but put every artefact it produces - the proposal, the
-findings, the checkpoint, the cost CSV, the PWA copies, `web-scan.json`,
-`officers.json`, `competitor-research/`, the bind-check reports - inside that one
-folder, so two clients' runs can never mix and one client's cost dashboard folder
-pick brings in everything for that run.
-
-Save as `_runs/<client-slug>/<client-slug>-proposal.html` plus its companion
-`_runs/<client-slug>/<client-slug>-findings.json`
+Save as `<client-slug>-proposal.html` plus its companion `<client-slug>-findings.json`
 and hand both to the user directly, along with the 4 PWA companion files
 (`manifest.webmanifest`, `sw.js`, `icon-192.png`, `icon-512.png`) copied unchanged from
 `assets/` — mention that the Install button only works if all four are deployed
@@ -140,9 +162,7 @@ explicitly said they want to keep them for a future incremental re-run.
 - `<client-slug>-findings.json` (citation source list — needed to answer "where did
   this claim come from" later)
 - `<client-slug>-checkpoint.json` (resume + audit history)
-- `<client-slug>-cost-report.csv` (raw cost data; view any number of them at once in
-  `skills/judgment-reviewer/assets/cost-dashboard.html`, which is built once and not
-  regenerated per run)
+- `<client-slug>-cost-report.csv`
 - `web-scan.json`, `officers.json`, `competitor-research/*.json` (the raw research
   inputs everything else cites back to — cheap to keep, expensive to re-derive)
 - `bind-check-report.json`, `competitor-facts-bind-check.json` (the citation

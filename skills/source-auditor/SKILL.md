@@ -52,10 +52,15 @@ something the 4 groups coordinate themselves. For every entry across all 4 files
    - `Confirmed` entries: verify the cited meeting/transcript reference actually
      exists in this run's Phase 0 notes — a `Confirmed` grade with no real meeting
      behind it gets downgraded to `D`/`.assess`.
+   - `Reported` / `Assumed` entries: check them against `<client-slug>-intake.json`.
+     `Reported` needs a pain the user said the client raised (`raised_by: client`);
+     anything else is downgraded to `Assumed`. Every `Assumed` pain must carry an
+     `.assess` "to verify" tag and appear as a question in `tool-discovery-questions` —
+     missing either is a blocking issue.
    - `A`/`B`/`C` entries: spot-check that the `source_url` is a real, resolvable URL
      and its domain plausibly matches the claim's subject (a claim about the client's
      revenue citing an unrelated news site is a red flag, not a pass).
-   - Any entry with a missing/empty `source_url` and no `Confirmed`/`.assess`
+   - Any entry with a missing/empty `source_url` and no `Confirmed`/`Reported`/`.assess`
      equivalent is an **automatic fail** for that claim.
 3. **Citation bind check** — run `python assets/bind_check.py
    <client-slug>-p1-group*.html --from-cache captures/manifest.json`. The
