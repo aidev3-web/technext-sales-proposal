@@ -13,6 +13,7 @@ Group headers (bold) are non-clickable sidebar section dividers, not their own `
 
 ## Overview
 
+- `pre-meeting` — Trước khi họp cần đọc / Read before the meeting ★ (written by front-matter-writer; 4 fixed parts: `pm-company`, `pm-person`, `pm-issues`, `pm-unknowns`; the ★ must-read list inside it is auto-built from every section tagged `data-star="1"`)
 - `overview` — Tổng quan / Overview
 - `exec-summary` — Tóm tắt điều hành / Executive Summary
 
@@ -76,6 +77,7 @@ across clients.
 - `tool-accounting-overhaul` — 📒 Cải tổ kế toán / Accounting Overhaul
 - `tool-demo-walkthrough` — 🧭 Hướng dẫn Demo / Demo Walkthrough
 - `tool-staff-guides` — 🛎 Hướng dẫn nhân viên / Staff Guides
+- `sales-playbook` — 🎯 Sales Playbook ★ (30-second + 2-minute pitch, objections, 15-minute demo script, what to close)
 - `tool-discovery-questions` — 📋 Câu hỏi khám phá / Discovery Questions
 - `meeting-minutes` — 🗒 Biên bản họp / Meeting Minutes
 
