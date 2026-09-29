@@ -20,7 +20,7 @@ contract for the `<section>` fragments you return — **do not** read the full
 groups just to write a handful of section fragments, pure waste — the orchestrator
 stitches your fragments into the real template shell mechanically afterward).
 
-**Read `competitor-research/*.json`** (written once per competitor by
+**Read `<client-slug>-social-scan.json`** too when it exists: its `owner: "competitor:<name>"` accounts and items give real social/review data for competitor comparisons (cite with page URL + verbatim excerpt from its `captures/social/*.md` snapshot, no reviewer names). **Read `competitor-research/*.json`** (written once per competitor by
 `<skill-root>/agents/competitor-research-worker.md`, dispatched once per competitor
 before Phase 1 — see that file for its exact JSON schema) — **don't research
 competitors yourself.** Group A's `competitor-deep-dive` reads the exact same files,

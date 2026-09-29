@@ -52,6 +52,9 @@ something the 4 groups coordinate themselves. For every entry across all 4 files
    - `Confirmed` entries: verify the cited meeting/transcript reference actually
      exists in this run's Phase 0 notes — a `Confirmed` grade with no real meeting
      behind it gets downgraded to `D`/`.assess`.
+   - Browser-observed entries (URL listed in `captures/manifest.json` with `"via": "browser"`):
+     bind-check the excerpt against that `captures/social/*.md` snapshot instead of the live
+     page (which is login-walled). A snapshot missing or not containing the excerpt blocks.
    - `Reported` / `Assumed` entries: check them against `<client-slug>-intake.json`.
      `Reported` needs a pain the user said the client raised (`raised_by: client`);
      anything else is downgraded to `Assumed`. Every `Assumed` pain must carry an

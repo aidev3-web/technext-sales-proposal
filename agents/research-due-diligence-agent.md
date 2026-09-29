@@ -21,6 +21,13 @@ groups just to write a handful of section fragments, pure waste — the orchestr
 stitches your fragments into the real template shell mechanically afterward, that step
 doesn't need your context).
 
+Read **`<client-slug>-social-scan.json`** first when it exists (written by `social-browser-scan`
+from the user's logged-in browser): use its accounts, items and summary for `digital-web`,
+`reviews-reputation`, `cSentiment`, `cThemes`, `cChannel`, `cDigital` and
+`founders-leadership` instead of estimating. Cite items with the page URL and a verbatim
+excerpt from its `captures/social/*.md` snapshot; never name reviewers. If its status is
+`skipped_no_browser` or a platform is in `blocked[]`, say so plainly in the section.
+
 Also read **`captures/manifest.json`** and the `.md` files it points to under
 `captures/` (written by `web-osint-scanner`'s pre-fetch pass) for the client's own
 site/social/review pages, and **`officers.json`** (written by the `officers-lookup`

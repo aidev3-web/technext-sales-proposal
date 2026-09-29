@@ -46,7 +46,7 @@ cd technext-sales-proposal
 ./install.sh                           # macOS / Linux
 ```
 
-The installer links the orchestrator skill **and** its 10 sub-skills into the agent
+The installer links the orchestrator skill **and** its 12 sub-skills (incl. `diagram-design`, `social-browser-scan`) into the agent
 skills directory you choose, because the pipeline dispatches the sub-skills by name.
 Use `--copy` (`-Copy` on Windows) if your filesystem does not support symlinks.
 
@@ -99,7 +99,7 @@ One orchestrator drives the run:
 ```text
 SKILL.md                     Orchestrator map - start here
 agents/                      5 sub-agent definitions
-skills/                      10 sub-skills the pipeline dispatches
+skills/                      12 sub-skills the pipeline dispatches
 assets/                      Templates, research rules, validators, PWA files
 api/  blocker/               Small helper pages and answer files
 report/                      Internal design and review documents
@@ -123,3 +123,14 @@ tag rather than following `main` if you need a stable version.
 
 Contact TechNext Asia. When reporting a problem, include the client slug of the run and
 the `_runs/<client-slug>/` folder if you can share it.
+
+
+## Optional: Claude in Chrome for social media and reviews
+
+Phase 0.75 (`social-browser-scan`) reads Facebook, LinkedIn, Instagram, Google Maps,
+YouTube, X and TikTok through your own logged-in Chrome. To enable it: install the Claude
+extension in Chrome and sign it in with **the same Claude account** Claude Code uses (another account will not connect), run `/chrome` in Claude Code, then restart with
+`claude --continue --chrome`. When the step runs it asks you to log in to those accounts
+yourself (a company account is recommended); it only reads, never posts or messages, and
+stops at any login wall, CAPTCHA or geo-block. Without a browser tool the step is skipped
+and the social sections are marked as estimates.

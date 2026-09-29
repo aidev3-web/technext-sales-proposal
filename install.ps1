@@ -4,7 +4,7 @@
 
 .DESCRIPTION
     Links <Destination>/technext-sales-proposal to this repository, and links each of
-    the 11 sub-skills (incl. diagram-design) under skills/ into <Destination>/<name> - the pipeline dispatches
+    the 12 sub-skills (incl. diagram-design, social-browser-scan) under skills/ into <Destination>/<name> - the pipeline dispatches
     those sub-skills by name, so they must be discoverable on their own.
 
     An existing real folder is never overwritten; it is reported and skipped. Existing
@@ -19,7 +19,7 @@
     Copy the files instead of creating links.
 
 .PARAMETER SkipSubSkills
-    Install only the orchestrator skill, not the 11 sub-skills (incl. diagram-design).
+    Install only the orchestrator skill, not the 12 sub-skills (incl. diagram-design, social-browser-scan).
 
 .PARAMETER DryRun
     Show what would happen without touching anything.
@@ -143,4 +143,23 @@ if (-not $SkipSubSkills) {
     }
 }
 
-Write-Host "`nDone. Ask your agent for a sales proposal to test the install."
+# Claude Code discovers subagents in <host>/agents, next to <host>/skills - the pipeline
+# dispatches the 5 research agents by name, so they must be installed there too.
+$AgentSrc = Join-Path $RepoRoot 'agents'
+$HostDir  = Split-Path -Parent $Destination
+if ((Test-Path -LiteralPath $AgentSrc) -and ((Split-Path -Leaf $HostDir) -eq '.claude')) {
+    $AgentDest = Join-Path $HostDir 'agents'
+    Write-Host "`nSubagents -> $AgentDest"
+    if (-not (Test-Path -LiteralPath $AgentDest)) {
+        if ($DryRun) { Write-Host "  [dry-run] would create $AgentDest" -ForegroundColor DarkGray }
+        else { New-Item -ItemType Directory -Path $AgentDest -Force | Out-Null }
+    }
+    Get-ChildItem -LiteralPath $AgentSrc -Filter '*.md' | Sort-Object Name | ForEach-Object {
+        Install-Link -LinkPath (Join-Path $AgentDest $_.Name) -TargetPath $_.FullName
+    }
+}
+elseif (Test-Path -LiteralPath $AgentSrc) {
+    Write-Host "`nSubagents: not a Claude Code skills dir - install the 5 files in agents/ with your agent's own sub-agent mechanism (see README)." -ForegroundColor Yellow
+}
+
+Write-Host "`nDone. Restart your agent, then ask it for a sales proposal to test the install."

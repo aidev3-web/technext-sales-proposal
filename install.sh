@@ -120,5 +120,23 @@ if [ "$SKIP_SUBS" -eq 0 ]; then
   done
 fi
 
+# Claude Code discovers subagents in <host>/agents, next to <host>/skills - the pipeline
+# dispatches the 5 research agents by name, so they must be installed there too.
+AGENT_SRC="$REPO_ROOT/agents"
+HOST_DIR="$(dirname "$DEST")"
+if [ -d "$AGENT_SRC" ] && [ "$(basename "$HOST_DIR")" = ".claude" ]; then
+  AGENT_DEST="$HOST_DIR/agents"
+  echo
+  echo "Subagents -> $AGENT_DEST"
+  [ "$DRY" -eq 1 ] || mkdir -p "$AGENT_DEST"
+  for f in "$AGENT_SRC"/*.md; do
+    [ -f "$f" ] || continue
+    install_link "$AGENT_DEST/$(basename "$f")" "$f"
+  done
+elif [ -d "$AGENT_SRC" ]; then
+  echo
+  echo "Subagents: not a Claude Code skills dir - install the 5 files in agents/ with your agent's own sub-agent mechanism (see README)."
+fi
+
 echo
-echo "Done. Ask your agent for a sales proposal to test the install."
+echo "Done. Restart your agent, then ask it for a sales proposal to test the install."
