@@ -12,9 +12,9 @@ model: sonnet
 > agent uses for sub-agents, or run this group's research directly if it has none.
 
 You are Group A of the `technext-sales-proposal` pipeline. Before writing anything,
-read **`<skill-root>/assets/research-rules.md`** (shared
+read **`~/.claude/skills/technext-sales-proposal/assets/research-rules.md`** (shared
 citation/`.assess`/chart rules — applies to you) and
-**`<skill-root>/assets/section-shell.md`** (the markup
+**`~/.claude/skills/technext-sales-proposal/assets/section-shell.md`** (the markup
 contract for the `<section>` fragments you return — **do not** read the full
 `proposal-template.html`; at ~250KB/~65-70k tokens it was being read in full by all 4
 groups just to write a handful of section fragments, pure waste — the orchestrator
@@ -51,7 +51,7 @@ Build all of these yourself, in this same call, via `regChart(() => mkChart(...)
 (bubble, `competitor-deep-dive`), `cGap` (radar, `competitor-deep-dive`), `cOrigin`
 (doughnut, `market-industry`), `cSeason` (line, `market-industry`), `cPersona` (bubble,
 `customer-personas`) — plus 1 static `diagram-block` (org chart / reporting lines, on
-`staff-org`, as a `.tl` timeline or `.grid.g3` of role cards — never Mermaid).
+`staff-org`, as a `.tl` timeline or `.grid.g3` of role cards — never Mermaid). Prefer drawing it with the bundled `diagram-design` skill (inline SVG only — see `assets/charts-and-diagrams.md`) when that looks clearer.
 
 ## What to research and write
 
@@ -84,7 +84,7 @@ subagent's Social Media pitch depends on this.
 - **Competitor comparison table** inside `competitor-deep-dive` — one `.tbl` row per
   competitor, columns for positioning, pricing tier, strengths/weaknesses, each
   cell's claims individually cited. **Read `competitor-research/*.json`** (written
-  once per competitor by `<skill-root>/agents/competitor-research-worker.md`, dispatched
+  once per competitor by `~/.claude/agents/competitor-research-worker.md`, dispatched
   before Phase 1 — see that file for its exact JSON schema) instead of researching
   competitors yourself — `research-delivery-growth-agent`'s `top3-competitor-deep-dive`
   reads the exact same files, so this is the single shared source for both instead of

@@ -12,9 +12,9 @@ model: sonnet
 > agent uses for sub-agents, or run this group's research directly if it has none.
 
 You are Group B of the `technext-sales-proposal` pipeline. Before writing anything,
-read **`<skill-root>/assets/research-rules.md`** (shared
+read **`~/.claude/skills/technext-sales-proposal/assets/research-rules.md`** (shared
 citation/`.assess`/chart rules — applies to you) and
-**`<skill-root>/assets/section-shell.md`** (the markup
+**`~/.claude/skills/technext-sales-proposal/assets/section-shell.md`** (the markup
 contract for the `<section>` fragments you return — **do not** read the full
 `proposal-template.html`; at ~250KB/~65-70k tokens it was being read in full by all 4
 groups just to write a handful of section fragments, pure waste — the orchestrator
@@ -33,7 +33,7 @@ complete list for this group — see `assets/menu-structure.md` for the full sid
 
 ## Diagrams you own
 
-3 static `diagram-block` divs (never Mermaid): acquisition-funnel (numbered `.tl`
+3 static `diagram-block` divs (never Mermaid;Prefer drawing it with the bundled `diagram-design` skill (inline SVG only — see `assets/charts-and-diagrams.md`) when that looks clearer.): acquisition-funnel (numbered `.tl`
 steps, on `department-workflows`), BPMN swimlane-by-role (`.tl` per role/lane, on
 `bpmn-blueprint-uml`), UML-style sequence (numbered `.tl` steps, actor named per step,
 also on `bpmn-blueprint-uml`).
