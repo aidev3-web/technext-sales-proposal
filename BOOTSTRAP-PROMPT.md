@@ -34,7 +34,7 @@ Do this in order. Stop and ask me if anything is ambiguous.
 
 3. Install it with the repository's own installer, pointing it at the directory from
    step 1:
-     Windows     : pwsh -File install.ps1 -Destination "<skills dir from step 1>"
+     Windows     : powershell -ExecutionPolicy Bypass -File install.ps1 -Destination "<skills dir from step 1>"
      macOS/Linux : ./install.sh --dest "<skills dir from step 1>"
    Add -Copy (Windows) or --copy (macOS/Linux) if symlinks are unavailable on this
    machine. The installer never overwrites an existing real folder; if it reports one,

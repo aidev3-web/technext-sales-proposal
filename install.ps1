@@ -3,7 +3,8 @@
     Install the technext-sales-proposal skill into an agent's skills directory.
 
 .DESCRIPTION
-    Links <Destination>/technext-sales-proposal to this repository, and links each of
+    Creates <Destination>/technext-sales-proposal holding only the skill itself (SKILL.md,
+    plus links to assets/ and agents/), and links each of
     the 12 sub-skills (incl. diagram-design, social-browser-scan) under skills/ into <Destination>/<name> - the pipeline dispatches
     those sub-skills by name, so they must be discoverable on their own.
 
@@ -21,20 +22,24 @@
 .PARAMETER SkipSubSkills
     Install only the orchestrator skill, not the 12 sub-skills (incl. diagram-design, social-browser-scan).
 
+.PARAMETER Force
+    Overwrite agent files in <host>/agents that differ from this repository's copy.
+
 .PARAMETER DryRun
     Show what would happen without touching anything.
 
 .EXAMPLE
-    pwsh -File install.ps1
+    powershell -ExecutionPolicy Bypass -File install.ps1
 
 .EXAMPLE
-    pwsh -File install.ps1 -Destination "$HOME\.codex\skills" -Copy
+    powershell -ExecutionPolicy Bypass -File install.ps1 -Destination "$HOME\.codex\skills" -Copy
 #>
 [CmdletBinding()]
 param(
     [string]$Destination,
     [switch]$Copy,
     [switch]$SkipSubSkills,
+    [switch]$Force,
     [switch]$DryRun
 )
 
@@ -101,6 +106,49 @@ function Install-Link {
     }
 }
 
+$Marker = '.installed-by-technext-sales-proposal'
+
+function Install-Orchestrator {
+    # A clean skill folder: SKILL.md + assets/ + agents/ only, never the whole repository
+    # (install scripts, reports, the second copy of the sub-skills under skills/).
+    param([string]$SkillPath)
+    if (Test-Path -LiteralPath $SkillPath) {
+        if (Test-IsLink -Path $SkillPath) {
+            # older installs linked the whole repository here
+            if ($DryRun) { Write-Host "  [dry-run] would replace old repo link $SkillPath" -ForegroundColor DarkGray }
+            else { Remove-Link -Path $SkillPath }
+        }
+        elseif (-not (Test-Path -LiteralPath (Join-Path $SkillPath $Marker))) {
+            Write-Warning "  skipped (a real folder already exists): $SkillPath"
+            return
+        }
+    }
+    if ($DryRun) { Write-Host "  [dry-run] $SkillPath <- SKILL.md, assets/, agents/" -ForegroundColor DarkGray; return }
+    New-Item -ItemType Directory -Path $SkillPath -Force | Out-Null
+    Set-Content -LiteralPath (Join-Path $SkillPath $Marker) -Value $RepoRoot -Encoding UTF8
+    Copy-Item -LiteralPath (Join-Path $RepoRoot 'SKILL.md') -Destination (Join-Path $SkillPath 'SKILL.md') -Force
+    foreach ($d in 'assets', 'agents') {
+        Install-Link -LinkPath (Join-Path $SkillPath $d) -TargetPath (Join-Path $RepoRoot $d)
+    }
+    Write-Host "  ready   $SkillPath (SKILL.md is a copy: re-run this installer after git pull)"
+}
+
+function Install-AgentFile {
+    # Files can't be junctions, and symlinks need admin/Developer Mode on Windows - copy.
+    param([string]$Dest, [string]$Src)
+    if (Test-Path -LiteralPath $Dest) {
+        $same = (Get-FileHash -LiteralPath $Dest).Hash -eq (Get-FileHash -LiteralPath $Src).Hash
+        if ($same) { Write-Host "  up to date $Dest"; return }
+        if (-not $Force) {
+            Write-Warning "  skipped (differs from this repo; re-run with -Force to overwrite): $Dest"
+            return
+        }
+    }
+    if ($DryRun) { Write-Host "  [dry-run] copy $Src -> $Dest" -ForegroundColor DarkGray; return }
+    Copy-Item -LiteralPath $Src -Destination $Dest -Force
+    Write-Host "  copied  $Dest"
+}
+
 if (-not (Test-Path -LiteralPath (Join-Path $RepoRoot 'SKILL.md'))) {
     throw "SKILL.md not found next to this script - run the installer from the repository root."
 }
@@ -134,7 +182,7 @@ if (-not (Test-Path -LiteralPath $Destination)) {
 }
 
 Write-Host "Orchestrator skill"
-Install-Link -LinkPath (Join-Path $Destination $SkillName) -TargetPath $RepoRoot
+Install-Orchestrator -SkillPath (Join-Path $Destination $SkillName)
 
 if (-not $SkipSubSkills) {
     Write-Host "`nSub-skills"
@@ -155,7 +203,7 @@ if ((Test-Path -LiteralPath $AgentSrc) -and ((Split-Path -Leaf $HostDir) -eq '.c
         else { New-Item -ItemType Directory -Path $AgentDest -Force | Out-Null }
     }
     Get-ChildItem -LiteralPath $AgentSrc -Filter '*.md' | Sort-Object Name | ForEach-Object {
-        Install-Link -LinkPath (Join-Path $AgentDest $_.Name) -TargetPath $_.FullName
+        Install-AgentFile -Dest (Join-Path $AgentDest $_.Name) -Src $_.FullName
     }
 }
 elseif (Test-Path -LiteralPath $AgentSrc) {

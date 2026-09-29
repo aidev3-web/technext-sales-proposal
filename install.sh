@@ -80,6 +80,9 @@ install_link() {
   local link_path="$1" target_path="$2"
 
   if [ -e "$link_path" ] || [ -L "$link_path" ]; then
+    if [ -f "$link_path" ] && [ ! -L "$link_path" ] && cmp -s "$link_path" "$target_path"; then
+      echo "  up to date $link_path"; return
+    fi
     if [ -L "$link_path" ]; then
       if [ "$DRY" -eq 1 ]; then echo "  [dry-run] would refresh $link_path"; return; fi
       rm -f "$link_path"
@@ -106,10 +109,28 @@ install_link() {
   fi
 }
 
+install_orchestrator() {
+  # A clean skill folder: SKILL.md + assets/ + agents/ only, never the whole repository.
+  local skill_path="$1" marker=".installed-by-technext-sales-proposal"
+  if [ -L "$skill_path" ]; then
+    # older installs linked the whole repository here
+    if [ "$DRY" -eq 1 ]; then echo "  [dry-run] would replace old repo link $skill_path"; else rm -f "$skill_path"; fi
+  elif [ -e "$skill_path" ] && [ ! -e "$skill_path/$marker" ]; then
+    echo "  skipped (a real directory already exists): $skill_path" >&2
+    return
+  fi
+  if [ "$DRY" -eq 1 ]; then echo "  [dry-run] $skill_path <- SKILL.md, assets/, agents/"; return; fi
+  mkdir -p "$skill_path"
+  echo "$REPO_ROOT" > "$skill_path/$marker"
+  for item in SKILL.md assets agents; do
+    install_link "$skill_path/$item" "$REPO_ROOT/$item"
+  done
+}
+
 [ "$DRY" -eq 1 ] || mkdir -p "$DEST"
 
 echo "Orchestrator skill"
-install_link "$DEST/$SKILL_NAME" "$REPO_ROOT"
+install_orchestrator "$DEST/$SKILL_NAME"
 
 if [ "$SKIP_SUBS" -eq 0 ]; then
   echo

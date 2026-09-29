@@ -440,7 +440,7 @@ figure{margin:0}
       <h3 id="install"><span class="t-vi">Cài đặt</span><span class="t-en">Install</span></h3>
       <p><span class="t-vi">Clone repo ra <b>cạnh</b> (không phải bên trong) thư mục skills của agent, rồi chạy installer:</span><span class="t-en">Clone the repo <b>next to</b> — not inside — your agent's skills directory, then run the installer:</span></p>
       <pre><code>git clone https://github.com/aidev3-web/technext-sales-proposal.git
-pwsh -File install.ps1                 # Windows
+powershell -ExecutionPolicy Bypass -File install.ps1               # Windows
 ./install.sh                           # macOS / Linux</code></pre>
       <p><span class="t-vi">Installer tạo liên kết cho <b>skill gốc + 10 sub-skill</b> vào thư mục skills bạn chọn, vì pipeline gọi sub-skill theo tên nên chúng phải tự tìm thấy được. Thư mục thật đang tồn tại sẽ không bị ghi đè — chỉ báo và bỏ qua.</span><span class="t-en">The installer links the <b>orchestrator skill plus its 10 sub-skills</b> into the skills directory you choose, because the pipeline dispatches sub-skills by name — they must be discoverable on their own. An existing real folder is never overwritten; it is reported and skipped.</span></p>
       <ul class="small">
