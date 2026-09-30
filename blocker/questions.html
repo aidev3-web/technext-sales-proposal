@@ -66,6 +66,19 @@ html[data-lang="en"] [data-en]{display:inline}
 html[data-lang="en"] h3[data-en],
 html[data-lang="en"] p[data-en],
 html[data-lang="en"] div.sub[data-en]{display:block}
+
+.dn{width:100%;height:auto;display:block;margin:12px 0 6px}
+.dn text{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.dn .box{fill:var(--panel);stroke:var(--ink2);stroke-width:1}
+.dn .focal{fill:var(--panel2);stroke:var(--accent);stroke-width:1.5}
+.dn .opt{fill:var(--panel);stroke:var(--muted);stroke-width:1;stroke-dasharray:4 3}
+.dn .tag{fill:none;stroke:var(--muted);stroke-width:.8}
+.dn .tagt{fill:var(--muted);font-size:8px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.dn .nm{fill:var(--ink);font-size:12px;font-weight:600;text-anchor:middle}
+.dn .ln{stroke:var(--ink2);stroke-width:1.2;fill:none}
+.dn .ah{fill:var(--ink2)}
+.dn .lb{fill:var(--muted);font-size:8px;font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em}
+.dn .mask{fill:var(--panel)}
 </style>
 </head>
 <body>
@@ -87,16 +100,36 @@ html[data-lang="en"] div.sub[data-en]{display:block}
 </aside>
 
 <div class="wrap">
-  <h1><span data-vi>Không còn câu hỏi nào cần xác nhận</span><span data-en>No open questions right now</span></h1>
-  <p class="sub"><span data-vi>Cả 5 câu hỏi trước đó (xóa section, bỏ Mermaid, Recommendations, số nguồn tối thiểu, bảng màu theo client) đều đã được quyết định và áp dụng vào skill. Trang này sẽ mở lại khi có câu hỏi mới cần bạn xác nhận.</span><span data-en>All 5 earlier questions (section removal, dropping Mermaid, Recommendations, minimum source count, per-client palette) have been decided and applied to the skill. This page reopens when a new question needs your confirmation.</span></p>
+  <h1><span data-vi>Câu hỏi cần sếp xác nhận</span><span data-en>Questions for your confirmation</span></h1>
+  <p class="sub"><span data-vi>Gõ câu trả lời dưới mỗi câu hỏi rồi bấm Lưu. Câu trả lời được lưu thẳng vào repo (<code>blocker/answers.json</code>) để Trung xem lại bất cứ lúc nào.</span><span data-en>Type an answer under each question and hit Save. It is committed straight to the repo (<code>blocker/answers.json</code>) so Trung can read it back anytime.</span></p>
+  <div class="status" id="status"></div>
 
-  <div class="q" style="border-left-color:var(--green)">
-    <div class="src"><span data-vi>Trạng thái</span><span data-en>Status</span></div>
-    <h3><span data-vi>✓ Đã xử lý xong tất cả</span><span data-en>✓ All resolved</span></h3>
-    <p><span data-vi>Xem chi tiết những gì đã thay đổi trong <a href="../report/sales-proposal-pipeline-workflow.html">sơ đồ pipeline</a>.</span><span data-en>See what changed in the <a href="../report/sales-proposal-pipeline-workflow.html">pipeline diagram</a>.</span></p>
+  <div class="q" data-id="q6">
+    <div class="src"><span data-vi>Cài đặt &amp; quy trình</span><span data-en>Install &amp; workflow</span></div>
+    <h3><span data-vi>Sếp đã cài skill và hiểu quy trình chạy chưa?</span><span data-en>Have you installed the skill and understood how the workflow runs?</span></h3>
+    <p><span data-vi>Skill cài bằng 1 prompt dán vào Claude Code (khoảng 1 phút), rồi chạy theo 6 bước sau. Trang hướng dẫn có sơ đồ đầu vào và đầu ra của từng bước.</span><span data-en>The skill installs with one prompt pasted into Claude Code (about a minute), then runs these 6 steps. The docs page has an input/output diagram for every step.</span></p><svg class="dn" viewBox="0 0 720 200" role="img" aria-labelledby="q6-title q6-desc" xmlns="http://www.w3.org/2000/svg"><title id="q6-title">Quy trình chạy skill sales proposal / How the sales proposal skill runs</title><desc id="q6-desc">Six steps in order: confirm details, verify the company, scan web and social, four parallel research groups, source check, assemble one HTML file.</desc><defs><marker id="q6-ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="ah" points="0 0, 8 3, 0 6"/></marker></defs><line class="ln" x1="224" y1="48" x2="256" y2="48" marker-end="url(#q6-ah)"/><line class="ln" x1="464" y1="48" x2="496" y2="48" marker-end="url(#q6-ah)"/><line class="ln" x1="600" y1="76" x2="600" y2="124" marker-end="url(#q6-ah)"/><line class="ln" x1="496" y1="152" x2="464" y2="152" marker-end="url(#q6-ah)"/><line class="ln" x1="256" y1="152" x2="224" y2="152" marker-end="url(#q6-ah)"/><rect class="box" x="16" y="20" width="208" height="56" rx="6"/><rect class="tag" x="24" y="26" width="16" height="12" rx="2"/><text class="tagt" x="32" y="35" text-anchor="middle">1</text><text class="nm" x="120" y="60" data-vi>Xác nhận thông tin</text><text class="nm" x="120" y="60" data-en>Confirm details</text><rect class="box" x="256" y="20" width="208" height="56" rx="6"/><rect class="tag" x="264" y="26" width="16" height="12" rx="2"/><text class="tagt" x="272" y="35" text-anchor="middle">2</text><text class="nm" x="360" y="60" data-vi>Xác minh công ty</text><text class="nm" x="360" y="60" data-en>Verify the company</text><rect class="box" x="496" y="20" width="208" height="56" rx="6"/><rect class="tag" x="504" y="26" width="16" height="12" rx="2"/><text class="tagt" x="512" y="35" text-anchor="middle">3</text><text class="nm" x="600" y="60" data-vi>Quét web và mạng xã hội</text><text class="nm" x="600" y="60" data-en>Scan web and social</text><rect class="focal" x="496" y="124" width="208" height="56" rx="6"/><rect class="tag" x="504" y="130" width="16" height="12" rx="2"/><text class="tagt" x="512" y="139" text-anchor="middle">4</text><text class="nm" x="600" y="164" data-vi>4 nhóm nghiên cứu song song</text><text class="nm" x="600" y="164" data-en>4 research groups in parallel</text><rect class="box" x="256" y="124" width="208" height="56" rx="6"/><rect class="tag" x="264" y="130" width="16" height="12" rx="2"/><text class="tagt" x="272" y="139" text-anchor="middle">5</text><text class="nm" x="360" y="164" data-vi>Kiểm tra nguồn</text><text class="nm" x="360" y="164" data-en>Source check</text><rect class="box" x="16" y="124" width="208" height="56" rx="6"/><rect class="tag" x="24" y="130" width="16" height="12" rx="2"/><text class="tagt" x="32" y="139" text-anchor="middle">6</text><text class="nm" x="120" y="164" data-vi>Ghép thành 1 file HTML</text><text class="nm" x="120" y="164" data-en>Assemble one HTML file</text></svg>
+    <div class="why"><b><span data-vi>Câu hỏi:</span><span data-en>Question:</span></b> <span data-vi>đã cài và chạy được chưa, phần nào của quy trình còn chưa rõ? Có cần Trung quay 1 video ngắn (cài đặt + chạy thử 1 khách hàng + xem kết quả) không?</span><span data-en>is it installed and working, and which part of the workflow is still unclear? Do you want Trung to record a short video (install + one client run + the result)?</span></div>
+    <textarea data-ph-vi="Gõ câu trả lời ở đây..." data-ph-en="Type your answer here..." placeholder="Type your answer here..."></textarea>
+    <div class="row"><button class="save"><span data-vi>Lưu</span><span data-en>Save</span></button><span class="saved"><span data-vi>Đã lưu!</span><span data-en>Saved!</span></span><span class="lastsaved"></span></div>
+  </div>
+  <div class="q" data-id="q7">
+    <div class="src"><span data-vi>Bản proposal HST Medical</span><span data-en>The HST Medical proposal</span></div>
+    <h3><span data-vi>Sếp đã đọc bản proposal HST Medical chưa, có điểm nào chưa hài lòng cần sửa không?</span><span data-en>Have you read the HST Medical proposal, and is anything unsatisfactory that needs fixing?</span></h3>
+    <p><span data-vi>Đây là bản chạy thử thật đầu tiên: 41 mục, 18 biểu đồ, 545 trích dẫn đều khớp nguồn, qua 15/15 kiểm tra tự động. Vì chưa liên hệ khách, mọi vấn đề của khách đều là giả định cần xác nhận trong buổi gặp.</span><span data-en>This is the first real test run: 41 sections, 18 charts, 545 citations all matched to source, 15/15 automatic checks passed. Because the client was not contacted, every client pain is an assumption to confirm in the meeting.</span></p><p><span data-vi>Những điểm mình biết còn yếu: công cụ tính lợi nhuận đặt chi phí S$60K trong khi báo giá năm đầu là S$81.8K–145K; hai mục giải pháp mạng xã hội và hướng dẫn nhân viên còn ngắn; chưa có dữ liệu về hệ thống đang dùng và doanh thu theo kênh.</span><span data-en>Known weak spots: the profit calculator uses a S$60K cost while the year-1 quotation is S$81.8K–145K; the social media solution and staff guides sections are short; no data yet on the current systems or revenue by channel.</span></p>
+    <div class="why"><b><span data-vi>Câu hỏi:</span><span data-en>Question:</span></b> <span data-vi>đã đọc chưa, có mục nào cần sửa, bổ sung hoặc bỏ (nội dung, số liệu, cách trình bày, ngôn ngữ) không?</span><span data-en>have you read it, and is there any section to fix, add or drop (content, figures, layout, wording)?</span></div>
+    <textarea data-ph-vi="Gõ câu trả lời ở đây..." data-ph-en="Type your answer here..." placeholder="Type your answer here..."></textarea>
+    <div class="row"><button class="save"><span data-vi>Lưu</span><span data-en>Save</span></button><span class="saved"><span data-vi>Đã lưu!</span><span data-en>Saved!</span></span><span class="lastsaved"></span></div>
+  </div>
+  <div class="q" data-id="q8">
+    <div class="src"><span data-vi>Claude in Chrome &amp; mạng xã hội</span><span data-en>Claude in Chrome &amp; social media</span></div>
+    <h3><span data-vi>Sếp đã biết Claude in Chrome chưa, và có cần video hướng dẫn cài nó không?</span><span data-en>Do you know Claude in Chrome, and do you need a video guide to set it up?</span></h3>
+    <p><span data-vi><b>Dùng để làm gì:</b> bước 0.75 của skill dùng Chrome của người dùng để đọc Facebook, LinkedIn, Instagram, Google Maps, YouTube, X, TikTok của khách và tối đa 3 đối thủ (số người theo dõi, đánh giá, bài đăng liên quan). Không có bước này thì phần mạng xã hội và uy tín chỉ là ước tính. Skill chỉ đọc, không bấm thích, bình luận hay nhắn tin.</span><span data-en><b>What it is for:</b> step 0.75 of the skill uses the user's own Chrome to read the client's and up to 3 competitors' Facebook, LinkedIn, Instagram, Google Maps, YouTube, X and TikTok (followers, reviews, relevant posts). Without it the social and reputation sections are estimates. The skill is read-only: no likes, comments or messages.</span></p><p><span data-vi><b>Cần chuẩn bị:</b> cài tiện ích Claude trên Chrome, đăng nhập tiện ích bằng <b>đúng tài khoản Claude đang dùng với Claude Code</b>, gõ <code>/chrome</code>, rồi mở lại bằng <code>claude --continue --chrome</code>. Người dùng phải <b>tự đăng nhập</b> các mạng xã hội trong Chrome đó (nên dùng tài khoản công ty); skill không bao giờ gõ mật khẩu hay tạo tài khoản.</span><span data-en><b>Setup:</b> install the Claude extension in Chrome, sign the extension in with <b>the same Claude account Claude Code uses</b>, type <code>/chrome</code>, then reopen with <code>claude --continue --chrome</code>. The user must <b>log in to the social accounts themselves</b> in that Chrome (a company account is best); the skill never types a password or creates an account.</span></p><p><span data-vi><b>Khi gặp trang chặn</b> (kiểm tra chống bot, Cloudflare, đăng nhập LinkedIn): skill không dừng lại, vẫn chạy tiếp, nhưng báo người dùng và chờ người dùng tự xác minh trong Chrome. Skill không tự giải CAPTCHA và không dùng công cụ lách chặn.</span><span data-en><b>When a page is blocked</b> (bot check, Cloudflare, LinkedIn login): the skill does not stop. It keeps running, notifies the user and waits for the user to verify in Chrome. It never solves a CAPTCHA and never uses a bypass tool.</span></p><svg class="dn" viewBox="0 0 720 284" role="img" aria-labelledby="q8-title q8-desc" xmlns="http://www.w3.org/2000/svg"><title id="q8-title">Cách xử lý trang bị chặn / How a blocked page is handled</title><desc id="q8-desc">A blocked page is noted, the run continues, the user is notified once; if the user verifies the page is read, otherwise it is dropped and marked as an estimate.</desc><defs><marker id="q8-ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="ah" points="0 0, 8 3, 0 6"/></marker></defs><line class="ln" x1="224" y1="48" x2="256" y2="48" marker-end="url(#q8-ah)"/><line class="ln" x1="464" y1="48" x2="496" y2="48" marker-end="url(#q8-ah)"/><line class="ln" x1="600" y1="76" x2="600" y2="124" marker-end="url(#q8-ah)"/><line class="ln" x1="496" y1="152" x2="464" y2="152" marker-end="url(#q8-ah)"/><line class="ln" x1="600" y1="180" x2="600" y2="228" marker-end="url(#q8-ah)"/><rect class="mask" x="464" y="132" width="32" height="12" rx="2"/><text class="lb" x="480" y="141" data-vi text-anchor="middle">CÓ</text><text class="lb" x="480" y="141" data-en text-anchor="middle">YES</text><text class="lb" x="612" y="206" data-vi>BỎ QUA / KHÔNG LÀM GÌ</text><text class="lb" x="612" y="206" data-en>SKIP / NO ACTION</text><rect class="box" x="16" y="20" width="208" height="56" rx="6"/><rect class="tag" x="24" y="26" width="16" height="12" rx="2"/><text class="tagt" x="32" y="35" text-anchor="middle">1</text><text class="nm" x="120" y="60" data-vi>Gặp trang chặn</text><text class="nm" x="120" y="60" data-en>Page is blocked</text><rect class="box" x="256" y="20" width="208" height="56" rx="6"/><rect class="tag" x="264" y="26" width="16" height="12" rx="2"/><text class="tagt" x="272" y="35" text-anchor="middle">2</text><text class="nm" x="360" y="60" data-vi>Chạy tiếp các phần khác</text><text class="nm" x="360" y="60" data-en>Keep running the rest</text><rect class="box" x="496" y="20" width="208" height="56" rx="6"/><rect class="tag" x="504" y="26" width="16" height="12" rx="2"/><text class="tagt" x="512" y="35" text-anchor="middle">3</text><text class="nm" x="600" y="60" data-vi>Báo người dùng 1 lần</text><text class="nm" x="600" y="60" data-en>Notify the user once</text><rect class="focal" x="496" y="124" width="208" height="56" rx="6"/><rect class="tag" x="504" y="130" width="16" height="12" rx="2"/><text class="tagt" x="512" y="139" text-anchor="middle">4</text><text class="nm" x="600" y="164" data-vi>Người dùng xác minh?</text><text class="nm" x="600" y="164" data-en>User verified?</text><rect class="box" x="256" y="124" width="208" height="56" rx="6"/><rect class="tag" x="264" y="130" width="16" height="12" rx="2"/><text class="tagt" x="272" y="139" text-anchor="middle">5</text><text class="nm" x="360" y="164" data-vi>Đọc trang, bổ sung</text><text class="nm" x="360" y="164" data-en>Read page, add info</text><rect class="opt" x="496" y="228" width="208" height="56" rx="6"/><rect class="tag" x="504" y="234" width="16" height="12" rx="2"/><text class="tagt" x="512" y="243" text-anchor="middle">6</text><text class="nm" x="600" y="268" data-vi>Bỏ trang, ghi là ước tính</text><text class="nm" x="600" y="268" data-en>Drop page, mark estimate</text></svg><p><span data-vi><b>Dùng trên điện thoại:</b> Claude in Chrome là tiện ích của Chrome trên máy tính, nên khi chạy skill từ điện thoại hoặc trên đám mây thì bước này bị bỏ qua và phần mạng xã hội chỉ là ước tính. Muốn có dữ liệu thật thì phải chạy trên máy tính có Chrome.</span><span data-en><b>On a phone:</b> Claude in Chrome is a desktop Chrome extension, so when the skill runs from a phone or in the cloud this step is skipped and the social parts are estimates. Real data needs a run on a computer with Chrome.</span></p>
+    <div class="why"><b><span data-vi>Câu hỏi:</span><span data-en>Question:</span></b> <span data-vi>sếp đã dùng Claude in Chrome chưa; có cần Trung quay video hướng dẫn cài Chrome + tiện ích + đăng nhập (kèm cảnh báo phải tự đăng nhập và cách xử lý khi bị chặn) không? Và sếp chấp nhận cách "vẫn chạy tiếp, báo người dùng xác minh, không xác minh thì bỏ trang đó" chứ?</span><span data-en>have you used Claude in Chrome; do you want Trung to record a video guide for Chrome + the extension + logging in (with the warning that you must log in yourself and how blocked pages are handled)? And is the "keep running, ask the user to verify, drop the page if not verified" approach acceptable?</span></div>
+    <textarea data-ph-vi="Gõ câu trả lời ở đây..." data-ph-en="Type your answer here..." placeholder="Type your answer here..."></textarea>
+    <div class="row"><button class="save"><span data-vi>Lưu</span><span data-en>Save</span></button><span class="saved"><span data-vi>Đã lưu!</span><span data-en>Saved!</span></span><span class="lastsaved"></span></div>
   </div>
 
-  <div class="foot">technext-sales-proposal</div>
+  <div class="foot">technext-sales-proposal · <span data-vi>câu trả lời được lưu vào blocker/answers.json trong repo</span><span data-en>answers are committed to blocker/answers.json in the repo</span></div>
 </div>
 
 <script>
@@ -124,6 +157,75 @@ function setTheme(t){
   }catch(e){}
 })();
 
+
+const LIVE_URL = 'https://technext-sales-proposal.vercel.app/blocker/questions.html';
+function wrongHostMsg(){
+  return document.documentElement.getAttribute('data-lang') === 'vi'
+    ? 'Trang này cần mở từ ' + LIVE_URL + ' mới tải và lưu được câu trả lời (đang mở từ nơi khác nên không có API).'
+    : 'Open this page from ' + LIVE_URL + ' to load and save answers (it is opened from somewhere without the API).';
+}
+async function apiJson(url, opts){
+  const r = await fetch(url, opts);
+  const ct = r.headers.get('content-type') || '';
+  if (!ct.includes('json')) throw new Error(wrongHostMsg());
+  const j = await r.json();
+  if (!r.ok) throw new Error(j.detail || j.message || j.error || ('http_' + r.status));
+  return j;
+}
+
+const statusEl = document.getElementById('status');
+function showStatus(msg, kind){
+  statusEl.textContent = msg;
+  statusEl.className = 'status show ' + kind;
+}
+
+function fmtTime(iso){
+  const lang = document.documentElement.getAttribute('data-lang');
+  const prefix = lang === 'vi' ? 'Trả lời lần cuối ' : 'Last answered ';
+  return prefix + new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+}
+async function loadAnswers(){
+  try{
+    const data = await apiJson('/api/answers');
+    document.querySelectorAll('.q').forEach(card => {
+      const id = card.dataset.id;
+      if (data[id]) {
+        card.querySelector('textarea').value = data[id].answer || '';
+        const ls = card.querySelector('.lastsaved');
+        if (data[id].updatedAt) ls.textContent = fmtTime(data[id].updatedAt);
+      }
+    });
+  }catch(e){
+    showStatus(e.message, 'err');
+  }
+}
+
+document.querySelectorAll('.q').forEach(card => {
+  const id = card.dataset.id;
+  const ta = card.querySelector('textarea');
+  const btn = card.querySelector('button.save');
+  const saved = card.querySelector('.saved');
+  const lastsaved = card.querySelector('.lastsaved');
+  btn.addEventListener('click', async () => {
+    btn.disabled = true;
+    try{
+      await apiJson('/api/answers', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ id, answer: ta.value })
+      });
+      saved.classList.add('show');
+      lastsaved.textContent = fmtTime(new Date().toISOString());
+      setTimeout(() => saved.classList.remove('show'), 2500);
+    }catch(e){
+      showStatus('Save failed: ' + e.message, 'err');
+    }finally{
+      btn.disabled = false;
+    }
+  });
+});
+
+loadAnswers();
 </script>
 </body>
 </html>
