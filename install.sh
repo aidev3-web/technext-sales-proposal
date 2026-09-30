@@ -122,7 +122,7 @@ install_orchestrator() {
   if [ "$DRY" -eq 1 ]; then echo "  [dry-run] $skill_path <- SKILL.md, assets/, agents/"; return; fi
   mkdir -p "$skill_path"
   echo "$REPO_ROOT" > "$skill_path/$marker"
-  for item in SKILL.md assets agents; do
+  for item in SKILL.md dependencies.json assets agents; do
     install_link "$skill_path/$item" "$REPO_ROOT/$item"
   done
 }

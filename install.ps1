@@ -123,10 +123,12 @@ function Install-Orchestrator {
             return
         }
     }
-    if ($DryRun) { Write-Host "  [dry-run] $SkillPath <- SKILL.md, assets/, agents/" -ForegroundColor DarkGray; return }
+    if ($DryRun) { Write-Host "  [dry-run] $SkillPath <- SKILL.md, dependencies.json, assets/, agents/" -ForegroundColor DarkGray; return }
     New-Item -ItemType Directory -Path $SkillPath -Force | Out-Null
     Set-Content -LiteralPath (Join-Path $SkillPath $Marker) -Value $RepoRoot -Encoding UTF8
     Copy-Item -LiteralPath (Join-Path $RepoRoot 'SKILL.md') -Destination (Join-Path $SkillPath 'SKILL.md') -Force
+    # the list of sub-skills SKILL.md's setup check reads, next to it
+    Copy-Item -LiteralPath (Join-Path $RepoRoot 'dependencies.json') -Destination (Join-Path $SkillPath 'dependencies.json') -Force
     foreach ($d in 'assets', 'agents') {
         Install-Link -LinkPath (Join-Path $SkillPath $d) -TargetPath (Join-Path $RepoRoot $d)
     }
