@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- **"What's updated" change log in the template.** The floating popup switches from "Read before
+  the meeting" to a change log once `#changelog-data` has entries (newest first, each item links
+  to the section it changed, new / changed / removed, red dot until the reader opens it, last-seen
+  remembered in `localStorage`). An empty list leaves the original popup untouched. It came from
+  the Hitachi run, where it had been added by hand, and was never in the template.
+- **`.g5-flow` five-step flow component** (also from the Hitachi run), documented in `section-shell.md`.
+- **`validate-proposal.py` check 16:** the change log must be valid JSON with real section ids,
+  kinds new/changed/removed and vi + en text; proposals from an older template are skipped.
+
 ## [1.1.2] - 2026-09-25
 
 ### Fixed
