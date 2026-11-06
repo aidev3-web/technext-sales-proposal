@@ -47,15 +47,16 @@ The portal MCP server with the person's own personal token (portal → My tokens
    - **quote**: `save_output {kind: "quote", body: {modules: [{module, reason}], missing?: [keys], label}, inputs: {lead: V, matrix}}`. `missing` lists any of `package`, `users`, `addons` absent from `profile`. `label` is `"neil"` only when a `modules` fact with `source.kind: "neil"` exists, else `"ai"`.
 
 ### ingest_notes (notes added on a card)
-The job carries only `ref: {label, url?}`; read the notes from that link. Never copy raw notes into anything saved.
-1. Remove every phone number and email.
-2. Extract facts: grade `confirmed`, `source.kind` `call` or `meeting`, `source.ref` = the label/date, only FACT_KEYS; use `supersedes` when replacing an earlier fact of the same key.
-3. `add_facts`, then `complete_job`. The portal recomputes `stale`; regenerate jobs follow.
+The job carries only `ref: {label, url?}`; read the notes from that link. **Raw notes are never sent anywhere or stored**: not in a fact, an output, a job, a prompt to another tool, or a file kept after the job.
+1. `stripContacts(notes)` from the portal's `lib/notes.mjs` (`node -e` or a small script) BEFORE any extraction; work only on the stripped text.
+2. Extract facts: `confirmed`, `source.kind` `call` or `meeting`, only FACT_KEYS; use `supersedes` when replacing an earlier fact of the same key.
+3. `checkExtractedFacts(facts, {label, date, record})` from `lib/notes.mjs` BEFORE `add_facts`. Fix the facts on errors; never bypass it.
+4. `add_facts`, then `complete_job`. The portal recomputes `stale`; regenerate jobs follow.
 
 ### regenerate (stale outputs only)
 Regenerate exactly the kinds listed in `get_lead`'s `stale`, nothing else (staleness comes from `staleOutputs`: an older `inputs.lead` alone is not stale).
 - proposal: update, do not rebuild — `technext-meeting-to-proposal` with the new facts and the `research` output; same artifact link.
-- journey: rerun the kit; only unsent follow-ups change and are labelled "Updated"; sent ones stay byte-for-byte.
+- journey: rerun the kit. Before saving any regenerated follow-up, read the lead's followup-state (`GET /api/v1/followup-state/<slug>`) and pass old drafts, new drafts and that state through `mergeFollowups` (`lib/followups.mjs`): sent drafts stay byte-for-byte (the saved sent text), changed unsent ones are labelled "Updated". Never rewrite a sent draft.
 - quote: rerun the module suggestion.
 Then `save_output` each as a draft with the new `V`.
 
