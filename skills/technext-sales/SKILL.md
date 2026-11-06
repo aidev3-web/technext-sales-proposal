@@ -40,12 +40,15 @@ The portal MCP server with the person's own personal token (portal → My tokens
 ### generate_all (New button)
 1. Research: run the `technext-sales-proposal` research phases (Phase 0 → Phase 1 → source-auditor), seeded from the form facts in `profile`. Result: `audited-findings.json`.
 2. Facts: `node tools/findings-to-facts.mjs <audited-findings.json> --usable` → follow `docs/findings-picks-prompt.md` (at most one pick per key, `from` = finding indices) → `node tools/findings-to-facts.mjs <file> picks.json --by <name>` → `add_facts {slug, facts}`. The reply's `version` is the new `V`.
+   Fact formats the portal's pricing reads: `users` STARTS with the whole number (`"6 users, accounting module only"`); `addons` is `"none"` or a comma list of `customization`, `training`, `migration`; `package` never comes from research.
 3. `save_output {slug, kind: "research", body: <audited-findings>}` with `inputs: {lead: V}`.
+3b. **Package:** ask the person (Neil decides) whether the package is `OOTB` or `Enterprise Core`. Only when they confirm, `add_facts` one fact `{key: "package", value: "OOTB" | "Enterprise Core", grade: "confirmed", source: {kind: "neil" or "call", ref, at}}` (exact spelling). Never guess it; without it the quote stays "not computable".
 4. With the same `V`, in parallel:
    - **proposal**: the `technext-sales-proposal` writing/assembly/validation phases from the record. Publish the artifact (way A), then `save_output {kind: "proposal", url, inputs: {lead: V, research: <research version>}}`.
    - **journey**: the `sales-journey` `kit.md` recipe with `profile` + `playbook.json` → `{kit, vars}`; check locally with `node lib/journey.mjs` → `save_output {kind: "journey", body: {kit, vars}, inputs: {lead: V, playbook}}`.
    - **quote**: `save_output {kind: "quote", body: {modules: [{module, reason}], missing?: [keys], label}, inputs: {lead: V, matrix}}`. `missing` lists any of `package`, `users`, `addons` absent from `profile`. `label` is `"neil"` only when a `modules` fact with `source.kind: "neil"` exists, else `"ai"`.
      The draft carries **no price, amount, total, rate or currency** of any kind (the portal refuses it). The portal computes the price from the price matrix (`lib/pricing.mjs`) when an approver publishes the quote; until then, tell the person the quote shows modules only.
+     The PUT answers `warnings[]` for module names that are not in the price matrix. Read them, fix the names using the matrix's module names (`GET /api/v1/price-matrix`), and save again before `complete_job`. Do not complete the job with warnings left.
 
 ### ingest_notes (notes added on a card)
 The job carries only `ref: {label, url?}`; read the notes from that link. **Raw notes are never sent anywhere or stored**: not in a fact, an output, a job, a prompt to another tool, or a file kept after the job.
