@@ -45,6 +45,7 @@ The portal MCP server with the person's own personal token (portal → My tokens
    - **proposal**: the `technext-sales-proposal` writing/assembly/validation phases from the record. Publish the artifact (way A), then `save_output {kind: "proposal", url, inputs: {lead: V, research: <research version>}}`.
    - **journey**: the `sales-journey` `kit.md` recipe with `profile` + `playbook.json` → `{kit, vars}`; check locally with `node lib/journey.mjs` → `save_output {kind: "journey", body: {kit, vars}, inputs: {lead: V, playbook}}`.
    - **quote**: `save_output {kind: "quote", body: {modules: [{module, reason}], missing?: [keys], label}, inputs: {lead: V, matrix}}`. `missing` lists any of `package`, `users`, `addons` absent from `profile`. `label` is `"neil"` only when a `modules` fact with `source.kind: "neil"` exists, else `"ai"`.
+     The draft carries **no price, amount, total, rate or currency** of any kind (the portal refuses it). The portal computes the price from the price matrix (`lib/pricing.mjs`) when an approver publishes the quote; until then, tell the person the quote shows modules only.
 
 ### ingest_notes (notes added on a card)
 The job carries only `ref: {label, url?}`; read the notes from that link. **Raw notes are never sent anywhere or stored**: not in a fact, an output, a job, a prompt to another tool, or a file kept after the job.
