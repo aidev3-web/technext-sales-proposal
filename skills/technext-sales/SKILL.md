@@ -19,8 +19,12 @@ Without a slug ("chạy việc mới"), list the open jobs and let the person ch
 1. **Install this skill**: copy `skills/technext-sales/` to `~/.claude/skills/technext-sales/` (Windows: `%USERPROFILE%\.claude\skills\`), or `pull_skill` it from the TechNext skill library. The research and proposal steps also need `technext-sales-proposal` (with its sub-skills) and `technext-meeting-to-proposal` installed.
 2. **Make your own token** on the portal: My tokens → scopes `read`, `facts.write`, `draft.write`, `jobs`. It is shown once. Never share it, never paste it in chat, a file in git, or a prompt.
 3. **Store it in an environment variable** on your own machine, e.g. `TECHNEXT_PORTAL_TOKEN` (Windows: `setx TECHNEXT_PORTAL_TOKEN "<token>"` in a new terminal, then reopen Claude Code).
-4. **Add the portal MCP server** to Claude Code, reading the token from that variable (never write the token into the config):
-   `claude mcp add --transport http technext-portal https://<portal-host>/api/v1/mcp --header "Authorization: Bearer ${TECHNEXT_PORTAL_TOKEN}"`
+4. **Add the portal MCP server** so that Claude Code reads the token from that variable at run time; never write the token itself into a config file. Put this in `.mcp.json` (project) or the `mcpServers` of `~/.claude.json`:
+   ```json
+   {"mcpServers": {"technext-portal": {"type": "http", "url": "https://<portal-host>/api/v1/mcp",
+     "headers": {"Authorization": "Bearer ${TECHNEXT_PORTAL_TOKEN}"}}}}
+   ```
+   (Claude Code expands `${...}` itself. Do not use `claude mcp add --header "...$TECHNEXT_PORTAL_TOKEN"` in a shell: the shell would expand it and store the real token in the config.)
 5. **Test** in Claude Code: ask for `list_leads` or `get_price_matrix`. A `401` means the token is wrong or expired; `403 token_scope` names the missing scope. Do not retry until it is fixed.
 6. The portal's **Open Claude Code** button needs Claude Code installed and run once on that machine (it registers the `claude-cli://` link). If nothing opens, use **Copy command** and paste it into Claude Code.
 
