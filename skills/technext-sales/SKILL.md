@@ -15,9 +15,19 @@ The portal's New-lead button opens Claude Code with exactly:
 `Run the open TechNext sales job for lead <slug>: use the technext-sales skill, claim the job, and follow it.`
 Without a slug ("chạy việc mới"), list the open jobs and let the person choose.
 
-## Setup (once per person)
-The portal MCP server with the person's own personal token (portal → My tokens) carrying scopes
-`read`, `facts.write`, `draft.write`, `jobs`. A missing scope shows as `403 token_scope`: tell the person which scope to add; do not retry.
+## Setup (once per machine, once per person)
+1. **Install this skill**: copy `skills/technext-sales/` to `~/.claude/skills/technext-sales/` (Windows: `%USERPROFILE%\.claude\skills\`), or `pull_skill` it from the TechNext skill library. The research and proposal steps also need `technext-sales-proposal` (with its sub-skills) and `technext-meeting-to-proposal` installed.
+2. **Make your own token** on the portal: My tokens → scopes `read`, `facts.write`, `draft.write`, `jobs`. It is shown once. Never share it, never paste it in chat, a file in git, or a prompt.
+3. **Store it in an environment variable** on your own machine, e.g. `TECHNEXT_PORTAL_TOKEN` (Windows: `setx TECHNEXT_PORTAL_TOKEN "<token>"` in a new terminal, then reopen Claude Code).
+4. **Add the portal MCP server** to Claude Code, reading the token from that variable (never write the token into the config):
+   `claude mcp add --transport http technext-portal https://<portal-host>/api/v1/mcp --header "Authorization: Bearer ${TECHNEXT_PORTAL_TOKEN}"`
+5. **Test** in Claude Code: ask for `list_leads` or `get_price_matrix`. A `401` means the token is wrong or expired; `403 token_scope` names the missing scope. Do not retry until it is fixed.
+6. The portal's **Open Claude Code** button needs Claude Code installed and run once on that machine (it registers the `claude-cli://` link). If nothing opens, use **Copy command** and paste it into Claude Code.
+
+## Every write (LEAD-V1-CONTRACT.md)
+- Every write carries a `command_id` (`^[A-Za-z0-9_-]{8,64}$`; a UUID works). Make one per logical write and keep it: on a timeout or network error, retry with the **same** `command_id` (the server returns the first result and writes nothing twice). A new attempt at a different change gets a new id. For `upload_kyc` it is the `command_id` argument (the server sends it as the `Command-Id` header).
+- A reply with `suggested: [paths]` is **normal**: those fields were edited by a person on the portal and are locked, so your values became suggestions for them to accept or reject. Never retry, never work around it; mention it in the summary.
+- `409 conflict` on `patch_journey` means a field changed since you read it: `get_page`/`get_lead` again, rebuild the change from the current value, and send a new `command_id`.
 
 ## Hard rules (design §2)
 1. The AI never writes a price. Quote = module names with reasons; the portal computes prices (`lib/pricing.mjs`) and refuses any price-like field.
@@ -38,31 +48,29 @@ The portal MCP server with the person's own personal token (portal → My tokens
 5. **Tell the person** in a few lines: which drafts were saved (with versions), any quote that is not computable and its missing facts, and that an approver must publish on the portal.
 
 ### generate_all (New button)
-1. Research: run the `technext-sales-proposal` research phases (Phase 0 → Phase 1 → source-auditor), seeded from the form facts in `profile`. Result: `audited-findings.json`.
-2. Facts: `node tools/findings-to-facts.mjs <audited-findings.json> --usable` → follow `docs/findings-picks-prompt.md` (at most one pick per key, `from` = finding indices) → `node tools/findings-to-facts.mjs <file> picks.json --by <name> --matrix price-matrix.json [--note <id>]` → `add_facts {slug, command_id, facts}`. Confirmed findings become `confirmed` facts only with `--note`: first `add_note` the call transcript the findings came from (contacts stripped) and pass its id; without a note they are written as `assumed`. The reply's `version` is the new `V`.
-   Fact formats the portal enforces on `add_facts` (anything else is refused with 400 and nothing is written): `users` is digits only (`"6"`), and any prose about users (`"6 users, accounting module only"`) goes in `client_words`; `modules` is an ARRAY of module names, each EXACTLY (case-sensitive) column 0 of a row of `get_price_matrix`; `package` is exactly `"OOTB"` or `"Enterprise Core"` and never comes from research; `addons` is `"none"` or a comma list of `customization`, `training`, `migration`. Fetch `get_price_matrix` once per run, save it, and pass it to the adapter with `--matrix`. Optionally send a `command_id` with `add_facts` so a retried call is not applied twice.
-3. `save_output {slug, kind: "research", body: <audited-findings>}` with `inputs: {lead: V}`.
-3b. **Package:** ask the person (Neil decides) whether the package is `OOTB` or `Enterprise Core`. A token may write a `confirmed` fact only when it cites a portal note, so: (1) `add_note {slug, command_id, label: "Package decision <date>", text: "<who> confirmed package <answer> on <date>"}` with the person's own words (no phone or email); (2) `add_facts` one fact `{key: "package", value: "OOTB" | "Enterprise Core", grade: "confirmed", source: {kind: "call", ref: <the note id, e.g. n3>, at}}` (exact spelling). If the person cannot confirm, skip it: never guess, never write it as confirmed without the note. Neil can also set it himself on the portal. Without it the quote stays "not computable".
-4. With the same `V`, in parallel:
-   - **proposal**: the `technext-sales-proposal` writing/assembly/validation phases from the record. Publish the artifact (way A), then `save_output {kind: "proposal", url, inputs: {lead: V, research: <research version>}}`.
-   - **journey**: the `sales-journey` `kit.md` recipe with `profile` + `playbook.json` → `{kit, vars}`; check locally with `node lib/journey.mjs` → `save_output {kind: "journey", body: {kit, vars}, inputs: {lead: V, playbook}}`.
-   - **quote**: `save_output {kind: "quote", body: {modules: [{module, reason}], missing?: [keys], label}, inputs: {lead: V, matrix}}`. `missing` lists any of `package`, `users`, `addons` absent from `profile`. `label` is `"neil"` only when a `modules` fact with `source.kind: "neil"` exists, else `"ai"`.
-     The draft carries **no price, amount, total, rate or currency** of any kind (the portal refuses it). The portal computes the price from the price matrix (`lib/pricing.mjs`) when an approver publishes the quote; until then, tell the person the quote shows modules only.
-     The PUT answers `warnings[]` for module names that are not in the price matrix. Read them, fix the names to column 0 of a `get_price_matrix` row, exactly (case-sensitive), and save again before `complete_job`. Do not complete the job with warnings left.
+The order matters (LEAD-V1-CONTRACT.md): **modules go before journey and KYC**, because the proposal reads `modules`; written after, they would make the KYC stale the moment it is saved.
+0. `get_price_matrix` once; save it as `price-matrix.json` (module names = column 0, exact, case-sensitive).
+1. **Research facts.** Run the `technext-sales-proposal` research phases (Phase 0 → Phase 1 → source-auditor), seeded from the form facts in `profile` → `audited-findings.json`. Then `node tools/findings-to-facts.mjs <audited-findings.json> --usable` → follow `docs/findings-picks-prompt.md` (at most one pick per key, `from` = finding indices; never `package`, never `modules` here) → `node tools/findings-to-facts.mjs <file> picks.json --by <name> --matrix price-matrix.json` → `add_facts {slug, command_id, facts}`. Research facts are `assumed`. (Only if the client's own words from a call are in a portal note may they be `confirmed`: pass `--note <id>`.) Formats the portal enforces (bad value = 400, nothing written): `users` digits only (`"6"`; prose goes in `client_words`); `addons` `"none"` or a comma list of `customization`, `training`, `migration`. Then `save_output {slug, command_id, kind: "research", body: <audited-findings>, inputs: {lead: V}}`.
+2. **Modules.** Suggest the Odoo modules as ONE `add_facts` fact `{key: "modules", value: [<exact column-0 names>], grade: "assumed", source: {kind: "web", ref: <the finding URL or "research <date>">, at}}`. Never prices. Reload `get_lead`: its `record.version` is `V` for steps 3 and 4.
+   **Package** (OOTB / Enterprise Core) is Neil's decision, not the AI's: ask the person; only if they confirm, `add_note {slug, command_id, label: "Package decision <date>", text: "<who> confirmed <package> on <date>"}` (no phone or email), then `add_facts` `{key: "package", value: "OOTB" | "Enterprise Core", grade: "confirmed", source: {kind: "call", ref: <note id>, at}}`. Otherwise skip it; without it the quote stays "not computable".
+3. **Journey.** The `sales-journey` `kit.md` recipe with `profile` + `playbook.json` → `{kit, vars}`; check with `node lib/journey.mjs`. First run: `save_output {slug, command_id, kind: "journey", body: {kit, vars}, inputs: {lead: V, playbook}}`. When a journey already exists: `get_page {slug}`, then `patch_journey {slug, command_id, changes: [{path, from, to}]}` with paths under `kit.*` / `vars.*` only, `from` = the current value.
+4. **KYC (the proposal page).** Build it with the `technext-sales-proposal` writing/assembly/validation phases from the record, then `upload_kyc {slug, command_id, html}`. The HTML must be ONE self-contained file (≤ 4 MB): inline CSS and JS only (no CDN, no external script or stylesheet), images and fonts only as `data:` URIs, no fetch/XHR/form posts, every link `target="_blank" rel="noopener"`, no service worker or web manifest, and **no customer phone number or email**. Its **Quotation section names the modules only — never a price, total, rate or currency**; the portal prices the quote.
+5. **Quote draft (optional).** `save_output {slug, command_id, kind: "quote", body: {modules: [{module, reason}], missing?: [keys], label}, inputs: {lead: V, matrix}}`: no price fields of any kind. Fix any `warnings[]` (unknown module names) and save again with a new `command_id`.
+6. `complete_job {id}`.
 
 ### ingest_notes (notes added on a card)
 The job points at a portal note (`get_note {slug, id}` returns its text; contacts were already stripped by the portal, but treat it as if they were not). **Raw notes are never sent anywhere else or stored outside that note**: not in a fact, an output, a job, a prompt to another tool, or a kept file.
 1. `stripContacts(text)` from the portal's `lib/notes.mjs` (`node -e` or a small script) BEFORE any extraction; work only on the stripped text.
 2. Extract facts: `confirmed`, `source.kind` `call` or `meeting`, only FACT_KEYS; use `supersedes` when replacing an earlier fact of the same key.
 3. `checkExtractedFacts(facts, {noteId, date, record, matrixModules})` from `lib/notes.mjs` BEFORE `add_facts`: every confirmed fact cites the note id as `source.ref` (the portal refuses confirmed facts from a token that cite anything else, and rejects the whole batch). Fix the facts on errors; never bypass it.
-4. `add_facts`, then `complete_job`. The portal recomputes `stale`; regenerate jobs follow.
+4. `add_facts {slug, command_id, facts}`, then `complete_job`. The portal recomputes `stale`; regenerate jobs follow.
 
 ### regenerate (stale outputs only)
 Regenerate exactly the kinds listed in `get_lead`'s `stale`, nothing else (staleness comes from `staleOutputs`: an older `inputs.lead` alone is not stale).
 - proposal: update, do not rebuild — `technext-meeting-to-proposal` with the new facts and the `research` output; same artifact link.
 - journey: rerun the kit. Before saving any regenerated follow-up, read the lead's followup-state (`GET /api/v1/followup-state/<slug>`) and pass old drafts, new drafts and that state through `mergeFollowups` (`lib/followups.mjs`): sent drafts stay byte-for-byte (the saved sent text), changed unsent ones are labelled "Updated". Never rewrite a sent draft.
 - quote: rerun the module suggestion.
-Then `save_output` each as a draft with the new `V`.
+Then write each with a new `command_id` and the new `V`: journey via `patch_journey` (only the changed `kit.*`/`vars.*` paths), proposal via `upload_kyc`, quote via `save_output`.
 
 ## How sales-journey reads a lead (draft, for its owner to adopt)
 Replace `research.md` and the local `lead.json` profile with `get_lead {slug}` (or `GET /api/v1/leads/<slug>` with a `read` token): use `profile` for `{industry, size, location, regulatory, risks}` and `record.version` as `inputs.lead`. The sales-entered fields (`current_system`, `users`, `departments`, …) become facts through `add_facts` instead of living only in the page.
