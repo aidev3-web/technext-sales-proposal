@@ -1,3 +1,5 @@
+> **Đã chuyển.** Repo này không còn được duy trì. Cài skill `technext-sales` từ `aidev3-web/SKILL-LIB` (nhánh `master`) qua mcp-skill-lib.
+
 # TechNext sales-proposal skill
 
 Turn a prospective client - a company name, a website, or a short brief - into one
